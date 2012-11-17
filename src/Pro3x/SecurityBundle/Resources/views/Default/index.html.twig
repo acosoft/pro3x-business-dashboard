@@ -1,1 +1,21 @@
-Hello {{ name }}!
+{% extends '::base.html.twig' %}
+
+{% block page_title %}
+    <div class="grid_12">
+	<h1 class="pro3x_page_title">Login or <a href="{{ path("register") }}">Register</a></h1>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2">
+	<form class="pro3x_login" method="post" {{ form_enctype(login) }}>
+	    <div class="pro3x_heading">User Authentication</div>
+	    {{ form_widget(login) }}
+	    
+	    <div class="pro3x_buttons">
+		<input type="submit" value="Login" />
+		<div class="clear"></div>
+	    </div>
+	</form>
+    </div>
+{% endblock %}

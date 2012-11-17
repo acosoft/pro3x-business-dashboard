@@ -51,7 +51,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	
 	/**
 	 *
-	 * @var User
+	 * @var ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Group", inversedBy="users")
 	 * @ORM\JoinTable(name="pro3x_users_groups")
 	 */

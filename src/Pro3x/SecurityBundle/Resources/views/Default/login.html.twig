@@ -1,0 +1,33 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}
+    <div class="grid_12">
+	<h1 class="pro3x_page_title">Login or <a href="{{ path("register") }}">Register</a></h1>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2 pro3x_login_page">
+	
+	{% if error %}
+	    <div class="pro3x_error">{{ error.message }}</div>
+	{% endif %}
+
+	<form class="pro3x_login" action="{{ path("_security_check") }}" method="post" id="login">
+	    <div class="pro3x_heading">User Authentication</div>
+	    <div class="pro3x_form_content">
+		<div>
+		    <label for="username">Username</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
+		</div>
+
+		<div>
+		    <label for="password">Password</label><input type="password" id="password" name="_password" />
+		</div>
+	    </div>
+	    <div class="pro3x_buttons">
+		<input type="submit" value="Login" />
+		<div class="clear"></div>
+	    </div>
+	</form>
+    </div>
+{% endblock %}

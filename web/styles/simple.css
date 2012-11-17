@@ -1,0 +1,153 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
+@import url("grid.css");
+
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
+
+* { font-family: 'Ubuntu', sans-serif; color: #222; }
+
+body, html
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: #fff6df;
+}
+
+h1
+{
+    font-size: 16pt;
+}
+
+.pro3x_header
+{
+    background-color: black;
+    color: #99cc00;
+    padding: 5px 10px;
+}
+
+.pro3x_header a, a:hover
+{
+    color: #99cc00;
+    text-decoration: none;
+}
+
+.pro3x_header a:hover, a
+{
+    color: #33b5e5;
+    text-decoration: none;
+}
+
+.pro3x_page_title_box
+{
+    background-color: #f9f9f9;
+    border-bottom: solid 1px #e5e5e5;
+    box-shadow: 0px 2px 5px gray;
+}
+
+.pro3x_page_title
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pro3x_content
+{
+    padding: 20px 10px 50px 10px;
+}
+
+form
+{
+    background-color: #f9f9f9;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 2px 2px 5px gray;
+}
+
+.pro3x_login_page
+{
+    margin-top: 75px;
+}
+
+.pro3x_error
+{
+    padding: 10px;
+    background-color: #ff4444;
+    color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 2px 2px 5px gray;
+    margin-bottom: 20px;
+}
+
+.pro3x_form_content
+{
+    padding: 10px 10px 0px 10px;
+    border-bottom: solid 2px white;
+}
+
+.pro3x_form_content > div > ul
+{
+    float: right;
+    width: 388px;
+    margin: 0px 6px;
+}
+
+.pro3x_form_content > div > ul li
+{
+    color: #ff4444;
+    padding-bottom: 5px;
+}
+
+.pro3x_form_content > div > ul + input
+{
+    margin-left: 200px;
+}
+
+.pro3x_form_content > div
+{
+    padding: 0px 0px 10px 0px;
+}
+
+.pro3x_form_content > div > label
+{
+    display: inline-block;
+    width: 200px;
+}
+
+.pro3x_heading
+{
+    background-color: #35b5e5;
+    color: white;
+    padding: 10px;
+    border-bottom: solid 1px white;
+    border-top-right-radius: 10px;
+}
+
+input[type=text], input[type=password], input[type=email]
+{
+    width: 388px;
+    padding: 5px 5px;
+    border: solid 1px #e5e5e5;
+}
+
+.pro3x_buttons
+{
+    padding: 10px 10px 10px 10px;
+}
+
+.pro3x_buttons input[type=submit]
+{
+    width: 100px;
+    border: solid 0px #e5e5e5;
+    color: white;
+    background-color: #33b5e5;
+    cursor: pointer;
+    padding: 5px;
+    float: right;
+    margin-left: 10px;
+    box-shadow: 1px 1px 1px gray;
+}
+
+.pro3x_buttons input[type=submit]:hover
+{
+    background-color: #99cc00;
+}
