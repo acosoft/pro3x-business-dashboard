@@ -5,7 +5,10 @@
         <title>{% block title %}Pro3x Online{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('styles/simple.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('styles/super.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/pro3xjqueryui/css/redmond/jquery-ui-1.9.1.custom.css') }}" />
+	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-1.8.2.js') }}"></script>
+	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-ui-1.9.1.custom.js') }}"></script>
     </head>
     <body>
 	{% block head %}
@@ -15,7 +18,9 @@
 	{% endblock %}
 	    
 	<div class="pro3x_page_title_box">
-	    {% block page_title %}{% endblock %}
+	    <div class="ui-widget-header pro3x_page_title_box">
+		<h1 class="pro3x_page_title">{% block page_title %}{% endblock %}</h1>
+	    </div>
 	    <div class="clear"></div>
 	</div>
 	    
@@ -24,6 +29,14 @@
 	    <div class="clear"></div>
 	</div>
 
-        {% block javascripts %}{% endblock %}
+	<script>
+	    jQuery(document).ready(function($) {
+		{% block javascripts %}{% endblock %}
+		
+		$('.pro3x_tabs').tabs();
+		$('.button').button();
+	    });
+	</script>
+        
     </body>
 </html>
