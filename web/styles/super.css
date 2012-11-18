@@ -17,7 +17,7 @@ body
     { display: inline-block; width: 12em; }
 
 input[type=text], input[type=password], input[type=email]
-    { padding: 0.5em; width: 30.3em; }
+    { padding: 0.5em; width: 30.2em; }
 
 .pro3x_page_title
     { padding-left: 0.67em; font-weight: normal; }
@@ -26,13 +26,19 @@ input[type=text], input[type=password], input[type=email]
     { margin-bottom: 2em; }
     
 .pro3x_header
-    { background-color: black; padding: 0.5em 0.5em 0.5em 16px; }
+    { background-color: black; padding: 0.5em 0.5em 0.5em 16px; border-bottom: solid 5px #6da5d0; }
     
 .pro3x_header a
     { color: white; text-decoration: none; }
     
-.pro3x_header a:hover
-    { color: #E17009; }
-    
 .pro3x_buttons .pro3x_info
     { float: left; margin-top: 0.5em; }
+    
+h1
+    { margin-top: 1.5em; margin-bottom: 0.5em; }
+    
+.ui-widget-content a, a
+    { color: #358dd0; text-decoration: none; }
+  
+.ui-widget-content a:hover, a:hover
+    { color: #99cc00; }

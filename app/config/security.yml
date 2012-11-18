@@ -28,7 +28,7 @@ security:
             security: false
 
         secured_area:
-            pattern:    ^/demo/secured/
+            pattern:    ^/demo/secured/|/admin
             form_login:
                 check_path: /demo/secured/login_check
                 login_path: /login
