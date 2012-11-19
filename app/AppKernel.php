@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Pro3x\SecurityBundle\Pro3xSecurityBundle(),
             new Pro3x\jQueryUIBundle\Pro3xjQueryUIBundle(),
+            new Pro3x\AppBundle\Pro3xAppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

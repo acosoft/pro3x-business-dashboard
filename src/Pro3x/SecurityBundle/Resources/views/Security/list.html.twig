@@ -1,11 +1,55 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}Pro3x Online Users{% endblock %}
+{% block page_title %}Korisnici{% endblock %}
 
 {% block body %}
     <div class="grid_12">
 	
+	{% include '::message.html.twig' %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    {% if is_granted('ROLE_OIB') %}
+			<th class="ui-widget-header ui-corner-all">Oib</th>
+		    {% endif %}
+		    <th class="ui-widget-header ui-corner-all">Korisničko ime</th>
+		    <th class="ui-widget-header ui-corner-all">Elektronička pošta</th>
+		    <th class="ui-widget-header ui-corner-all">Aktivan</th>
+		    <th class="ui-widget-header ui-corner-all">Omogućen</th>
+		    <th class="ui-widget-header ui-corner-all">Alati</th>
+		</tr>
+	    </thead>
+	{% for user in users %}
+	    <tr>
+		{% if is_granted('ROLE_OIB') %}
+		    <td>{{ user.oib }}</td>
+		{% endif %}
+		<td>{{ user.username }}</td>
+		<td>{{ user.email }}</td>
+		<td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
+		<td><span class="ui-icon {{ user.enabled?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
+		<td class="pro3x_tools">
+		    <a href="">edit</a>
+		    <a class="pro3x_confirm" data-msg="Jeste li sigurni da želite izbrisati korisnika <b>{{ user.username }}</b>?" href="{{ path('delete_user', {'id': user.id, 'back': app.request.uri}) }}">delete</a>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+	    </tr>
+	{% endfor %}
+	</table>
     </div>
+
+    {% include '::pager.html.twig' with {'count': count, 'page': page} %}
+
+    <div class="pro3x_dialog" title="Upozorenje!"></div>
+
 {% endblock %}
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+
+    
+
+{% endblock %}

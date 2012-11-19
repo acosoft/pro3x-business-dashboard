@@ -26,7 +26,7 @@ input[type=text], input[type=password], input[type=email]
     { margin-bottom: 2em; }
     
 .pro3x_header
-    { background-color: black; padding: 0.5em 0.5em 0.5em 16px; border-bottom: solid 5px #6da5d0; }
+    { background-color: black; padding: 0.5em 0.5em 0.5em 16px; border-bottom: solid 3px #449adc; box-shadow: 0px 2px 2px gray; }
     
 .pro3x_header a
     { color: white; text-decoration: none; }
@@ -34,11 +34,54 @@ input[type=text], input[type=password], input[type=email]
 .pro3x_buttons .pro3x_info
     { float: left; margin-top: 0.5em; }
     
+table.pro3x th, table.pro3x td
+    { padding: 0.5em 1em; }
+    
 h1
     { margin-top: 1.5em; margin-bottom: 0.5em; }
     
 .ui-widget-content a, a
-    { color: #358dd0; text-decoration: none; }
+    { color: #449adc; text-decoration: none; }
   
 .ui-widget-content a:hover, a:hover
     { color: #99cc00; }
+
+td.pro3x_tools a
+    { display: inline-block; margin: 0 0.25em; font-weight: bold; }
+    
+table.pro3x tr:hover
+    { background-color: #e0effc; }
+
+table.pro3x
+    { border-spacing: 1px; width: 100%; }
+    
+/* * * PAGER * * */  
+  
+.pro3x_pager
+    { margin-top: 1em; }
+    
+.pro3x_pager a
+    { display: inline-block; margin: 0 0.1em; width: 16px; height: 16px; text-align: center; }
+
+.pro3x_pager > span, .pro3x_pager > div
+    { float: left; margin: 0 0.1em; position: relative; top: 3px; }
+    
+.pro3x_pager > span
+    { cursor: pointer; }
+    
+.pro3x_current_page, .pro3x_current_page:hover
+    { font-weight: bold; color: #222222; cursor: default; }
+    
+.pro3x_pager_scroll
+    { float: left; overflow: hidden; width: 18em; border-left: solid 1px #449adc; border-right: solid 1px #449adc; }
+    
+.pro3x_pager_items
+    { overflow: visible; white-space: nowrap; display: inline-block; }
+    
+/* * * DIALOG * * */
+
+.pro3x_dialog
+    { display: none; }
+    
+table.pro3x td.pro3x_no_data
+    { padding: 2em; text-align: center; }

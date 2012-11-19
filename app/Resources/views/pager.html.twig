@@ -1,0 +1,14 @@
+<div class="grid_6">
+    <div class="pro3x_pager">
+	<span class="ui-icon ui-icon-arrow-1-w pro3x_pager_previous"></span>
+	<div class="pro3x_pager_scroll">
+	    <div class="pro3x_pager_items">
+		{% for index in range(1, count) %}
+			<a class="{{ (index == page)?'pro3x_current_page':'pro3x_page' }}" href="{{ path('users_list', {'page': index}) }}">{{ index }}</a>
+		{% endfor %}
+	    </div>
+	</div>
+	<span class="ui-icon ui-icon-arrow-1-e pro3x_pager_next"></span>
+	<div class="clear"></div>
+    </div>
+</div>
