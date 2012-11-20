@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Pro3x\SecurityBundle\Entity\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

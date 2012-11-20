@@ -1,3 +1,8 @@
+pro3x_app:
+    resource: "@Pro3xAppBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 pro3x_security:
     resource: "@Pro3xSecurityBundle/Controller/"
     type:     annotation

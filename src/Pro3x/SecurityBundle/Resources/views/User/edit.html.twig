@@ -1,0 +1,26 @@
+{% extends '::form.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_user_{{ mode }}"></span>{{ (mode == 'edit')?'Izmjena podataka o korisniku':'Unos novog korisnika' }}{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2">
+	<div class="pro3x_tabs">
+	    <ul>
+		<li><a href="#info">Informacije</a></li>
+	    </ul>
+	    <div id="info">
+		<div class="pro3x_form_content">
+		    <form method="post">
+			{{ form_widget(form) }}
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="Spremi" />
+			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="Odustani" />
+			</div>
+		    </form>
+		</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

@@ -1,0 +1,73 @@
+<script>
+    jQuery(document).ready(function($) {
+	{% block javascripts %}{% endblock %}
+
+	$('.pro3x_tabs').tabs();
+	$('.button').button();
+
+	$('.pro3x_pager_previous').click(function() {
+	    var scroll = $(this).next();
+	    var items = scroll.find('.pro3x_pager_items');
+
+	    if(Math.abs(parseInt(items.css('marginLeft'))) > scroll.width() / 1.5) {
+		items.animate({marginLeft: '+=' + scroll.width() / 1.5});
+	    }
+	    else {
+		items.animate({marginLeft: 0});		    
+	    }
+	});
+
+	$('.pro3x_pager_next').click(function() {
+	    var scroll = $(this).prev();
+	    var items = scroll.find('.pro3x_pager_items');
+
+	    if(Math.abs(parseInt(items.css('marginLeft'))) < items.width() - scroll.width() / 0.5) {
+		items.animate({marginLeft: '-=' + scroll.width() / 1.5});
+	    }
+	    else if(items.width() > scroll.width() - 10) {
+		items.animate({marginLeft: - items.width() + scroll.width() - 10});
+	    }
+	});
+
+	$('.pro3x_pager_scroll').each(function() {
+	    var scroll = $(this);
+	    var items = scroll.find('.pro3x_pager_items');
+	    var current = items.find('.pro3x_current_page');
+
+	    var left = current.position().left;
+
+	    if(items.width() > scroll.width() && left > items.width() - scroll.width() / 2) {
+		items.animate({marginLeft: - items.width() + scroll.width() - 10});
+	    }
+	    else if(left > scroll.width() / 2) {
+		items.animate({marginLeft: - left + (scroll.width() - current.width()) / 2});
+	    }
+	});
+
+	$('.pro3x_confirm').click(function(event) {
+
+	    event.preventDefault();
+	    var item = $(this);
+
+	    $(".pro3x_dialog" ).html('<span class="pro3x_icon ' + item.data('icon') + '"></span><div class="pro3x_message">' + item.data('msg') + '</div>').data('href', item.attr('href')).dialog({
+		resizable: false,
+		width: 420,
+		height:210,
+		modal: true,
+		buttons: {
+		    "Potvrdi": function() {
+			window.location = $(this).data('href');
+		    },
+		    "Odustani": function() {
+			$( this ).dialog( "close" );
+		    }
+		}
+	    });
+	});
+
+	$('input.link').click(function(event) {
+	    window.location = $(this).data('href');
+	    event.preventDefault();
+	});
+    });
+</script>

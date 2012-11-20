@@ -71,13 +71,4 @@ class DefaultController extends Controller
             'error'         => $error,
         );
 	}
-	
-	/**
-     * @Route("/", name="dashboard")
-     * @Template()
-     */
-	public function dashboardAction()
-	{
-		
-	}
 }

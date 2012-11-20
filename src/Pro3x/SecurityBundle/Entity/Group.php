@@ -39,7 +39,6 @@ class Group implements RoleInterface
 	
 	/**
 	 *
-	 * @var User[]
 	 * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
 	 */
 	private $users;
@@ -64,5 +63,20 @@ class Group implements RoleInterface
 	public function getRole()
 	{
 		return $this->role;
+	}
+	
+	public function setRole($role)
+	{
+		$this->role = $role;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function setName($name)
+	{
+		$this->name = $name;
 	}
 }

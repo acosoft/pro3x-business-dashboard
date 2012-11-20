@@ -1,0 +1,41 @@
+{% extends '::form.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_authorization"></span>Izmjena dozvola korisnika <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri}) }}">{{ user.username }}</a>{% endblock %}
+
+{% block body %}
+    <form method="post">
+	<div class="grid_8 push_2">
+	    {% include '::message.html.twig' %}
+	    <table class="ui-widget-content ui-corner-all pro3x">
+		<thead>
+		    <tr>
+			<th class="ui-widget-header ui-corner-all">Naziv grupe</th>
+		    </tr>
+		</thead>
+	    {% for group in groups %}
+		<tr>
+		    <td>
+			<input type="checkbox" value="{{ group.id }}" {{ (group in user.groups)?'checked="checked"':'' }} name="groups[]" /> {{ group.name }}
+		    </td>
+		</tr>
+	    {% else %}
+		<tr>
+		    <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+		</tr>
+	    {% endfor %}
+	    </table>
+	</div>
+
+	<div class="grid_8 push_2">
+	    <div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+		<input type="submit" class="button" value="Spremi" />
+		<input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="Odustani" />
+	    </div>
+	</div>
+	
+	<input type="hidden" name="id" value="{{ user.id }}" />
+	<input type="hidden" name="back" value="{{ app.request.get('back') }}" />
+    </form>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

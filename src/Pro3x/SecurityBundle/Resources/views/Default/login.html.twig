@@ -1,7 +1,7 @@
-{% extends '::login.html.twig' %}
+{% extends '::form.html.twig' %}
 
 {% block page_title %}
-    Login or <a href="{{ path("register") }}">Register</a>
+    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>Login or <a href="{{ path("register") }}">Register</a>
 {% endblock %}
 
 {% block body %}
@@ -21,11 +21,11 @@
 		<form class="pro3x_login" action="{{ path("_security_check") }}" method="post" id="login">
 		    <div class="pro3x_form_content">
 			<div>
-			    <label for="username">Username</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
+			    <label for="username">Korisničko ime</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
 			</div>
 
 			<div>
-			    <label for="password">Password</label><input type="password" id="password" name="_password" />
+			    <label for="password">Zaporka</label><input type="password" id="password" name="_password" />
 			</div>
 		    </div>
 		    <div class="pro3x_buttons">

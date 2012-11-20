@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}Korisnici{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_users"></span>Popis Korisnika{% endblock %}
 
 {% block body %}
     <div class="grid_12">
@@ -30,8 +30,9 @@
 		<td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
 		<td><span class="ui-icon {{ user.enabled?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
 		<td class="pro3x_tools">
-		    <a href="">edit</a>
-		    <a class="pro3x_confirm" data-msg="Jeste li sigurni da želite izbrisati korisnika <b>{{ user.username }}</b>?" href="{{ path('delete_user', {'id': user.id, 'back': app.request.uri}) }}">delete</a>
+		    <a href="{{ path('edit_permissions', {'id': user.id, 'back': app.request.uri}) }}">dozvole</a>
+		    <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">izmjeni</a>
+		    <a class="pro3x_confirm" data-icon="pro3x_icon_user_delete" data-msg="Jeste li sigurni da želite izbrisati korisnika <b>{{ user.username }}</b>?" href="{{ path('delete_user', {'id': user.id, 'back': app.request.uri}) }}">izbriši</a>
 		</td>
 	    </tr>
 	{% else %}
@@ -42,14 +43,17 @@
 	</table>
     </div>
 
+    <div class="grid_6">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <input type="button" data-href="{{ path('add_user', {'back': app.request.uri}) }}" class="button link" value="Dodaj" />
+	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="Odustani" />
+	</div>
+    </div>
+
     {% include '::pager.html.twig' with {'count': count, 'page': page} %}
 
     <div class="pro3x_dialog" title="Upozorenje!"></div>
 
 {% endblock %}
 
-{% block javascripts %}
-
-    
-
-{% endblock %}
+{% block javascripts %}{% endblock %}

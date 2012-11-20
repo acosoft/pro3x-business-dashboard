@@ -25,7 +25,3 @@ _configurator:
 
 _main:
     resource: routing.yml
-
-home:
-  pattern: /
-  defaults: { _controller: AcmeDemoBundle:Welcome:index }
