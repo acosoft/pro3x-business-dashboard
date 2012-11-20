@@ -1,6 +1,10 @@
 <div class="pro3x_header">
     <a href="{{ path('dashboard') }}">Pro3x Online</a>
     <ul>
-	<li><a href="{{ path('dashboard') }}">Dashboard</a></li>
+	<li>
+	    {% if is_granted('ROLE_USER') %}
+		<a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.username }}</a> : <a href="{{ path('logout') }}">Logout</a>
+	    {% endif %}
+	</li>
     </ul>
 </div>

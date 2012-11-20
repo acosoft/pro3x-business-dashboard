@@ -2,7 +2,7 @@
 
 namespace Pro3x\SecurityBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Pro3x\AppBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -13,23 +13,8 @@ use Pro3x\SecurityBundle\Entity\User;
 /**
  * @Route("/admin/users")
  */
-class UserController extends Controller
+class UserController extends AdminController
 {
-	private function getPageSize()
-	{
-		return 3;
-	}
-	
-	private function getPageOffset($page)
-	{
-		return ($page - 1) * $this->getPageSize();
-	}
-	
-	private function getPageCount($itemCount)
-	{
-		return ceil($itemCount / $this->getPageSize());
-	}
-	
 	/**
 	 * @Route("/delete/{id}", name="delete_user")
 	 */

@@ -7,6 +7,37 @@
 	{% include '::message.html.twig' %}
 	
 	<div class="ui-widget ui-corner-all ui-widget-content pro3x_dashboard_panel_box">
+	    <div class="ui-widget-header ui-corner-all pro3x_dashboard_panel_header">Trgovačko poslovanje</div>
+	    <div class="pro3x_dashboard_panel">
+	
+		<a class="button" href="{{ path('add_user', {'back': app.request.uri}) }}">
+		    <span class="pro3x_icon pro3x_icon_invoice_add"></span>
+		    Novi Račun
+		</a>
+		<a class="button" href="{{ path('users_list') }}">
+		    <span class="pro3x_icon pro3x_icon_invoice"></span>
+		    Popis Računa
+		</a>
+		<a class="button" href="{{ path('add_group', {'back': app.request.uri}) }}">
+		    <span class="pro3x_icon pro3x_icon_inventory_add"></span>
+		    Novi Artikal
+		</a>
+		<a class="button" href="{{ path('list_groups') }}">
+		    <span class="pro3x_icon pro3x_icon_inventory"></span>
+		    Popis Artikala
+		</a>
+		<a class="button" href="{{ path('add_client', {'back': app.request.uri}) }}">
+		    <span class="pro3x_icon pro3x_icon_client_add"></span>
+		    Novi Kupac
+		</a>
+		<a class="button" href="{{ path('clients') }}">
+		    <span class="pro3x_icon pro3x_icon_client"></span>
+		    Popis Kupaca
+		</a>
+	    </div>
+	</div>
+	    
+	<div class="ui-widget ui-corner-all ui-widget-content pro3x_dashboard_panel_box">
 	    <div class="ui-widget-header ui-corner-all pro3x_dashboard_panel_header">Sigurnosne postavke</div>
 	    <div class="pro3x_dashboard_panel">
 	

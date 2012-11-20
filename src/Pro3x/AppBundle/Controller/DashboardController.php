@@ -2,14 +2,14 @@
 
 namespace Pro3x\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Pro3x\AppBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/admin")
  */
-class DashboardController extends Controller
+class DashboardController extends AdminController
 {
     /**
      * @Route("/", name="dashboard")

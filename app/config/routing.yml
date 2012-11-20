@@ -1,3 +1,8 @@
+pro3x_invoice:
+    resource: "@Pro3xInvoiceBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 pro3x_app:
     resource: "@Pro3xAppBundle/Controller/"
     type:     annotation
@@ -8,6 +13,9 @@ pro3x_security:
     type:     annotation
     prefix:   /
 
+home:
+    pattern:  /
+    defaults: { _controller: AcmeDemoBundle:Welcome:index }
   
 # Internal routing configuration to handle ESI
 #_internal:

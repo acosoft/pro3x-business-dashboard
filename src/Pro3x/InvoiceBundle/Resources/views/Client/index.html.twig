@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>Popis Kupaca{% endblock %}
+
+{% block body %}
+    <div class="grid_12">
+	
+	{% include '::message.html.twig' %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    <th class="ui-widget-header ui-corner-all">Kupac</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 300px;">Kontakt</th>
+		    <th class="ui-widget-header ui-corner-all">Alati</th>
+		</tr>
+	    </thead>
+	{% for client in clients %}
+	    <tr>
+		<td>
+		    <div>{{ client.description|join(', ') }}</div>
+		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		</td>
+		<td>
+		    <div>{{ client.email }}</div>
+		    <div>{{ client.phones|join(', ') }}</div>
+		</td>
+		<td class="pro3x_tools">
+		    <a href="{{ path('edit_client', {'id': client.id, 'back': app.request.uri }) }}">izmjeni</a>
+		    <a class="pro3x_confirm" data-icon="pro3x_icon_client_delete" data-msg="Jeste li sigurni da želite izbrisati kupca <b>{{ client.name }}</b>?" href="{{ path('delete_client', {'id': client.id, 'back': app.request.uri}) }}">izbriši</a>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+	    </tr>
+	{% endfor %}
+	</table>
+    </div>
+
+    <div class="grid_6">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <input type="button" data-href="{{ path('add_client', {'back': app.request.uri}) }}" class="button link" value="Dodaj" />
+	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="Odustani" />
+	</div>
+    </div>
+
+    {% include '::pager.html.twig' with {'count': count, 'page': page} %}
+
+    <div class="pro3x_dialog" title="Upozorenje!"></div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

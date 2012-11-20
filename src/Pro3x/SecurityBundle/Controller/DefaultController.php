@@ -71,4 +71,13 @@ class DefaultController extends Controller
             'error'         => $error,
         );
 	}
+	
+	/**
+	 * @todo Delete Acme bundle and change logout pattern
+     * @Route("/demo/secured/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+        // The security layer will intercept this request
+    }
 }

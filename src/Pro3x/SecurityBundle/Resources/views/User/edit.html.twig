@@ -1,6 +1,6 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_user_{{ mode }}"></span>{{ (mode == 'edit')?'Izmjena podataka o korisniku':'Unos novog korisnika' }}{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_user_{{ mode }}"></span>{{ (mode == 'edit')?'Izmjena korisnika'|title:'Unos novog korisnika'|title }}{% endblock %}
 
 {% block body %}
     <div class="grid_8 push_2">

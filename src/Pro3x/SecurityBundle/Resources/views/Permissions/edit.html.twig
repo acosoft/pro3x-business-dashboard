@@ -1,6 +1,6 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_authorization"></span>Izmjena dozvola korisnika <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri}) }}">{{ user.username }}</a>{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_authorization"></span>Izmjena Dozvola Korisnika <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri}) }}">{{ user.username|title }}</a>{% endblock %}
 
 {% block body %}
     <form method="post">
