@@ -12,14 +12,14 @@
 		<tr>
 		    <th class="ui-widget-header ui-corner-all">Kupac</th>
 		    <th class="ui-widget-header ui-corner-all" style="width: 300px;">Kontakt</th>
-		    <th class="ui-widget-header ui-corner-all">Alati</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">Alati</th>
 		</tr>
 	    </thead>
 	{% for client in clients %}
 	    <tr>
 		<td>
-		    <div>{{ client.description|join(', ') }}</div>
 		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		    <div>{{ client.description|join(', ') }}</div>
 		</td>
 		<td>
 		    <div>{{ client.email }}</div>

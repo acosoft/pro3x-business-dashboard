@@ -55,6 +55,6 @@ class ClientController extends AdminController
     public function indexAction($page)
     {
 		$clients = $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client')->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page));
-        return array('clients' => $clients, 'count' => $this->getPageCount(100), 'page' => $page);
+        return array('clients' => $clients, 'count' => $this->getPageCount($this->getClientRepository()->getCount()), 'page' => $page);
     }
 }

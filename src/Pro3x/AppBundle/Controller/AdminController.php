@@ -5,6 +5,7 @@ namespace Pro3x\AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\ORM\EntityRepository;
 
 class AdminController extends Controller
 {
@@ -41,10 +42,38 @@ class AdminController extends Controller
 		return array('form' => $form->createView(), 'title' => $title, 'cssClass' => 'pro3x_small_icon_' . $icon);
 	}
 	
+	public function tableParams($items, $page, $count)
+	{
+		return array('items' => $items, 'page' => $page, 'count' => $count);
+	}
+		
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\ClientRepository
+	 */
+	public function getClientRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client');
+	}
+		
+	public function getTaxRateRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:TaxRate');
+	}
+	
 	public function deleteEntity($repository, $message)
 	{
 		$id = $this->getRequest()->get('id');
-		$group = $this->getDoctrine()->getRepository($repository)->findOneById($id);
+		
+		if($repository instanceof EntityRepository)
+		{
+			$group = $repository->findOneById($id);
+		}
+		else
+		{
+			$group = $this->getDoctrine()->getRepository($repository)->findOneById($id);
+		}
+		
 		$this->redirect404($group);
 		
 		$manager = $this->getDoctrine()->getEntityManager();

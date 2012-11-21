@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_{{ icon }}"></span>{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="grid_12">
+	
+	{% include '::message.html.twig' %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    {% for column in columns %}
+		    <th class="ui-widget-header ui-corner-all" {% if column.width > 0 %}style="width: 300px;"{% endif %}>
+			{{ column.name|title }}
+		    </th>
+		    {% endfor %}
+		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">Alati</th>
+		</tr>
+	    </thead>
+	{% for item in items %}
+	    <tr>
+		{% for column in columns %}
+		<td>
+		    {{ attribute(item, column.name) }}
+		</td>
+		{% endfor %}
+		<td class="pro3x_tools">
+		    <a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">izmjeni</a>
+		    <a class="pro3x_confirm" data-icon="pro3x_icon_{{ icon }}" data-msg="Jeste li sigurni da želite izbrisati {{ type }} <b>{{ attribute(item, deleteColumn) }}</b>?" href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">izbriši</a>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+	    </tr>
+	{% endfor %}
+	</table>
+    </div>
+
+    <div class="grid_6">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <input type="button" data-href="{{ path(route, {'back': app.request.uri}) }}" class="button link" value="Dodaj" />
+	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="Odustani" />
+	</div>
+    </div>
+
+    {% if pager %}{% include '::pager.html.twig' with {'count': count, 'page': page} %}{% endif %}
+    <div class="pro3x_dialog" title="Upozorenje!"></div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}
