@@ -1,0 +1,65 @@
+'Popis poreznih stopa' : Tax rates
+'Spremi' : Save
+'Odustani': Cancel
+'Dodaj': Add New
+'Potvrdi': Delete
+'Naziv': Name
+'Stopa': Rate
+'izmjeni': Edit
+'izbriši': Delete
+'Upozorenje!' : Warning
+'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?': Are you sure you wish to delete %type% <b>%description%</b>?
+'poreznu stopu': Tax rate
+'Pro3x Online': Pro3x Business Dashboard
+'Logout' : Logout
+'Pro3x Online Dashboard': Pro3x Business Dashboard
+'Trgovačko poslovanje' : Invoicing Module
+'Novi Račun' : New Invoice
+'Popis Računa' : Invoices
+'Novi Artikal' : New Product
+'Popis Artikala' : Products
+'Novi Kupac' : New Customer
+'Popis Kupaca': Customers
+'Porezne Stope' : Tax Rates
+'Sigurnosne postavke' : Security Module
+'Novi Korisnik' : New User
+'Popis Korisnika' : Users
+'Nova Grupa' : New Group
+'Popis Grupa' : Groups
+'Informacije': 'Details'
+'Korisničko ime': Username
+'Email': Email
+'Aktivan' : Enabled
+'Ne aktivan' : Disabled
+'Aktiviran' : Enabled
+'OIB' : Tax Number
+'Zaporka' : Password
+'Ponovite zaporku' : Confirm Password
+'Unos novog korisnika' : New User
+'Izmjena korisnika' : Edit User
+'Popis Korisnika' : Users
+'Alati' : Tools
+'Omogućen' : Enabled
+'dozvole' : Groups
+'Jeste li sigurni da želite izbrisati korisnika <b>%username%</b>?' : Are you sure you wish to delete user <b>%username%</b>?
+'Dozvole Korisnika |' : Edit group membership |
+'Naziv grupe' : Group
+'Jeste li sigurni da želite izbrisati grupu <b>%name%</b>?' : Are you sure you wish to delete group <b>%name%</b>?
+'Nema rezultata' : No records found
+'Izmjena grupe' : Edit group
+'Naziv uloge' : Role
+'Popis Kupaca' : Customers
+'Informacije o kupcu' : Customer Details
+'Kontakt informacije' : Contact Details
+'Jeste li sigurni da želite izbrisati kupca <b>%name%</b>?' : Are you sure you wish to delete customer <b>%name%</b>?
+'Unos novog klijenta' : New Customer
+'Novi kupac je uspješno kreiran' : New customer created successfully
+'Kupac je uspješno izbrisan' : Customer successfully deleted
+'Informacije o kupcu su uspješno izmijenjene' : Customer details successfully changed
+'Grupa je uspješno izmjenjena' : Group successfully changed
+'Grupa je uspješno kreirana' : Group successfully created
+'Grupa je uspješno izbrisana' : Group successfully deleted
+'Informacije o korisniku su uspješno izmjenjene' : User successfully changed
+'Korisnik je uspješno izbrisan' : User successfully deleted
+'Podaci o novom korisniku su uspješno spremljeni u bazu' : User successfully created
+'Dozvole korisnika su uspješno izmijenjene' : Permissions successfully changed

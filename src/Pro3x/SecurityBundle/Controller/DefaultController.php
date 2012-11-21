@@ -74,7 +74,7 @@ class DefaultController extends Controller
 	
 	/**
 	 * @todo Delete Acme bundle and change logout pattern
-     * @Route("/demo/secured/logout", name="logout")
+     * @Route("/logout", name="logout")
      */
     public function logoutAction()
     {

@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_group"></span>Popis Grupa{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_group"></span>{{ 'Popis Grupa'|trans }}{% endblock %}
 
 {% block body %}
     <div class="grid_12">
@@ -9,21 +9,23 @@
 	<table class="ui-widget-content ui-corner-all pro3x">
 	    <thead>
 		<tr>
-		    <th class="ui-widget-header ui-corner-all">Naziv grupe</th>
-		    <th class="ui-widget-header ui-corner-all">Alati</th>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Naziv grupe'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Alati'|trans }}</th>
 		</tr>
 	    </thead>
 	{% for group in groups %}
 	    <tr>
 		<td>{{ group.name }}</td>
 		<td class="pro3x_tools" style="width: 200px;">
-		    <a href="{{ path('edit_group', {'id': group.id, 'back': app.request.uri }) }}">izmjeni</a>
-		    <a class="pro3x_confirm" data-icon="pro3x_icon_group_delete" data-msg="Jeste li sigurni da želite izbrisati grupu <b>{{ group.name }}</b>?" href="{{ path('delete_group', {'id': group.id, 'back': app.request.uri}) }}">izbriši</a>
+		    <a href="{{ path('edit_group', {'id': group.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
+		    <a class="pro3x_confirm" data-icon="pro3x_icon_group_delete" 
+		       data-msg="{{ 'Jeste li sigurni da želite izbrisati grupu <b>%name%</b>?'|trans({ '%name%': group.name }) }}" 
+		       href="{{ path('delete_group', {'id': group.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
 		</td>
 	    </tr>
 	{% else %}
 	    <tr>
-		<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+		<td class="pro3x_no_data" colspan="100">{{ 'Nema rezultata'|trans }}</td>
 	    </tr>
 	{% endfor %}
 	</table>
@@ -31,12 +33,12 @@
 
     <div class="grid_6">
 	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
-	    <input type="button" data-href="{{ path('add_group', {'back': app.request.uri}) }}" class="button link" value="Dodaj" />
-	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="Odustani" />
+	    <input type="button" data-href="{{ path('add_group', {'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />
+	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
 	</div>
     </div>
 
-    <div class="pro3x_dialog" title="Upozorenje!"></div>
+<div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
 {% endblock %}
 
 {% block javascripts %}{% endblock %}

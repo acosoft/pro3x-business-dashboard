@@ -103,4 +103,9 @@ class AdminController extends Controller
 		
 		return false;
 	}
+	
+	public function translate($message, $params = array())
+	{
+		return $this->get('translator')->trans($message, $params);
+	}
 }

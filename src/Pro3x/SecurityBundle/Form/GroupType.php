@@ -11,8 +11,8 @@ class GroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
-            ->add('role', 'text')
+            ->add('name', 'text', array('label' => 'Naziv grupe'))
+            ->add('role', 'text', array('label' => 'Naziv uloge'))
         ;
     }
 

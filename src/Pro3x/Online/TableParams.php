@@ -82,9 +82,9 @@ class TableParams
 		$this->toolsWidth = $toolsWidth;
 	}
 
-	public function addColumn($name, $width = 0)
+	public function addColumn($name, $label = null, $width = 0)
 	{
-		$this->columns[] = new TableColumn($name, $width);
+		$this->columns[] = new TableColumn($name, $label, $width);
 		return $this;
 	}
 	

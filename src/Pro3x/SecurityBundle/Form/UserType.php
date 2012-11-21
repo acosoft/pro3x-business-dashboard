@@ -13,7 +13,7 @@ class UserType extends AbstractType
         $builder
             ->add('username', 'text', array('label' => 'Korisničko ime'))
             ->add('email', 'text')
-            ->add('active', 'choice', array('choices' => array('1' => "Aktivan", 0 => "Ne aktivan"), 'label' => 'Aktivan'))
+            ->add('active', 'choice', array('choices' => array('1' => "Aktivan", 0 => "Ne aktivan"), 'label' => 'Aktiviran'))
 			->add('oib', 'text', array('required' => false, 'label' => 'OIB'))
             ->add('password', 'repeated', array('first_name' => 'password', 'second_name' => 'confirm_password', 'type' => 'password', 'required' => false, 
 				'first_options' => array('label' => 'Zaporka'),

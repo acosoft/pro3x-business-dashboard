@@ -10,7 +10,7 @@ security:
             iterations:	1
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_OIB]
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
@@ -27,17 +27,17 @@ security:
             security: false
 
         secured_area:
-            pattern:    ^/demo/secured/|^/admin
+            pattern:    ^/demo/secured/|^/admin|^/logout
             form_login:
                 check_path: /demo/secured/login_check
                 login_path: /login
             logout:
-                path:   /demo/secured/logout
+                path:   /logout
                 target: /
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
 
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_USER }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }

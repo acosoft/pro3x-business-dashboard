@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TaxRate
  *
- * @ORM\Table()
+ * @ORM\Table(name="pro3x_tax_rates")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\TaxRateRepository")
  */
 class TaxRate

@@ -55,10 +55,10 @@
 		height:210,
 		modal: true,
 		buttons: {
-		    "Potvrdi": function() {
+		    "{{ 'Potvrdi'|trans }}": function() {
 			window.location = $(this).data('href');
 		    },
-		    "Odustani": function() {
+		    "{{ 'Odustani'|trans }}": function() {
 			$( this ).dialog( "close" );
 		    }
 		}

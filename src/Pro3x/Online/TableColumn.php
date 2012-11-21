@@ -6,13 +6,26 @@ class TableColumn
 {
 	private $name;
 	private $width;
+	private $label;
 	
-	function __construct($name, $width = 0)
+	function __construct($name, $label=null, $width = 0)
 	{
 		$this->name = $name;
 		$this->width = $width;
+		
+		$this->label = ($label)?$label:$name;
 	}
 	
+	public function getLabel()
+	{
+		return $this->label;
+	}
+
+	public function setLabel($label)
+	{
+		$this->label = $label;
+	}
+
 	public function getName()
 	{
 		return $this->name;
