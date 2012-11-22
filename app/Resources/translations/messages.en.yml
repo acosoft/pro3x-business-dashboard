@@ -63,3 +63,6 @@
 'Korisnik je uspješno izbrisan' : User successfully deleted
 'Podaci o novom korisniku su uspješno spremljeni u bazu' : User successfully created
 'Dozvole korisnika su uspješno izmijenjene' : Permissions successfully changed
+'Nova porezna stopa je uspješno spremljena' : Tax rate successfully created
+'Izmjenjena porezna stopa je uspješno spremljena' : Tax rate successfully changed
+'Porezna stopa je uspješno izbrisana' : Tax rate successfully deleted
