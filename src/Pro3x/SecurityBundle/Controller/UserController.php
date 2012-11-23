@@ -68,6 +68,7 @@ class UserController extends AdminController
 					$user->setPassword($encodedPassword);
 				}
 				
+				$user->setDisplayName($data->getDisplayName());
 				$user->setActive($data->isActive());
 				$user->setEmail($data->getEmail());
 				$user->setOib($data->getOib());

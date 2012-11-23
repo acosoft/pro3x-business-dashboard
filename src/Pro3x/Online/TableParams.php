@@ -80,6 +80,7 @@ class TableParams
 	public function setToolsWidth($toolsWidth)
 	{
 		$this->toolsWidth = $toolsWidth;
+		return $this;
 	}
 
 	public function addColumn($name, $label = null, $width = 0)

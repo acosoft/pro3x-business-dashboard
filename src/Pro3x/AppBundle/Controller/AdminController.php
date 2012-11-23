@@ -37,6 +37,31 @@ class AdminController extends Controller
 		}
 	}
 	
+	public function parseNumber($value)
+	{
+		$nf = new \NumberFormatter($this->getLocale(), \NumberFormatter::DECIMAL);
+		return $nf->parse($value);
+	}
+	
+	public function getParam($name, $default = null)
+	{
+		return $this->getRequest()->get($name, $default);
+	}
+	
+	/**
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\Session\Session
+	 */
+	public function getSession()
+	{
+		return $this->get('session');
+	}
+	
+	public function getLocale()
+	{
+		return $this->getSession()->get('_locale');
+	}
+	
 	public function editParams($form, $title, $icon)
 	{
 		return array('form' => $form->createView(), 'title' => $title, 'cssClass' => 'pro3x_small_icon_' . $icon);
@@ -56,9 +81,22 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client');
 	}
 		
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\TaxRateRepository
+	 */
 	public function getTaxRateRepository()
 	{
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:TaxRate');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\ProductRepository
+	 */
+	public function getProductRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Product');
 	}
 	
 	public function deleteEntity($repository, $message)

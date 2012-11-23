@@ -14,9 +14,10 @@
 			<th class="ui-widget-header ui-corner-all">{{ 'OIB'|trans }}</th>
 		    {% endif %}
 			<th class="ui-widget-header ui-corner-all">{{ 'Korisničko ime'|trans }}</th>
+			<th class="ui-widget-header ui-corner-all">{{ 'Naziv korisnika'|trans }}</th>
 			<th class="ui-widget-header ui-corner-all">{{ 'Email'|trans }}</th>
 			<th class="ui-widget-header ui-corner-all">{{ 'Aktiviran'|trans }}</th>
-			<th class="ui-widget-header ui-corner-all">{{ 'Alati'|trans }}</th>
+			<th class="ui-widget-header ui-corner-all" style="width: 200px;">{{ 'Alati'|trans }}</th>
 		</tr>
 	    </thead>
 	{% for user in users %}
@@ -25,6 +26,7 @@
 		    <td>{{ user.oib }}</td>
 		{% endif %}
 		<td>{{ user.username }}</td>
+		<td>{{ user.displayName }}</td>
 		<td>{{ user.email }}</td>
 		<td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
 		<td class="pro3x_tools">

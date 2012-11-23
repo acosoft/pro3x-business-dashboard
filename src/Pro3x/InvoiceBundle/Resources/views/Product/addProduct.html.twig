@@ -1,0 +1,62 @@
+{% extends '::form.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon {{ cssClass }}"></span>{{ title|trans|title }}{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2">
+	<div class="pro3x_tabs">
+	    <ul>
+		<li><a href="#info">{{ 'Informacije'|trans }}</a></li>
+	    </ul>
+	    <div id="info">
+		<div class="pro3x_form_content">
+		    <form method="post">
+			{{ form_widget(form) }}
+			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+			</div>
+		    </form>
+		</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %}
+    
+{% block javascripts %}
+    function calculateTax(item, target, route) {
+	if(item.val() != '') {
+	    var taxes = Array();
+	    target.addClass('ajax');
+
+	    $('.pro3x_checkbox_list input').each(function() {
+		if($(this).attr('checked') == 'checked') {
+		    taxes.push($(this).val());
+		}
+	    })
+	
+	    $.get(route, {'tax-rates': taxes, 'amount': item.val()}, function(data) {
+		$('#pro3x_invoicebundle_producttype_unitPrice').val(data.amount);
+		$('#pro3x_invoicebundle_producttype_taxAmount').val(data.tax);
+		$('#pro3x_invoicebundle_producttype_taxedPrice').val(data.total);
+		target.removeClass('ajax');
+	    }, 'json');
+	}
+    }
+	
+    $('#pro3x_invoicebundle_producttype_unitPrice').blur(function() {
+	calculateTax($(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
+    });
+    
+    $('#pro3x_invoicebundle_producttype_taxedPrice').blur(function() {
+	calculateTax($(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
+    });
+    
+    $('.pro3x_checkbox_list input').click(function() {
+	calculateTax($('#pro3x_invoicebundle_producttype_taxedPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
+    });
+    
+    calculateTax($('#pro3x_invoicebundle_producttype_unitPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
+    
+{% endblock %}

@@ -3,7 +3,7 @@
     <ul>
 	<li>
 	    {% if is_granted('ROLE_USER') %}
-		<a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.username }}</a> : <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
+		<a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.displayName }}</a> :: <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
 	    {% endif %}
 	</li>
     </ul>

@@ -33,7 +33,24 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $displayName;
+	
+	public function getDisplayName()
+	{
+		if($this->displayName)
+			return $this->displayName;
+		else
+			return $this->username;
+	}
 
+	public function setDisplayName($displayName)
+	{
+		$this->displayName = $displayName;
+	}
 
     /**
      * Get id

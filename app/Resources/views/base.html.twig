@@ -25,7 +25,12 @@
 	    <div class="clear"></div>
 	</div>
 
-	{% include '::scripts.html.twig' %}
+	<script>
+	    jQuery(document).ready(function($) {
+		{% block javascripts %}{% endblock %}
+		{% include '::scripts.html.twig' %}
+	    });
+	</script>
         
     </body>
 </html>

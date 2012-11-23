@@ -66,3 +66,25 @@
 'Nova porezna stopa je uspješno spremljena' : Tax rate successfully created
 'Izmjenjena porezna stopa je uspješno spremljena' : Tax rate successfully changed
 'Porezna stopa je uspješno izbrisana' : Tax rate successfully deleted
+'Naziv korisnika' : Display name
+'Popis proizvoda' : Products
+'Jedinična cijena' : Unit price
+'Iznos poreza' : Tax Amount
+'Barkod' : Barcode
+'MPC': Taxed price
+'Novi artikal je uspješno spremljen' : Product successfully created
+'Jedinica' : Unit
+'Proizvod je uspješno izbrisan' : Product successfully deleted
+'Proizvod je uspješno izmjenjen' : Product successfully changed
+'Novi artikal' : New product
+'Naziv artikla' : Name
+'Interna oznaka' : Internal code
+'Porezne stope' : Tax Rates
+'Iznos poreza' : Total Tax Amount
+'Ukupna cijena' : Taxed Price
+'Mjerna jedinica' : Unit
+'Izmjena klijenta' : Edit customer
+'Adresa' : Address
+'Lokacija' : Location
+'Telefon' : Phone number
+'Mobitel' : Mobile number

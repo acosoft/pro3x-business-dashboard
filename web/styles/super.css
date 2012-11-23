@@ -4,7 +4,7 @@
 body 
     { font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 0px 0px 100px 0px; margin: 0px; }
 
-:focus 
+a:focus 
     { outline: 0; }
 
 .pro3x_buttons
@@ -17,7 +17,7 @@ body
     { margin-bottom: .5em; }
 
 .pro3x_form_content > div > label, form > div > div > label
-    { display: inline-block; width: 12em; }
+    { display: inline-block; width: 12em; vertical-align: top; padding-top: 0.75em; }
     
 form > div > div select
     { padding: 0.5em; margin-left: 0px; width: 31.5em; }
@@ -31,6 +31,15 @@ form label + ul + input
 input[type=text], input[type=password], input[type=email]
     { padding: 0.5em; width: 30.2em; }
 
+.pro3x_checkbox_list
+    { padding: 0.25em; width: 30.2em; display: inline-block; }
+    
+.pro3x_checkbox_list label
+    { width: 28em; display: inline-block; }
+    
+.pro3x_checkbox_list input
+    { margin: 0.5em 0.75em 0.5em 0em; position: relative; top: 1px; }
+    
 .pro3x_page_title
     { padding-left: 0.67em; font-weight: normal; }
     
@@ -57,6 +66,12 @@ h1
   
 .ui-widget-content a:hover, a:hover
     { color: #99cc00; }
+    
+.ui-widget-content
+    { padding: 2px; }
+
+table.ui-widget-content
+    { padding: 1px; }
 
 td.pro3x_tools a
     { display: inline-block; margin: 0 0.25em; font-weight: bold; }
@@ -166,6 +181,7 @@ table.pro3x td.pro3x_no_data
 
 .pro3x_small_icon_tax
     { background-image: url("../bundles/pro3xapp/small/briefcase.png"); } 
+    
 
 /* * * CLIENTS * * */
 
@@ -201,6 +217,14 @@ table.pro3x td.pro3x_no_data
 .pro3x_icon_inventory_delete
     { background-image: url("../bundles/pro3xapp/database_delete.png"); } 
 
+.pro3x_small_icon_inventory
+    { background-image: url("../bundles/pro3xapp/small/database.png"); }
+    
+.pro3x_small_icon_inventory_add
+    { background-image: url("../bundles/pro3xapp/small/database_add.png"); }
+
+.pro3x_small_icon_inventory_edit
+    { background-image: url("../bundles/pro3xapp/small/database_edit.png"); }
     
 /* * * SECURITY * * */
     
@@ -250,3 +274,6 @@ a.ui-state-active:hover
     
 .ui-button .ui-button-text
     { line-height: 1.2em; }
+    
+.ajax
+    { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }

@@ -32,7 +32,22 @@ class TaxRate
      * @ORM\Column(name="rate", type="decimal", scale=2)
      */
     private $rate;
+	
+	/**
+	 *
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="taxRates")
+	 */
+	private $products;
 
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
 
     /**
      * Get id
