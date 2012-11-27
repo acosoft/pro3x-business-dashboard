@@ -3,10 +3,13 @@
 
 body 
     { font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 0px 0px 100px 0px; margin: 0px; }
-
-a:focus 
-    { outline: 0; }
-
+    
+:focus
+    { outline-color: #449adc; }
+    
+a:focus
+    { outline: none; }    
+    
 .pro3x_buttons
     { text-align: right; }
     
@@ -73,11 +76,20 @@ h1
 table.ui-widget-content
     { padding: 1px; }
 
-td.pro3x_tools a
+td.pro3x_tools a, .pro3x_delete_invoice_item
     { display: inline-block; margin: 0 0.25em; font-weight: bold; }
+    
+.pro3x_delete_invoice_item
+    { float: right; margin-top: 2px; display: none; }
+    
+tr:hover .pro3x_delete_invoice_item
+    { display: inline-block; }
     
 table.pro3x tr:hover
     { background-color: #e0effc; }
+    
+#actionCode.ajax
+    { background-position: 15em 0.53em;  }
 
 table.pro3x
     { border-spacing: 1px; width: 100%; }
@@ -135,6 +147,9 @@ table.pro3x td.pro3x_no_data
     
 .pro3x_dialog .pro3x_message
     { padding: 1em 0em; }
+    
+.pro3x_message
+    { cursor: pointer; }
   
 .pro3x_icon_users
     { background-image: url("../bundles/pro3xapp/user.png"); }
@@ -182,6 +197,12 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_tax
     { background-image: url("../bundles/pro3xapp/small/briefcase.png"); } 
     
+.pro3x_invoice_total
+    { text-align: right; padding-right: 10px; font-size: 2em; }
+    
+.pro3x_unit
+    { display: inline-block; width: 30px; }
+    
 
 /* * * CLIENTS * * */
 
@@ -225,6 +246,26 @@ table.pro3x td.pro3x_no_data
 
 .pro3x_small_icon_inventory_edit
     { background-image: url("../bundles/pro3xapp/small/database_edit.png"); }
+    
+/* * * invoice * * */
+
+.pro3x_icon_invoice
+    { background-image: url("../bundles/pro3xapp/smart_phone.png"); } 
+
+.pro3x_icon_invoice_add
+    { background-image: url("../bundles/pro3xapp/smart_phone_add.png"); }  
+
+.pro3x_icon_invoice_delete
+    { background-image: url("../bundles/pro3xapp/smart_phone_delete.png"); } 
+
+.pro3x_small_icon_invoice
+    { background-image: url("../bundles/pro3xapp/small/smart_phone.png"); }
+    
+.pro3x_small_icon_invoice_add
+    { background-image: url("../bundles/pro3xapp/small/smart_phone_add.png"); }
+
+.pro3x_small_icon_invoice_edit
+    { background-image: url("../bundles/pro3xapp/small/smart_phone_edit.png"); }
     
 /* * * SECURITY * * */
     
@@ -277,3 +318,9 @@ a.ui-state-active:hover
     
 .ajax
     { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }
+
+.pro3x_ajax
+    { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); display: inline-block; width: 16px; height: 11px; float: right; margin-top: 0.25em; }
+    
+input[type="text"].pro3x_query
+    { width: 54.6em; }

@@ -42,27 +42,36 @@ $('.pro3x_pager_scroll').each(function() {
 });
 
 $('.pro3x_confirm').click(function(event) {
-
-    event.preventDefault();
+    
     var item = $(this);
-
-    $(".pro3x_dialog" ).html('<span class="pro3x_icon ' + item.data('icon') + '"></span><div class="pro3x_message">' + item.data('msg') + '</div>').data('href', item.attr('href')).dialog({
-	resizable: false,
-	width: 420,
-	height:210,
-	modal: true,
-	buttons: {
-	    "{{ 'Potvrdi'|trans }}": function() {
-		window.location = $(this).data('href');
-	    },
-	    "{{ 'Odustani'|trans }}": function() {
-		$( this ).dialog( "close" );
+    
+    if(item.data('confirm') != 'skip')
+    {
+	event.preventDefault();
+	$(".pro3x_dialog" ).html('<span class="pro3x_icon ' + item.data('icon') + '"></span><div class="pro3x_message">' + item.data('msg') + '</div>').data('href', item.attr('href')).dialog({
+	    resizable: false,
+	    width: 420,
+	    height:210,
+	    modal: true,
+	    buttons: {
+		"{{ 'Potvrdi'|trans }}": function() {
+		    window.location = $(this).data('href');
+		},
+		"{{ 'Odustani'|trans }}": function() {
+		    $( this ).dialog( "close" );
+		}
 	    }
-	}
-    });
+	});
+    }
 });
 
 $('input.link').click(function(event) {
     window.location = $(this).data('href');
     event.preventDefault();
 });
+
+$('body').on('click', '.pro3x_message', function() { $(this).slideUp(); });
+$('body').on('mouseover', '.pro3x_message', function() { $(this).find('span.ui-icon').removeClass('ui-icon-info').addClass('ui-icon-closethick'); });
+$('body').on('mouseout', '.pro3x_message', function() { $(this).find('span.ui-icon').addClass('ui-icon-info').removeClass('ui-icon-closethick'); });
+
+$('input[type="text"]').first().focus();

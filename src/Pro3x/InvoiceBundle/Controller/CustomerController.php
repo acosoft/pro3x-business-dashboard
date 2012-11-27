@@ -5,12 +5,12 @@ namespace Pro3x\InvoiceBundle\Controller;
 use Pro3x\AppBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pro3x\InvoiceBundle\Form\ClientType;
+use Pro3x\InvoiceBundle\Form\CustomerType;
 
 /**
- * @Route("/admin/clients")
+ * @Route("/admin/customers")
  */
-class ClientController extends AdminController
+class CustomerController extends AdminController
 {
 	/**
 	 * @Route("/add", name="add_client")
@@ -18,7 +18,7 @@ class ClientController extends AdminController
 	 */
 	public function addAction()
 	{
-		$form = $this->createForm(new ClientType());
+		$form = $this->createForm(new CustomerType());
 		if($result = $this->saveForm($form, 'Novi kupac je uspješno kreiran')) return $result;
 
 		return array('form' => $form->createView(), 'title' => 'Unos novog klijenta', 'cssClass' => 'pro3x_small_icon_client_add');
@@ -30,10 +30,10 @@ class ClientController extends AdminController
 	 */
 	public function editAction($id)
 	{
-		$client = $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client')->findOneById($id);
+		$client = $this->getCustomerRepository()->findOneById($id);
 		$this->redirect404($client);
 		
-		$form = $this->createForm(new ClientType(), $client);
+		$form = $this->createForm(new CustomerType(), $client);
 		if($result = $this->saveForm($form, 'Informacije o kupcu su uspješno izmijenjene')) return $result;
 		
 		return $this->editParams($form, 'Izmjena klijenta', 'client_edit');
@@ -45,7 +45,7 @@ class ClientController extends AdminController
 	 */
 	public function deleteAction()
 	{
-		return $this->deleteEntity('Pro3xInvoiceBundle:Client', 'Kupac je uspješno izbrisan');
+		return $this->deleteEntity($this->getCustomerRepository(), 'Kupac je uspješno izbrisan');
 	}
 	
 	/**
@@ -54,7 +54,7 @@ class ClientController extends AdminController
      */
     public function indexAction($page)
     {
-		$clients = $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client')->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page));
-        return array('clients' => $clients, 'count' => $this->getPageCount($this->getClientRepository()->getCount()), 'page' => $page);
+		$clients = $this->getCustomerRepository()->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page));
+        return array('clients' => $clients, 'count' => $this->getPageCount($this->getCustomerRepository()->getCount()), 'page' => $page);
     }
 }

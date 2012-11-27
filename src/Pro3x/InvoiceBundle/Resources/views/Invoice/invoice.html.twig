@@ -1,0 +1,104 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_invoice_add"></span>{{ 'Novi račun'|trans|title }}
+    {% if invoice.customer %} | <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="grid_12" style="margin-bottom: 1em;">
+	
+	{% include '::message.html.twig' %}
+	<form action="">
+	    <table class="ui-widget-content ui-corner-all pro3x">
+		<thead>
+		    <tr>
+			    <th class="ui-widget-header ui-corner-all" style="width: 350px;">{{ 'Naziv artikla'|trans }}</th>
+			    <th class="ui-widget-header ui-corner-all">{{ 'Jedinična cijena'|trans }}</th>
+			    <th class="ui-widget-header ui-corner-all">{{ 'Količina'|trans }}</th>
+			    <th class="ui-widget-header ui-corner-all">{{ 'Popust'|trans }}</th>
+			    <th class="ui-widget-header ui-corner-all">{{ 'Osnovica'|trans }}</th>
+			    <th class="ui-widget-header ui-corner-all">{{ 'Ukupno'|trans }}</th>
+		    </tr>
+		</thead>
+
+		<tbody>
+		{% for item in invoice.items %}
+			{% include 'Pro3xInvoiceBundle:Invoice:addItem.html.twig' with {'item': item} %}
+		{% else %}
+		    <tr>		    
+			<td colspan="100" class="pro3x_no_data">{{ 'Upišite barkod ili šifru artikla i kliknite enter ili gumb Dodaj'|trans }}</td>
+		    </tr>
+		{% endfor %}
+		</tbody>
+	    </table>
+	</form>
+    </div>
+
+    <div class="container_12">
+	<div class="grid_9">
+	    <form action="{{ path('add_invoice_item') }}">
+		<input type="text" id="actionCode" style="width: 218px; padding: 4px;" placeholder="Barkod ili šifra artikla" name="code" />
+		<input type="hidden" name="invoice" value="{{ invoice.id }}" />
+		<input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
+		<input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
+		<input  id="save" class="button" type="button" name="action" value="Ispis" />
+		<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+	    </form>
+	</div>
+	<div class="grid_1">
+	    <div style="padding-top: .4em; margin-top: 2px; border-top: solid 1px transparent;">{{ 'Ukupno:'|trans }}</div>
+	</div>
+	<div class="grid_2">
+	    <div class="pro3x_invoice_total">{{ total }}</div>
+	</div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    function addItem(form) {
+	$('#actionCode').addClass('ajax');
+    
+	$.get(form.attr('action'), form.serialize(), function(data) {
+	    $('tbody').append($(data.item));
+	    $('tbody .pro3x_no_data').parents('tr').remove();
+	    $('.pro3x_invoice_total').text(data.total);
+	    $("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
+	    $('#actionCode').removeClass('ajax');
+	}, 'json');
+    }
+
+    $('#addProduct').click(function() {
+	var form = $(this).parent();
+	addItem(form);
+    });
+    
+    $('#actionCode').keypress(function(e) {
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if(code == 13) { //Enter keycode
+	  addItem($(this).parent());
+	  e.preventDefault();
+	  
+	  $(this).val('').focus();
+	}
+    });
+    
+    $('tbody').on('click', '.pro3x_delete_invoice_item', function(event) { 
+    
+	var link = $(this);
+	event.preventDefault();
+	
+	var ajax = $('<span class="pro3x_ajax"></span>');
+	link.replaceWith(ajax);
+	
+	$.post(link.attr('href'), null, function (data) {
+	    ajax.parents('tr').remove();
+	    $('.pro3x_invoice_total').text(data.total);
+
+	    if($('tbody td').size() == 0) {
+		$('tbody').append($('<tr><td colspan="100" class="pro3x_no_data">{{ 'Upišite barkod ili šifru artikla i kliknite enter ili gumb Dodaj'|trans }}</td></tr>'));
+	    }
+	}, 'json');
+    });
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Izbor Kupca'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="grid_12" style="margin-bottom: 2em;">
+	<div class="pro3x_tabs">
+	    <ul>
+		<li><a href="#info">{{ 'Pretraživanje'|trans }}</a></li>
+	    </ul>
+	    <div id="info">
+		<div class="pro3x_form_content">
+		    <form method="post">
+			{{ form_widget(form) }}
+			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="{{ 'Pretraži'|trans }}" />
+			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+			</div>
+		    </form>
+		</div>
+	    </div>
+	</div>
+    </div>
+
+    <div class="grid_12">
+	
+	{% if clients|length > 0 %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Informacije o kupcu'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 300px;">{{ 'Kontakt informacije'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">{{ 'Alati'|trans }}</th>
+		</tr>
+	    </thead>
+	{% for client in clients %}
+	    <tr>
+		<td>
+		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		    <div>{{ client.description|join(', ') }}</div>
+		</td>
+		<td>
+		    <div>{{ client.email }}</div>
+		    <div>{{ client.phones|join(', ') }}</div>
+		</td>
+		<td class="pro3x_tools">
+		    <a href="{{ path('change_invoice_customer', {'id': app.request.get('id'), 'customerId': client.id, 'back': app.request.get('back')}) }}">odaberi</a>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">{{ 'Nema rezultata'|trans }}</td>
+	    </tr>
+	{% endfor %}
+	</table>
+	{% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

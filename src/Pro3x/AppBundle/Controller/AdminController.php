@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\ORM\EntityRepository;
+use Pro3x\Online\Numeric;
 
 class AdminController extends Controller
 {
@@ -21,7 +22,10 @@ class AdminController extends Controller
 	
 	public function getPageCount($itemCount)
 	{
-		return ceil($itemCount / $this->getPageSize());
+		if($itemCount == 0)
+			return 1;
+		else
+			return ceil($itemCount / $this->getPageSize());
 	}
 	
 	public function setMessage($message)
@@ -37,10 +41,34 @@ class AdminController extends Controller
 		}
 	}
 	
+	public function getNumeric()
+	{
+		return new Numeric($this->getLocale());
+	}
+	
+	/**
+	 * 
+	 * @return \NumberFormatter
+	 */
+	public function getNumberFormatter($minDecimals, $maxDecimals = null)
+	{
+		$numeric = new \Pro3x\Online\Numeric($this->getLocale());
+		
+		if(!$maxDecimals)
+			$maxDecimals = $minDecimals;
+		
+		return $numeric->getNumberFormatter($minDecimals, $maxDecimals);
+	}
+	
 	public function parseNumber($value)
 	{
-		$nf = new \NumberFormatter($this->getLocale(), \NumberFormatter::DECIMAL);
-		return $nf->parse($value);
+		return $this->getNumberFormatter(2)->parse($value);
+	}
+	
+	public function formatNumber($value, $minDecimals = 2, $maxDecimals = null)
+	{
+		if(!$maxDecimals) $maxDecimals = $minDecimals;
+		return $this->getNumberFormatter($minDecimals, $maxDecimals)->format($value);
 	}
 	
 	public function getParam($name, $default = null)
@@ -59,7 +87,7 @@ class AdminController extends Controller
 	
 	public function getLocale()
 	{
-		return $this->getSession()->get('_locale');
+		return $this->getRequest()->getLocale();
 	}
 	
 	public function editParams($form, $title, $icon)
@@ -74,11 +102,29 @@ class AdminController extends Controller
 		
 	/**
 	 * 
-	 * @return \Pro3x\InvoiceBundle\Entity\ClientRepository
+	 * @return \Pro3x\InvoiceBundle\Entity\CustomerRepository
 	 */
-	public function getClientRepository()
+	public function getCustomerRepository()
 	{
-		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Client');
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Customer');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\InvoiceRepository
+	 */
+	public function getInvoiceRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Invoice');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\InvoiceItem
+	 */
+	public function getInvoiceItemRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:InvoiceItem');
 	}
 		
 	/**
@@ -122,6 +168,18 @@ class AdminController extends Controller
 		return $this->redirect($this->getRequest()->get('back'));
 	}
 	
+	public function getBackUrl()
+	{
+		if($back = $this->getRequest()->get('back'))
+		{
+			return $back;
+		}
+		else
+		{
+			return $this->generateUrl('dashboard');
+		}
+	}
+	
 	public function saveForm($form, $message)
 	{
 		if($this->getRequest()->isMethod('post'))
@@ -135,7 +193,7 @@ class AdminController extends Controller
 				$manager->flush();
 				
 				$this->get('session')->setFlash('message', $message);
-				return $this->redirect($this->getRequest()->get('back'));
+				return $this->redirect($this->getBackUrl());
 			}
 		}
 		

@@ -32,7 +32,7 @@ class ProductController extends AdminController
 	 */
 	public function calculateTotalPriceAction()
 	{
-		$basePrice = $this->getParam('amount', 0);
+		$basePrice = $this->parseNumber($this->getParam('amount', 0));
 		$totalTaxRate = 0;
 		
 		$taxRates = $this->getRequest()->get('tax-rates', array());
@@ -43,12 +43,13 @@ class ProductController extends AdminController
 			$totalTaxRate += $tax->getRate();
 		}
 		
-		$taxedPrice = $basePrice * (1 + $totalTaxRate);
+		$taxedPrice = round($basePrice * (1 + $totalTaxRate), 2);
+		$basePrice = $taxedPrice / (1 + $totalTaxRate);
 
 		return new Response(json_encode(array(
-			'amount' => number_format($basePrice, 6),
-			'tax' => number_format($taxedPrice - $basePrice, 2), 
-			'total' => number_format($taxedPrice, 2)), JSON_FORCE_OBJECT));
+			'amount' => $this->formatNumber($basePrice, 6),
+			'tax' => $this->formatNumber($taxedPrice - $basePrice, 2, 6), 
+			'total' => $this->formatNumber($taxedPrice, 2)), JSON_FORCE_OBJECT));
 	}
 	
 	/**
@@ -56,7 +57,7 @@ class ProductController extends AdminController
 	 */
 	public function calculateBasePrice()
 	{
-		$taxedPrice = $this->getParam('amount', 0);
+		$taxedPrice = $this->parseNumber($this->getParam('amount', 0));
 		$totalTaxRate = 0;
 		
 		$taxRates = $this->getRequest()->get('tax-rates', array());
@@ -70,9 +71,9 @@ class ProductController extends AdminController
 		$basePrice = $taxedPrice / (1 + $totalTaxRate);
 
 		return new Response(json_encode(array(
-			'amount' => number_format($basePrice, 6),
-			'tax' => number_format($taxedPrice - $basePrice, 2), 
-			'total' => number_format($taxedPrice, 2)), JSON_FORCE_OBJECT));
+			'amount' => $this->formatNumber($basePrice, 6),
+			'tax' => $this->formatNumber($taxedPrice - $basePrice, 2, 6), 
+			'total' => $this->formatNumber($taxedPrice, 2)), JSON_FORCE_OBJECT));
 	}
 	
 	
@@ -111,14 +112,22 @@ class ProductController extends AdminController
 		$repository = $this->getProductRepository();
 		$count = $repository->count();
 		
+		$products = $this->getProductRepository()->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page)); /* @var $products \Doctrine\Common\Collections\ArrayCollection */
+		
+		$numeric = $this->getNumeric();
+		foreach ($products as $product) /* @var $product \Pro3x\InvoiceBundle\Entity\Product */
+		{
+			$product->setNumeric($numeric);
+		}
+		
 		return $params->setTitle('Popis proizvoda')
 				->setIcon('inventory')
 				
 				->addColumn('barcode', 'Barkod')
 				->addColumn('name', 'Naziv')
-				->addColumn('unitPriceFormated', 'Jedinična cijena')
-				->addColumn('taxAmountFormated', 'Iznos poreza')
-				->addColumn('taxedPriceFormated', 'MPC')
+				->addColumn('unitPriceFormated', 'Jedinična cijena', 0, 'right')
+				->addColumn('taxAmountFormated', 'Iznos poreza', 0, 'right')
+				->addColumn('taxedPriceFormated', 'MPC', 0, 'right')
 				->addColumn("Unit", "Jedinica")
 				
 				->setToolsWidth(200)
@@ -131,6 +140,7 @@ class ProductController extends AdminController
 				
 				->setPager(true)
 				->setPageCount($this->getPageCount($count))
-				->setItems($this->getProductRepository()->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page)))->getParams();
+				->setPage($this->getRequest()->get('page', 1))
+				->setItems($products)->getParams();
     }
 }

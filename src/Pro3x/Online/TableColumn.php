@@ -7,11 +7,13 @@ class TableColumn
 	private $name;
 	private $width;
 	private $label;
+	private $textAlign;
 	
-	function __construct($name, $label=null, $width = 0)
+	function __construct($name, $label=null, $width = 0, $textAlign = 'left')
 	{
 		$this->name = $name;
 		$this->width = $width;
+		$this->textAlign = $textAlign;
 		
 		$this->label = ($label)?$label:$name;
 	}
@@ -44,6 +46,16 @@ class TableColumn
 	public function setWidth($width)
 	{
 		$this->width = $width;
+	}
+	
+	public function getTextAlign()
+	{
+		return $this->textAlign;
+	}
+
+	public function setTextAlign($textAlign)
+	{
+		$this->textAlign = $textAlign;
 	}
 }
 

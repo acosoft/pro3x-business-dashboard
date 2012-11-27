@@ -3,14 +3,15 @@
 namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Client
  *
  * @ORM\Table(name="pro3x_clients")
- * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\ClientRepository")
+ * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\CustomerRepository")
  */
-class Client
+class Customer
 {
     /**
      * @var integer
@@ -56,6 +57,21 @@ class Client
 	 */
 	private $email;
 	
+	/**
+	 * @OneToMany(targetEntity="Invoice", mappedBy="customer")
+	  */
+	private $invoices;
+	
+	public function getInvoices()
+	{
+		return $this->invoices;
+	}
+
+	public function setInvoices($invoices)
+	{
+		$this->invoices = $invoices;
+	}
+
 	public function getName()
 	{
 		return $this->name;

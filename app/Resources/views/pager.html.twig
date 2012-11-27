@@ -1,10 +1,10 @@
-<div class="grid_6" style="text-align: right;">
+<div class="grid_4" style="text-align: right;">
     <div class="pro3x_pager">
 	<span class="ui-icon ui-icon-arrow-1-w pro3x_pager_previous"></span>
 	<div class="pro3x_pager_scroll">
 	    <div class="pro3x_pager_items">
 		{% for index in range(1, count) %}
-			<a class="{{ (index == page)?'pro3x_current_page':'pro3x_page' }}" href="{{ path(app.request.attributes.get('_route'), {'page': index}) }}">{{ index }}</a>
+			<a class="{{ (index == page)?'pro3x_current_page':'pro3x_page' }}" href="{{ path(app.request.attributes.get('_route'), {'page': index, 'back': app.request.get('back')}) }}">{{ index }}</a>
 		{% endfor %}
 	    </div>
 	</div>

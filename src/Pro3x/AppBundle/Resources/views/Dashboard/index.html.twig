@@ -10,10 +10,10 @@
 	    <div class="ui-widget-header ui-corner-all pro3x_dashboard_panel_header">{{ 'Trgovačko poslovanje'|trans}}</div>
 	    <div class="pro3x_dashboard_panel">
 	
-		<a class="button" href="{{ path('add_user', {'back': app.request.uri}) }}">
+		<a class="button" href="{{ path('add_invoice', {'back': app.request.uri}) }}">
 		    <span class="pro3x_icon pro3x_icon_invoice_add"></span>
 		    {{ 'Novi Račun'|trans }}
-		</a><a class="button" href="{{ path('users_list') }}">
+		</a><a class="button" href="{{ path('invoices') }}">
 		    <span class="pro3x_icon pro3x_icon_invoice"></span>
 		    {{ 'Popis Računa'|trans }}
 		</a><a class="button" href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">

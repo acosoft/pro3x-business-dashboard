@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ClientType extends AbstractType
+class CustomerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,12 +24,12 @@ class ClientType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pro3x\InvoiceBundle\Entity\Client'
+            'data_class' => 'Pro3x\InvoiceBundle\Entity\Customer'
         ));
     }
 
     public function getName()
     {
-        return 'pro3x_invoicebundle_clienttype';
+        return 'pro3x_invoicebundle_customertype';
     }
 }

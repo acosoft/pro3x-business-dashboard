@@ -14,15 +14,15 @@ class ProductType extends AbstractType
             ->add('name', 'text', array('label' => 'Naziv artikla'))
             ->add('barcode', 'text', array('label' => 'Barkod'))
             ->add('code', 'text', array('label' => 'Interna oznaka'))
-            ->add('unitPrice', 'text', array('label' => 'Jedinična cijena'))
+            ->add('unitPrice', 'number', array('label' => 'Jedinična cijena'))
 			->add('taxRates', 'entity', array(
 				'label' => 'Porezne stope', 
 				'expanded' => true, 'property' => 'name', 
 				'multiple' => true, 
 				'class' => 'Pro3xInvoiceBundle:TaxRate', 
 				'attr' => array('class' => 'pro3x_checkbox_list')))
-			->add('taxAmount', 'text', array('mapped' => false, 'label' => 'Iznos poreza', 'read_only' => true))
-			->add('taxedPrice', 'text', array('mapped' => false, 'label' => 'Ukupna cijena'))
+			->add('taxAmount', 'number', array('mapped' => false, 'label' => 'Iznos poreza', 'read_only' => true))
+			->add('taxedPrice', 'number', array('mapped' => false, 'label' => 'Ukupna cijena'))
             ->add('unit', 'text', array('label' => 'Mjerna jedinica'))
             
         ;

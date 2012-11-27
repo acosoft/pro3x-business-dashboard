@@ -83,9 +83,12 @@ class TableParams
 		return $this;
 	}
 
-	public function addColumn($name, $label = null, $width = 0)
+	public function addColumn($name, $label = null, $width = 0, $align="left")
 	{
-		$this->columns[] = new TableColumn($name, $label, $width);
+		$column = new TableColumn($name, $label, $width, $align);
+
+		$this->columns[] = $column;
+		
 		return $this;
 	}
 	

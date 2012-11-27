@@ -3,6 +3,7 @@
 namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product
@@ -37,7 +38,7 @@ class Product
 	private $code;
 	
 	/**
-	 * @ORM\Column(type="decimal", scale=6)
+	 * @ORM\Column(type="decimal", precision=14, scale=6)
 	 */
 	private $unitPrice;
 	
@@ -46,6 +47,22 @@ class Product
 	 */
 	private $unit;
 	
+	private $numeric;
+	
+	/**
+	 * 
+	 * @return \Pro3x\Online\Numeric
+	 */
+	public function getNumeric()
+	{
+		return $this->numeric;
+	}
+
+	public function setNumeric($numeric)
+	{
+		$this->numeric = $numeric;
+	}
+
 	/**
 	 *
 	 * @var ArrayCollection
@@ -57,9 +74,9 @@ class Product
 	function __construct()
 	{
 		$this->unitPrice = 0;
+		$this->taxRates = new ArrayCollection();
 	}
 
-	
     /**
      * Get id
      *
@@ -105,12 +122,12 @@ class Product
 
 	public function getUnitPrice()
 	{
-		return $this->unitPrice;
+		return $this->getTaxedPrice() / (1 + $this->getTotalTaxRate());
 	}
 	
 	public function getUnitPriceFormated()
 	{
-		return number_format($this->getUnitPrice(), 2);
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getUnitPrice());
 	}
 
 	public function setUnitPrice($unitPrice)
@@ -121,7 +138,7 @@ class Product
 	
 	public function getTaxAmountFormated()
 	{
-		return number_format($this->getTaxAmount(), 2);
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getTaxAmount());
 	}
 	
 	public function getTaxAmount()
@@ -131,10 +148,10 @@ class Product
 	
 	public function getTaxedPriceFormated()
 	{
-		return number_format($this->getTaxedPrice(), 2);
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getTaxedPrice());
 	}
 	
-	public function getTaxedPrice()
+	public function getTotalTaxRate()
 	{
 		$totalRate = 0;
 		
@@ -143,7 +160,13 @@ class Product
 			$totalRate += $tax->getRate();
 		}
 		
-		return round($this->getUnitPrice() * (1 + $totalRate), 2);
+		return $totalRate;
+	}
+	
+	public function getTaxedPrice()
+	{
+		
+		return round($this->unitPrice * (1 + $this->getTotalTaxRate()), 2);
 	}
 
 	public function getUnit()
