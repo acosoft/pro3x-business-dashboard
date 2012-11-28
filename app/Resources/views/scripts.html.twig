@@ -71,7 +71,7 @@ $('input.link').click(function(event) {
 });
 
 $('body').on('click', '.pro3x_message', function() { $(this).slideUp(); });
-$('body').on('mouseover', '.pro3x_message', function() { $(this).find('span.ui-icon').removeClass('ui-icon-info').addClass('ui-icon-closethick'); });
-$('body').on('mouseout', '.pro3x_message', function() { $(this).find('span.ui-icon').addClass('ui-icon-info').removeClass('ui-icon-closethick'); });
+$('body').on('mouseover', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.removeClass(icon.data('icon')).addClass('ui-icon-closethick'); });
+$('body').on('mouseout', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.addClass(icon.data('icon')).removeClass('ui-icon-closethick'); });
 
 $('input[type="text"]').first().focus();

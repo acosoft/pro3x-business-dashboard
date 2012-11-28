@@ -2,7 +2,15 @@
 <div class="ui-widget pro3x_message">
     <div class="ui-state-highlight ui-corner-all" style="padding: 0 0.7em; margin-bottom: 1.5em;">
 	<p>
-	    <span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span>{{ app.session.flash('message')|trans }}
+	    <span class="ui-icon ui-icon-info" data-icon="ui-icon-info" style="float: left; margin-right: 0.3em;"></span>{{ app.session.flash('message')|trans }}
+	</p>
+    </div>
+</div>
+{% elseif app.session.hasFlash('warning') %}
+<div class="ui-widget pro3x_message">
+    <div class="ui-state-error ui-corner-all" style="padding: 0 0.7em; margin-bottom: 1.5em;">
+	<p>
+	    <span class="ui-icon ui-icon-alert" data-icon="ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>{{ app.session.flash('warning')|trans }}
 	</p>
     </div>
 </div>

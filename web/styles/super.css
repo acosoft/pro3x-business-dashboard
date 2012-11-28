@@ -227,6 +227,10 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_client_delete
     { background-image: url("../bundles/pro3xapp/small/client_delete.png"); } 
 
+.pro3x_small_icon_client_search
+    { background-image: url("../bundles/pro3xapp/small/client_search.png"); } 
+
+    
 /* * * INVENTORY * * */
 
 .pro3x_icon_inventory
@@ -324,3 +328,6 @@ a.ui-state-active:hover
     
 input[type="text"].pro3x_query
     { width: 54.6em; }
+    
+.pro3x_no_selection
+    { background: #efefef; }

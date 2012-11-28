@@ -138,7 +138,7 @@ class ProductController extends AdminController
 				->setDeleteColumn('name')
 				->setDeleteType('poreznu stopu')
 				
-				->setPager(true)
+				->setPagerVisible(true)
 				->setPageCount($this->getPageCount($count))
 				->setPage($this->getRequest()->get('page', 1))
 				->setItems($products)->getParams();

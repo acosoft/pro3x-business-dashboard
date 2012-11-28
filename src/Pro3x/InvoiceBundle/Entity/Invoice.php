@@ -82,6 +82,10 @@ class Invoice
 		$this->items = $items;
 	}
 
+	/**
+	 * 
+	 * @return Customer
+	 */
 	public function getCustomer()
 	{
 		return $this->customer;
@@ -112,5 +116,18 @@ class Invoice
 		}
 		
 		return $total;
+	}
+	
+	public function __call($name, $arguments)
+	{
+		if($name == 'customer.name' && $this->getCustomer() != null)
+		{
+			return implode(', ', $this->getCustomer()->getDescription());
+		}
+	}
+	
+	public function __get($name)
+	{
+		return "";
 	}
 }

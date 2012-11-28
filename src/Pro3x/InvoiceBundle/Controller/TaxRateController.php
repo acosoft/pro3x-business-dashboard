@@ -69,7 +69,7 @@ class TaxRateController extends AdminController
 				->setDeleteColumn('name')
 				->setDeleteType('poreznu stopu')
 				
-				->setPager(false)
+				->setPagerVisible(false)
 				->setItems($this->getTaxRateRepository()->findAll())->getParams();
     }
 }

@@ -8,14 +8,26 @@ class TableColumn
 	private $width;
 	private $label;
 	private $textAlign;
+	private $translate;
 	
-	function __construct($name, $label=null, $width = 0, $textAlign = 'left')
+	function __construct($name, $label=null, $width = 0, $textAlign = 'left', $translate = false)
 	{
 		$this->name = $name;
 		$this->width = $width;
 		$this->textAlign = $textAlign;
+		$this->translate = $translate;
 		
 		$this->label = ($label)?$label:$name;
+	}
+	
+	public function getTranslate()
+	{
+		return $this->translate;
+	}
+
+	public function setTranslate($translate)
+	{
+		$this->translate = $translate;
 	}
 	
 	public function getLabel()

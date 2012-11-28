@@ -33,6 +33,11 @@ class AdminController extends Controller
 		$this->get('session')->setFlash('message', $message);
 	}
 	
+	public function setWarningMessage($message)
+	{
+		$this->get('session')->setFlash('warning', $message);
+	}
+	
 	public function redirect404($test)
 	{
 		if(!$test)

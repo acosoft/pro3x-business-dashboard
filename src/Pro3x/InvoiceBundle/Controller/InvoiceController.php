@@ -14,6 +14,8 @@ use Pro3x\InvoiceBundle\Parsers\AmountCodePercentParser;
 use Pro3x\InvoiceBundle\Entity\Invoice;
 use Pro3x\Online\TableParams;
 use Pro3x\InvoiceBundle\Form\CustomerType;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @Route("/admin/invoices")
@@ -27,7 +29,7 @@ class InvoiceController extends AdminController
 	public function addAction()
 	{
 		$invoice = new Invoice();
-		$invoice->setStatus('draft');
+		$invoice->setStatus('skica');
 		
 		$manager = $this->getDoctrine()->getEntityManager();
 		$manager->persist($invoice);
@@ -37,30 +39,41 @@ class InvoiceController extends AdminController
 	}
 	
 	/**
-	 * @Route("/change-customer/{id}/{customerId}", defaults={"customerId" = null}, name="change_invoice_customer")
-	 * @Template()
+	 * @Route("/change-customer/{id}/{page}/{customerId}", defaults={"customerId" = null, "page" = 1}, name="change_invoice_customer")
+	 * @Template("::table.html.twig")
 	 */
-	public function invoiceCustomerAction($id, $customerId)
+	public function invoiceCustomerAction($id, $page, $customerId)
 	{
 		$invoice = $this->getInvoiceRepository()->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
-		
-		$form = $this->createFormBuilder()
-				->add('query', 'text', array('label' => 'Upis za pretraživanje', 'attr' => array('class' => 'pro3x_query')))->getForm();
+				
+		$queryBuilder = $this->getCustomerRepository()->createQueryBuilder('c')
+				->setMaxResults($this->getPageSize())
+				->setFirstResult($this->getPageOffset($page));
 		
 		if($this->getRequest()->isMethod('post'))
 		{
-				$form->bind($this->getRequest());
-				$data = $form->getData();
+			$query = $this->getParam('query');
+			
+			if(strlen($query) < 3) $this->setWarningMessage('Potrebno je minimalno tri znaka za uspješno pretraživanje');
+			$queryBuilder->andWhere('c.name LIKE :name OR c.taxNumber LIKE :name')
+					->setParameters(array(':name' => '%' . $query . '%'));
 
-				$items = $this->getCustomerRepository()->createQueryBuilder('c')->andWhere('c.name LIKE :name OR c.taxNumber LIKE :name')->getQuery()->execute(array(':name' => '%' . $data['query'] . '%'));
+			$items = $queryBuilder->getQuery()->execute();
 		}
 		else if($customerId != null)
 		{
-			$customer = $this->getCustomerRepository()->findOneById($customerId);
-			$this->redirect404($customer);
-			
-			$invoice->setCustomer($customer);
+			if($customerId == 'empty')
+			{
+				$invoice->setCustomer(null);
+			}
+			else
+			{
+				$customer = $this->getCustomerRepository()->findOneById($customerId);
+				$this->redirect404($customer);
+
+				$invoice->setCustomer($customer);
+			}
 			
 			$manager = $this->getDoctrine()->getManager();
 			$manager->persist($invoice);
@@ -70,10 +83,36 @@ class InvoiceController extends AdminController
 		}
 		else
 		{
-			$items = array();
+			$items = $queryBuilder->getQuery()->execute();
 		}
+		
+		$pager = new Paginator($queryBuilder->getQuery());
+		$count = $pager->count();
+		
+		$params = new TableParams();
+		
+		return $params->setTitle('Izbor kupca')
+				->setIcon('client_search')
 
-		return array('form' => $form->createView(), 'clients' => $items);
+				->addColumn('name', "Naziv")
+				->addColumn('taxNumber', 'OIB')
+				->addColumn('address')
+				->addColumn('location')
+				
+				->setAddRoute('add_client')
+				
+				->setPagerVisible(true)
+				->setPageCount($this->getPageCount($count))
+				->setPage($page)
+				->addPagerParam('id', $id)
+				->addPagerParam('customerId', $customerId)
+				
+				->setSearchVisible(true)
+				->setSelectParam('customerId')
+				->setPlaceholder('Naziv ili OIB kupca')
+				
+				->addPagerParam('query', $this->getParam('query'))
+				->setItems($items)->getParams();
 	}
 	
 	/**
@@ -180,8 +219,9 @@ class InvoiceController extends AdminController
 		return $params->setTitle('Popis računa')
 				->setIcon('invoice')
 				
-				->addColumn('id', "Naziv")
-				->addColumn('status', "Status")
+				->addColumn('id', "ID")
+				->addColumn('customer.name', 'Kupac')
+				->addColumnTrans('status', "Status")
 				
 				->setAddRoute('add_invoice')
 				->setEditRoute('edit_invoice')
@@ -189,7 +229,7 @@ class InvoiceController extends AdminController
 				->setDeleteColumn('id')
 				->setDeleteType('račun')
 				
-				->setPager(true)
+				->setPagerVisible(true)
 				->setPageCount($this->getPageCount($count))
 				->setPage($page)
 				->setItems($items)->getParams();
