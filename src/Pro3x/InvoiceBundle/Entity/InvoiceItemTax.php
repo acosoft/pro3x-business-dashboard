@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 /**
  * InvoiceItemTax
  *
- * @ORM\Table()
+ * @ORM\Table(name="pro3x_invoice_item_taxes")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\InvoiceItemTaxRepository")
  */
 class InvoiceItemTax

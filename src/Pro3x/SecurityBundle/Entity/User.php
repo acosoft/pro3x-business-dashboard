@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Pro3x\SecurityBundle\Entity\Group;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Pro3x\SecurityBundle\Entity\User
@@ -22,6 +23,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 		$this->isActive = true;
 		$this->salt = md5(uniqid(null, true));
 		$this->groups = new ArrayCollection();
+		$this->invoices = new ArrayCollection();
 	}
 
 	
@@ -39,6 +41,51 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 */
 	private $displayName;
 	
+	/**
+	 * @ORM\Column(type="string", name="shop_id", nullable=true)
+	 */
+	private $shop;
+	
+	/**
+	 * @ORM\Column(type="string", name="pos_id", nullable=true)
+	 */
+	private $pos;
+	
+	public function getShop()
+	{
+		return $this->shop;
+	}
+
+	public function setShop($shop)
+	{
+		$this->shop = $shop;
+	}
+
+	public function getPos()
+	{
+		return $this->pos;
+	}
+
+	public function setPos($pos)
+	{
+		$this->pos = $pos;
+	}
+
+	/**
+	 * @OneToMany(targetEntity="Pro3x\InvoiceBundle\Entity\Invoice", mappedBy="user")
+	  */
+	private $invoices;
+	
+	public function getInvoices()
+	{
+		return $this->invoices;
+	}
+
+	public function setInvoices($invoices)
+	{
+		$this->invoices = $invoices;
+	}
+
 	public function getDisplayName()
 	{
 		if($this->displayName)

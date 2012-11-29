@@ -73,6 +73,8 @@ class UserController extends AdminController
 				$user->setEmail($data->getEmail());
 				$user->setOib($data->getOib());
 				$user->setUsername($data->getUsername());
+				$user->setShop($data->getShop());
+				$user->setPos($data->getPos());
 				
 				$manager->persist($user);
 				$manager->flush();

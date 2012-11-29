@@ -23,10 +23,10 @@ class AppKernel extends Kernel
             new Pro3x\jQueryUIBundle\Pro3xjQueryUIBundle(),
             new Pro3x\AppBundle\Pro3xAppBundle(),
             new Pro3x\InvoiceBundle\Pro3xInvoiceBundle(),
+			new Acme\DemoBundle\AcmeDemoBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

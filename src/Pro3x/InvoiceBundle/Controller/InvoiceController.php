@@ -31,11 +31,33 @@ class InvoiceController extends AdminController
 		$invoice = new Invoice();
 		$invoice->setStatus('skica');
 		
+		$invoice->setUser($this->getUser());
+		
 		$manager = $this->getDoctrine()->getEntityManager();
 		$manager->persist($invoice);
 		$manager->flush();
 		
+		//$title = $this->renderView('Pro3xInvoiceBundle:Invoice:addInvoiceTitle.html.twig', array('invoice' => $invoice));
+		
 		return $this->redirect($this->generateUrl('edit_invoice', array('id' => $invoice->getId(), 'back' => $this->getParam('back'))));
+	}
+	
+	/**
+	 * @Route("/change-position", name="change_invoice_position")
+	 * @Template()
+	 */
+	public function changePositionAction()
+	{
+		return array();
+	}
+	
+	/**
+	 * @Route("/change-location", name="change_invoice_location")
+	 * @Template()
+	 */
+	public function changeLocatonAction()
+	{
+		return array();
 	}
 	
 	/**
@@ -176,6 +198,23 @@ class InvoiceController extends AdminController
 				
 		$invoice->setNumeric($this->getNumeric());
 		return array('total' => $this->formatNumber($invoice->getTotal(), 2), 'invoice' => $invoice);
+	}
+	
+	/**
+	 * @Route("/print/{id}", name="print_invoice")
+	 * @Template()
+	 */
+	public function printAction($id)
+	{
+		$invoice = $this->getInvoiceRepository()->findOneById($id);
+		$this->redirect404($invoice);
+		
+		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		
+//		if($this->getParam('encode') == false)
+//			return new Response($print);
+//		else
+			return new Response(base64_encode($print));
 	}
 	
 	/**

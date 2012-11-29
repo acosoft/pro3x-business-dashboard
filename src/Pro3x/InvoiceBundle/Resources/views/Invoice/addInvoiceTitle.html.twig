@@ -1,0 +1,3 @@
+<a href="{{ path('change_invoice_position', {'id': invoice.id}) }}">{{ invoice.location }}</a> : 
+<a href="{{ path('change_invoice_position', {'id': invoice.id}) }}">{{ invoice.position }}</a> : 
+{{ 'Novi račun'|trans }} | <a href="{{ path('change_invoice_customer', {'id': invoice.id}) }}">{{ invoice.customer.name }}</a>

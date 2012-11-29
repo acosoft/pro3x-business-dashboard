@@ -110,6 +110,14 @@ class TableParams
 		$this->deleteColumn = $deleteColumn;
 		return $this;
 	}
+	
+	public function setRoutes($entity)
+	{
+		$this->setAddRoute('add_' . $entity);
+		$this->setEditRoute('edit_' . $entity);
+		$this->setDeleteRoute('delete_' . $entity);
+		return $this;
+	}
 
 	public function getEditRoute()
 	{
@@ -146,6 +154,7 @@ class TableParams
 		$this->selectParam = 'id';
 		$this->selectColumn = 'id';
 		$this->noSelection = true;
+		$this->setDeleteColumn('id');
 	}
 
 	public function getToolsWidth()

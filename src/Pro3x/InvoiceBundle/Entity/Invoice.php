@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 /**
  * Invoice
  *
- * @ORM\Table()
+ * @ORM\Table(name="pro3x_invoices")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\InvoiceRepository")
  */
 class Invoice
@@ -38,8 +38,40 @@ class Invoice
 	 */
 	private $status;
 	
+	/**
+	 * @ManyToOne(targetEntity="Pro3x\SecurityBundle\Entity\User", inversedBy="invoices")
+	  */
+	private $user;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $shop_id;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $pos_id;
+	
 	private $numeric;
 	
+	public function __construct()
+	{
+		$this->shop_id = 1;
+		$this->pos_id = 1;
+	}
+
+	
+	public function getUser()
+	{
+		return $this->user;
+	}
+
+	public function setUser($user)
+	{
+		$this->user = $user;
+	}
+
 	public function getNumeric()
 	{
 		return $this->numeric;

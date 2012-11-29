@@ -116,6 +116,24 @@ class AdminController extends Controller
 	
 	/**
 	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\PositionRepository
+	 */
+	public function getPositionRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Position');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\ShopRepository
+	 */
+	public function getLocationRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Location');
+	}
+	
+	/**
+	 * 
 	 * @return \Pro3x\InvoiceBundle\Entity\InvoiceRepository
 	 */
 	public function getInvoiceRepository()

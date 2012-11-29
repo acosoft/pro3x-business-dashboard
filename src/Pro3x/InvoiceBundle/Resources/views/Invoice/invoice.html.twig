@@ -1,5 +1,9 @@
 {% extends '::base.html.twig' %}
 
+{% block header %}
+    <script src="http://www.google.com/cloudprint/client/cpgadget.js"></script>
+{% endblock %}
+
 {% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_invoice_add"></span>{{ 'Novi račun'|trans|title }}
     {% if invoice.customer %} | <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> {% endif %}
 {% endblock %}
@@ -41,7 +45,7 @@
 		<input type="hidden" name="invoice" value="{{ invoice.id }}" />
 		<input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
 		<input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
-		<input  id="save" class="button" type="button" name="action" value="Ispis" />
+		<input  id="print" class="button" type="button" name="action" value="Ispis" />
 		<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
 	    </form>
 	</div>
@@ -57,6 +61,16 @@
 
 {% block javascripts %}
 
+    $('#print').click(function() {
+	//window.location = '{{ path('print_invoice', {'id': invoice.id}) }}';
+	
+	$.post('{{ url('print_invoice', {'id': invoice.id}) }}', null, function(data){
+	    var gadget = new cloudprint.Gadget();
+	    gadget.setPrintDocument("text/html", "Invoice {{ invoice.id }}", data, "base64");
+	    gadget.openPrintDialog();
+	}, 'text');
+    });
+    
     function addItem(form) {
 	$('#actionCode').addClass('ajax');
     

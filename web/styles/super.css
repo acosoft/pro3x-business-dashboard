@@ -177,17 +177,6 @@ table.pro3x td.pro3x_no_data
 
 .pro3x_small_icon
     { display: inline-block; width: 32px; height: 32px; vertical-align: text-bottom; margin: 0em 0.5em; }
-
- /* * * INVOICES * * */
-
-.pro3x_icon_invoice
-    { background-image: url("../bundles/pro3xapp/smart_phone.png"); } 
-
-.pro3x_icon_invoice_add
-    { background-image: url("../bundles/pro3xapp/smart_phone_add.png"); } 
-
-.pro3x_icon_invoice_delete
-    { background-image: url("../bundles/pro3xapp/smart_phone_delete.png"); } 
     
 /* * * TAX RATES * * */
 
@@ -251,25 +240,68 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_inventory_edit
     { background-image: url("../bundles/pro3xapp/small/database_edit.png"); }
     
+    
+/* * * location * * */
+
+.pro3x_icon_location
+    { background-image: url("../bundles/pro3xapp/map.png"); } 
+
+.pro3x_icon_location_add
+    { background-image: url("../bundles/pro3xapp/map_add.png"); }  
+
+.pro3x_icon_location_delete
+    { background-image: url("../bundles/pro3xapp/map_delete.png"); } 
+
+.pro3x_small_icon_location
+    { background-image: url("../bundles/pro3xapp/small/map.png"); }
+    
+.pro3x_small_icon_location_add
+    { background-image: url("../bundles/pro3xapp/small/map_add.png"); }
+
+.pro3x_small_icon_location_edit
+    { background-image: url("../bundles/pro3xapp/small/map_edit.png"); }
+    
+    
+/* * * pos * * */
+
+.pro3x_icon_position
+    { background-image: url("../bundles/pro3xapp/computer.png"); } 
+
+.pro3x_icon_position_add
+    { background-image: url("../bundles/pro3xapp/computer_add.png"); }  
+
+.pro3x_icon_position_delete
+    { background-image: url("../bundles/pro3xapp/computer_delete.png"); } 
+
+.pro3x_small_icon_position
+    { background-image: url("../bundles/pro3xapp/small/computer.png"); }
+    
+.pro3x_small_icon_position_add
+    { background-image: url("../bundles/pro3xapp/small/computer_add.png"); }
+
+.pro3x_small_icon_position_edit
+    { background-image: url("../bundles/pro3xapp/small/computer_edit.png"); }
+    
+    
 /* * * invoice * * */
 
 .pro3x_icon_invoice
-    { background-image: url("../bundles/pro3xapp/smart_phone.png"); } 
+    { background-image: url("../bundles/pro3xapp/invoice.png"); } 
 
 .pro3x_icon_invoice_add
-    { background-image: url("../bundles/pro3xapp/smart_phone_add.png"); }  
+    { background-image: url("../bundles/pro3xapp/invoice_add.png"); }  
 
 .pro3x_icon_invoice_delete
-    { background-image: url("../bundles/pro3xapp/smart_phone_delete.png"); } 
+    { background-image: url("../bundles/pro3xapp/invoice_delete.png"); } 
 
 .pro3x_small_icon_invoice
-    { background-image: url("../bundles/pro3xapp/small/smart_phone.png"); }
+    { background-image: url("../bundles/pro3xapp/small/invoice.png"); }
     
 .pro3x_small_icon_invoice_add
-    { background-image: url("../bundles/pro3xapp/small/smart_phone_add.png"); }
+    { background-image: url("../bundles/pro3xapp/small/invoice_add.png"); }
 
 .pro3x_small_icon_invoice_edit
-    { background-image: url("../bundles/pro3xapp/small/smart_phone_edit.png"); }
+    { background-image: url("../bundles/pro3xapp/small/invoice_edit.png"); }
     
 /* * * SECURITY * * */
     

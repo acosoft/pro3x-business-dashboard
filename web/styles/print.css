@@ -1,0 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
+
+
+body 
+    { font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 10mm 10mm 10mm 10mm; width: 210mm; margin: 0px auto; }

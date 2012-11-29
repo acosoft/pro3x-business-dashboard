@@ -22,7 +22,7 @@
 		{% if search == true and noSelection == true %}
 		    <tr class="pro3x_no_selection">
 			{% for column in columns %}
-			    <td></td>
+			    <td {% if column.textAlign %} style="text-align: {{ column.textAlign }};" {% endif %}>- - -</td>
 			{% endfor %}
 			<td class="pro3x_tools"><a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): 'empty', 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a></td>
 		    </tr>
@@ -43,7 +43,7 @@
 				<a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a>
 			    {% else %}
 				<a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
-				<a class="pro3x_confirm" data-icon="pro3x_icon_{{ icon }}" 
+				<a class="pro3x_confirm" data-icon="pro3x_icon_{{ icon }}_delete" 
 				   data-msg="{{ 'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?'|trans({'%type%': type|trans, '%description%': attribute(item, deleteColumn) }) }}" 
 				   href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
 			    {% endif %}

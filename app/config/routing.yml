@@ -16,6 +16,10 @@ pro3x_security:
 home:
     pattern:  /
     defaults: { _controller: AcmeDemoBundle:Welcome:index }
+    
+_demo_secured:
+    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
+    type:     annotation
   
 # Internal routing configuration to handle ESI
 #_internal:

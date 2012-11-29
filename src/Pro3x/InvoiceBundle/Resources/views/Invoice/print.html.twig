@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{{ 'Pro3x Online'|trans }}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('styles/print.css') }}" />
+	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-1.8.2.js') }}"></script>
+	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-ui-1.9.1.custom.js') }}"></script>
+	<style type="text/css">
+		
+	    @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
+	    @page 
+		{ margin: 0mm 0mm 0mm 0mm; size: A4; }
+		
+	    body 
+		{ font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 0mm; width: 210mm; margin: 0mm auto; }
+
+	</style>
+    </head>
+    <body>
+	{% for  item in invoice.items %}
+	    <div style="margin: 10mm; width: 190mm; height: 250mm; page-break-after: always; background-color: #0bff00;">
+		<div style="clear: both;">
+		    <h1>{{ hello }}</h1>
+		    <div style="margin-bottom: 50px; margin-top: 30mm;">Račun R-1: {{ invoice.id }}</div>
+		</div>
+		<div style="padding: 5px 0px;">{{ item.description }}</div>
+	    </div>
+	{% endfor %}
+    </body>
+</html>
