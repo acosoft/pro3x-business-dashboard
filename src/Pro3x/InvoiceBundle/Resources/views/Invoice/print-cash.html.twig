@@ -18,7 +18,9 @@
 		
 	    th
 		{ text-align: left; padding-left: 5mm; }
-
+		
+	    td
+		{ padding-left: 5mm; }
 	</style>
     </head>
     <body>
@@ -41,18 +43,19 @@
 	{% endif %}    
 	    
 	<h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R1: {{ invoice.id }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
-	<div style="margin-bottom: 7mm;">
+	<div style="">
 	    <div style="margin-top: 3.75mm;">Račun izdao:  {{ invoice.user.displayName }}</div>
 	    <div>Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
 	</div>
 	
 	<div style="clear: both"></div>
-	<table style="width: 100%; margin-top: 20mm; border-spacing: 0px;">
+	<table style="width: 100%; margin-top: 15mm; border-spacing: 0px;">
 	    <thead>
 		<tr>
 		    <th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
-		    <th style="text-align: right;">Jedinična cijena</th>
+		    <th style="text-align: right;">Cijena</th>
 		    <th style="text-align: right;">Količina</th>
+		    <th style="text-align: right;">Popust</th>
 		    <th style="text-align: right;">Osnovica</th>
 		    <th style="text-align: right;">Porez</th>
 		    <th style="text-align: right;">Iznos</th>
@@ -61,9 +64,10 @@
 	    <tbody>
 	    {% for  item in invoice.items %}
 		    <tr>
-			<td>{{ item.description }}</td>
+			<td style="padding-left: 0;">{{ item.description }}</td>
 			<td style="text-align: right;">{{ item.unitPriceFormated }}</td>
 			<td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
+			<td style="text-align: right;">{{ item.discountFormated }} %</td>
 			<td style="text-align: right;">{{ item.priceFormated }}</td>
 			<td style="text-align: right;">{{ item.taxAmountFormated }}</td>
 			<td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
@@ -74,5 +78,28 @@
 	<div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 3mm;">
 	    <h2>Ukupno za platiti: {{ invoice.totalFormated }} kn</h2>
 	</div>
+	
+	<div style="clear: both;"></div>
+	<table style="margin-top: 15mm; border-spacing: 0px;">
+	    <thead>
+		<tr>
+		    <th style="padding-left: 0mm;">Porezna stopa</th>
+		    <th style="text-align: right;">Osnovica</th>
+		    <th style="text-align: right;">Stopa</th>
+		    <th style="text-align: right;">Iznos</th>
+		</tr>
+	    </thead>
+	    <tbody>
+	    {% for  item in invoice.taxItems %}
+		    <tr>
+			<td style="padding-left: 0;">{{ item.description }}</td>
+			<td style="text-align: right;">{{ item.base }}</td>
+			<td style="text-align: right;">{{ item.rate }} %</td>
+			<td style="text-align: right;">{{ item.amount }}</td>
+		    </tr>
+	    {% endfor %}
+	    </tbody>
+	</table>
+	
     </body>
 </html>

@@ -179,7 +179,7 @@ class InvoiceItem
 	
 	public function getDiscountFormated()
 	{
-		return $this->getNumeric()->getNumberFormatter(2)->format($this->getDiscount());
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getDiscount() * 100);
 	}
 
 	public function getTaxes()

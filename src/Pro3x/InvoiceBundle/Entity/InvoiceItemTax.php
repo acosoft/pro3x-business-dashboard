@@ -52,6 +52,10 @@ class InvoiceItemTax
 		$this->taxRate = $taxRate->getRate();
 	}
 	
+	/**
+	 * 
+	 * @return InvoiceItem
+	 */
 	public function getItem()
 	{
 		return $this->item;
@@ -90,6 +94,11 @@ class InvoiceItemTax
 	public function setTaxRate($taxRate)
 	{
 		$this->taxRate = $taxRate;
+	}
+	
+	public function getTaxAmount()
+	{
+		return $this->getItem()->getPrice() * $this->getTaxRate();
 	}
 
     /**

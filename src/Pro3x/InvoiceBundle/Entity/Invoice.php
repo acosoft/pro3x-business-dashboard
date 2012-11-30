@@ -160,47 +160,56 @@ class Invoice
 		$this->status = $status;
 	}
 	
-	
-	//TODO: replace with final version
-	private $taxItems;
+	private function getTaxItemsArray()
+	{
+		$taxes = array();
+		
+		foreach ($this->getItems() as $item) /* @var $item InvoiceItem */
+		{
+			foreach ($item->getTaxes() as $tax) /* @var $tax InvoiceItemTax */
+			{
+				$taxes[$tax->getTaxId()][] = $tax;
+			}
+		}
+		
+		return $taxes;
+	}
 	
 	public function getTaxItems()
 	{
-		return $this->taxItems;
+		$taxes = $this->getTaxItemsArray();
+		$aggTax = array();
+		
+		foreach($taxes as $key => $taxItems) /* @var $taxItems InvoiceItemTax[] */
+		{
+			$item = array();
+			$item['base'] = 0;
+			$item['amount'] = 0;
+			$item['rate'] = $taxItems[0]->getTaxRate();
+			$item['description'] = $taxItems[0]->getTaxDescription();
+			$item['total'] = 0;
+			
+			foreach ($taxItems as $taxItem) /* @var $taxItem InvoiceItemTax */
+			{
+				$item['base'] += $taxItem->getItem()->getPrice();
+				$item['amount'] += $taxItem->getTaxAmount();
+				$item['total'] = $item['base'] + $item['amount'];
+			}
+			
+			$aggTax[] = $item;
+		}
+		
+		$nf = $this->getNumeric()->getNumberFormatter();
+		foreach ($aggTax as &$item)
+		{
+			$item['base'] = $nf->format($item['base']);
+			$item['total'] = $nf->format($item['total']);
+			$item['amount'] = $nf->format($item['amount']);
+			$item['rate'] = $nf->format($item['rate'] * 100);
+		}
+		
+		return $aggTax;
 	}
-
-	public function setTaxItems($taxItems)
-	{
-		$this->taxItems = $taxItems;
-	}
-
-	
-//	private function getTaxItemsArray()
-//	{
-//		$taxes = array();
-//		
-//		foreach ($this->getItems() as $item) /* @var $item InvoiceItem */
-//		{
-//			foreach ($item->getTaxes() as $tax) /* @var $tax InvoiceItemTax */
-//			{
-//				$taxes[$tax->getTaxId()][] = $tax;
-//			}
-//		}
-//		
-//		return $taxes;
-//	}
-//	
-//	public function getTaxItems()
-//	{
-//		$taxes = $this->getTaxItemsArray();
-//		$aggTax = array();
-//		
-//		foreach($taxes as $key => $taxItems)
-//		{
-//			$item = new InvoiceItemTax();
-//			
-//		}
-//	}
 	
 	public function getTotal()
 	{

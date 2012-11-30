@@ -189,7 +189,8 @@ class InvoiceController extends AdminController
 	 */
 	public function printAction($id)
 	{
-		$invoice = $this->getInvoiceRepository()->findOneById($id); /* @var $invoice Invoice */
+		$repository = $this->getInvoiceRepository();
+		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
 		$invoice->setNumeric($this->getNumeric());

@@ -73,7 +73,11 @@ class UserController extends AdminController
 		}
 		else if($this->getRequest()->isMethod('post'))
 		{
-			$form = $this->createForm(new UserType(), $user);
+			//TODO: extra field is a hack to pass extra information for form fields, problem with relation to positions during login
+			$temp = new User();
+			$temp->extra = $this->getPositions();
+			
+			$form = $this->createForm(new UserType(), $temp);
 			$form->bind($this->getRequest());
 
 			$data = $form->getData(); /* @var $data User */
