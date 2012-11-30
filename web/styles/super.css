@@ -352,6 +352,9 @@ a.ui-state-active:hover
 .ui-button .ui-button-text
     { line-height: 1.2em; }
     
+.ui-button
+    { line-height: 16px; }
+    
 .ajax
     { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }
 
@@ -363,3 +366,6 @@ input[type="text"].pro3x_query
     
 .pro3x_no_selection
     { background: #efefef; }
+    
+a.ui-state-focus
+    { color: #1D5987 !important; }

@@ -42,26 +42,44 @@ class Invoice
 	 * @ManyToOne(targetEntity="Pro3x\SecurityBundle\Entity\User", inversedBy="invoices")
 	  */
 	private $user;
+		
+	/**
+	 * @ManyToOne(targetEntity="Position", inversedBy="invoices")
+	  */
+	private $position;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="datetime")
 	 */
-	private $shop_id;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $pos_id;
+	private $created;
 	
 	private $numeric;
 	
 	public function __construct()
 	{
-		$this->shop_id = 1;
-		$this->pos_id = 1;
+		$this->created = new \DateTime('now');
+	}
+	
+	public function getDateFormated()
+	{
+		return $this->created->format('d.m.Y');
+	}
+	
+	public function getTimeFormated()
+	{
+		return $this->created->format('H:i');
 	}
 
-	
+	public function getPosition()
+	{
+		return $this->position;
+	}
+
+	public function setPosition($position)
+	{
+		$this->position = $position;
+	}
+
 	public function getUser()
 	{
 		return $this->user;
@@ -72,6 +90,10 @@ class Invoice
 		$this->user = $user;
 	}
 
+	/**
+	 * 
+	 * @return \Pro3x\Online\Numeric
+	 */
 	public function getNumeric()
 	{
 		return $this->numeric;
@@ -138,6 +160,48 @@ class Invoice
 		$this->status = $status;
 	}
 	
+	
+	//TODO: replace with final version
+	private $taxItems;
+	
+	public function getTaxItems()
+	{
+		return $this->taxItems;
+	}
+
+	public function setTaxItems($taxItems)
+	{
+		$this->taxItems = $taxItems;
+	}
+
+	
+//	private function getTaxItemsArray()
+//	{
+//		$taxes = array();
+//		
+//		foreach ($this->getItems() as $item) /* @var $item InvoiceItem */
+//		{
+//			foreach ($item->getTaxes() as $tax) /* @var $tax InvoiceItemTax */
+//			{
+//				$taxes[$tax->getTaxId()][] = $tax;
+//			}
+//		}
+//		
+//		return $taxes;
+//	}
+//	
+//	public function getTaxItems()
+//	{
+//		$taxes = $this->getTaxItemsArray();
+//		$aggTax = array();
+//		
+//		foreach($taxes as $key => $taxItems)
+//		{
+//			$item = new InvoiceItemTax();
+//			
+//		}
+//	}
+	
 	public function getTotal()
 	{
 		$total = 0;
@@ -148,6 +212,11 @@ class Invoice
 		}
 		
 		return $total;
+	}
+	
+	public function getTotalFormated()
+	{
+		return $this->getNumeric()->getNumberFormatter()->format($this->getTotal());
 	}
 	
 	public function __call($name, $arguments)

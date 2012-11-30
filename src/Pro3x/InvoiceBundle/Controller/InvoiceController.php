@@ -32,32 +32,15 @@ class InvoiceController extends AdminController
 		$invoice->setStatus('skica');
 		
 		$invoice->setUser($this->getUser());
+		$position = $this->getPositionRepository()->find($this->getUser()->getPosition());
+		$invoice->setPosition($position);
+		
 		
 		$manager = $this->getDoctrine()->getEntityManager();
 		$manager->persist($invoice);
 		$manager->flush();
 		
-		//$title = $this->renderView('Pro3xInvoiceBundle:Invoice:addInvoiceTitle.html.twig', array('invoice' => $invoice));
-		
 		return $this->redirect($this->generateUrl('edit_invoice', array('id' => $invoice->getId(), 'back' => $this->getParam('back'))));
-	}
-	
-	/**
-	 * @Route("/change-position", name="change_invoice_position")
-	 * @Template()
-	 */
-	public function changePositionAction()
-	{
-		return array();
-	}
-	
-	/**
-	 * @Route("/change-location", name="change_invoice_location")
-	 * @Template()
-	 */
-	public function changeLocatonAction()
-	{
-		return array();
 	}
 	
 	/**
@@ -206,15 +189,35 @@ class InvoiceController extends AdminController
 	 */
 	public function printAction($id)
 	{
-		$invoice = $this->getInvoiceRepository()->findOneById($id);
+		$invoice = $this->getInvoiceRepository()->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
-		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		$invoice->setNumeric($this->getNumeric());
+		$invoice->setStatus($this->getParam('mode', 'cash'));
 		
-//		if($this->getParam('encode') == false)
-//			return new Response($print);
-//		else
-			return new Response(base64_encode($print));
+		foreach($invoice->getItems() as $item) /* @var $item InvoiceItem */
+		{
+			$item->setNumeric($invoice->getNumeric());
+		}
+		
+		$manager = $this->getDoctrine()->getEntityManager();
+		$manager->persist($invoice);
+		$manager->flush();
+		
+		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $this->getParam('mode', 'cash') . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		
+		$direct = $this->getParam('print', 'true');
+		
+		if($direct === 'true')
+		{
+			$response = new Response(base64_encode($print));
+		}
+		else
+		{
+			$response = new Response($print);
+		}
+		
+		return $response;
 	}
 	
 	/**

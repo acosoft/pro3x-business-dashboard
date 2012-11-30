@@ -35,6 +35,17 @@ class UserController extends AdminController
 		$this->get('session')->setFlash('message', 'Korisnik je uspješno izbrisan');
 		return $this->redirect($this->getRequest()->get('back'));
 	}
+	
+	private function getPositions()
+	{
+		$positions = array();
+		foreach($this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult() as $position)
+		{
+			$positions[$position->getId()] = $position->getDescription();
+		}
+		
+		return $positions;
+	}
 
 	/**
 	 * @Route("/edit/{id}", name="edit_user")
@@ -48,13 +59,21 @@ class UserController extends AdminController
 		
 		if(!$user) $this->createNotFoundException ('Korisnik ne postoji');
 		
+		$positions = array();
+		foreach($this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult() as $position)
+		{
+			$positions[$position->getId()] = $position->getDescription();
+		}
+
+		$user->extra = $this->getPositions();
+		
 		if($this->getRequest()->isMethod('get'))
 		{
 			$form = $this->createForm(new UserType(), $user);
 		}
 		else if($this->getRequest()->isMethod('post'))
 		{
-			$form = $this->createForm(new UserType());
+			$form = $this->createForm(new UserType(), $user);
 			$form->bind($this->getRequest());
 
 			$data = $form->getData(); /* @var $data User */
@@ -73,8 +92,7 @@ class UserController extends AdminController
 				$user->setEmail($data->getEmail());
 				$user->setOib($data->getOib());
 				$user->setUsername($data->getUsername());
-				$user->setShop($data->getShop());
-				$user->setPos($data->getPos());
+				$user->setPosition($data->getPosition());
 				
 				$manager->persist($user);
 				$manager->flush();
@@ -94,7 +112,10 @@ class UserController extends AdminController
 	 */
 	public function addAction()
 	{
-		$form = $this->createForm(new UserType(), $user = new User());
+		$user = new User();
+		$user->extra = $this->getPositions();
+		
+		$form = $this->createForm(new UserType(), $user);
 		
 		if($this->getRequest()->isMethod('post'))
 		{

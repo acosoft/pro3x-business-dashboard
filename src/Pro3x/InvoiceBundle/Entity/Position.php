@@ -4,6 +4,7 @@ namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Position
@@ -33,10 +34,46 @@ class Position
 	private $location;
 	
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $name;
 	
+	/**
+	 * @OneToMany(targetEntity="Pro3x\SecurityBundle\Entity\User", mappedBy="position")
+	  */
+	private $users;
+	
+	function __construct()
+	{
+		$this->invoices = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	
+	/**
+	 * @OneToMany(targetEntity="Invoice", mappedBy="position")
+	  */
+	private $invoices;
+	
+	public function getUsers()
+	{
+		return $this->users;
+	}
+
+	public function setUsers($users)
+	{
+		$this->users = $users;
+	}
+
+	public function getInvoices()
+	{
+		return $this->invoices;
+	}
+
+	public function setInvoices($invoices)
+	{
+		$this->invoices = $invoices;
+	}
+
 	public function getName()
 	{
 		return $this->name;
@@ -70,6 +107,14 @@ class Position
 	public function getLocationName()
 	{
 		return $this->getLocation()->getName();
+	}
+	
+	public function getDescription()
+	{
+		if($this->getName())
+			return $this->getLocationName() . ' : ' . $this->getName();
+		else
+			return $this->getLocationName();
 	}
 
     /**

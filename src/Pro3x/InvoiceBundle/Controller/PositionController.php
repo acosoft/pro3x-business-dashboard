@@ -65,7 +65,7 @@ class PositionController extends AdminController
 	 */
 	public function positionsAction()
 	{
-		$items = $this->getPositionRepository()->findAll();
+		$items = $this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult();
 		$params = new TableParams();
 
 		$params->setTitle('Pregled pozicija')

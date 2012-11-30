@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Pro3x\SecurityBundle\Entity\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * Pro3x\SecurityBundle\Entity\User
@@ -37,45 +38,30 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
     private $id;
 	
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $displayName;
 	
 	/**
-	 * @ORM\Column(type="string", name="shop_id", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
-	private $shop;
+	private $position;
 	
-	/**
-	 * @ORM\Column(type="string", name="pos_id", nullable=true)
-	 */
-	private $pos;
-	
-	public function getShop()
-	{
-		return $this->shop;
-	}
-
-	public function setShop($shop)
-	{
-		$this->shop = $shop;
-	}
-
-	public function getPos()
-	{
-		return $this->pos;
-	}
-
-	public function setPos($pos)
-	{
-		$this->pos = $pos;
-	}
-
 	/**
 	 * @OneToMany(targetEntity="Pro3x\InvoiceBundle\Entity\Invoice", mappedBy="user")
 	  */
 	private $invoices;
 	
+	public function getPosition()
+	{
+		return $this->position;
+	}
+
+	public function setPosition($position)
+	{
+		$this->position = $position;
+	}
+
 	public function getInvoices()
 	{
 		return $this->invoices;

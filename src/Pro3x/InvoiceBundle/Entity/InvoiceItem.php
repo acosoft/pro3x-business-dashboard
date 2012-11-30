@@ -204,6 +204,16 @@ class InvoiceItem
 		return $rate;
 	}
 	
+	public function getTaxAmount()
+	{
+		return $this->getTaxedPrice() - $this->getPrice();
+	}
+
+	public function getTaxAmountFormated()
+	{
+		return $this->getNumeric()->getNumberFormatter()->format($this->getTaxAmount());
+	}
+
 	public function getTaxedPrice()
 	{
 		return $this->getPrice() * $this->getTaxRate();

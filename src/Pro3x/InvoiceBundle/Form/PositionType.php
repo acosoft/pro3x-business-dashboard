@@ -16,7 +16,7 @@ class PositionType extends AbstractType
 				'expanded' => false, 'property' => 'name', 
 				'multiple' => false, 
 				'class' => 'Pro3xInvoiceBundle:Location'))
-			->add('name', 'text', array('label' => 'Naziv blagajne'))
+			->add('name', 'text', array('label' => 'Naziv blagajne', 'required' => false))
             ->add('sequence', 'text', array('label' => 'Sljedeći račun'))
         ;
     }
