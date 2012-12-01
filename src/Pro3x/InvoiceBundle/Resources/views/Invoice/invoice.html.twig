@@ -8,10 +8,8 @@
     </style>
 {% endblock %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_invoice_add"></span>{{ 'Novi račun'|trans|title }} | 
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_invoice_add"></span>{% if invoice.sequence is null  %}{{ 'Novi Račun'|trans|title }}{% else %}{{ 'Račun'|trans|title }} {{ invoice.sequence }}{% endif %} | 
     {{ invoice.position.location.name }} {{ invoice.position.name }}
-
-    
     {% if invoice.customer %} | <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> {% endif %}
 {% endblock %}
 
@@ -60,7 +58,7 @@
 		    <li><a data-mode="cash" href="#">Gotovinski</a></li>
 		    <li><a data-mode="wire" href="#">Bez gotovinski</a></li>
 		</ul>
-		<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+		<input type="button" class="button link" data-href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}" value="{{ 'Odustani'|trans }}" />
 	    </form>
 	</div>
 	<div class="grid_1">

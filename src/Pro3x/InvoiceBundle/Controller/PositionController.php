@@ -26,7 +26,7 @@ class PositionController extends AdminController
 		
 		$handler->setTitle('Izmjena pozicije')
 				->setIcon('position_add')
-				->setSuccessMessage('Pozicija je uspješno spremljena')
+				->setSuccessMessage('Blagajna je uspješno spremljena')
 				->setFormType(new PositionType());
 		
 		return $handler->execute();
@@ -42,7 +42,7 @@ class PositionController extends AdminController
 		
 		$handler->setIcon('position_edit')
 				->setTitle('Izmjena pozicije')
-				->setSuccessMessage('Pozicija je uspješno izmjenjena')
+				->setSuccessMessage('Blagajna je uspješno izmjenjena')
 				->setRepository($this->getPositionRepository())
 				->setFormType(new PositionType());
 		
@@ -55,7 +55,7 @@ class PositionController extends AdminController
 	 */
 	public function deleteAction()
 	{
-		return $this->deleteEntity($this->getPositionRepository(), 'Pozicija je uspješno izbrisana');
+		return $this->deleteEntity($this->getPositionRepository(), 'Blagajna je uspješno izbrisana');
 	}
 	
 	
@@ -68,10 +68,11 @@ class PositionController extends AdminController
 		$items = $this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult();
 		$params = new TableParams();
 
-		$params->setTitle('Pregled pozicija')
+		$params->setTitle('Pregled blagajni')
 				->setIcon('position')
 				->addColumn('locationName', 'Naziv lokacije')
 				->addColumn('name', 'Naziv blagajne')
+				->addColumn('sequence', 'Sljedeći račun')
 				->setDeleteType('poziciju')
 				->setDeleteColumn('name')
 				->setRoutes('position')

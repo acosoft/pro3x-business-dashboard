@@ -44,6 +44,7 @@ class Invoice
 	private $user;
 		
 	/**
+	 * @var Position Point of Sale position at location
 	 * @ManyToOne(targetEntity="Position", inversedBy="invoices")
 	  */
 	private $position;
@@ -53,13 +54,46 @@ class Invoice
 	 */
 	private $created;
 	
-	private $numeric;
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $sequence;
 	
+	private $numeric;
+
 	public function __construct()
 	{
 		$this->created = new \DateTime('now');
+		$this->sequence = null;
+	}
+
+	public function getSequence()
+	{
+		return $this->sequence;
+	}
+
+	public function setSequence($sequence)
+	{
+		$this->sequence = $sequence;
 	}
 	
+	public function getSequenceFormated()
+	{
+		if($this->getSequence() == null)
+		{
+			return '- - -';
+		}
+		else
+		{
+			return $this->getSequence();
+		}
+	}
+	
+	public function getDateTimeFormated()
+	{
+		return $this->created->format('d.m.Y H:i\h');
+	}
+
 	public function getDateFormated()
 	{
 		return $this->created->format('d.m.Y');

@@ -188,10 +188,28 @@ class InvoiceController extends AdminController
 	 * @Template()
 	 */
 	public function printAction($id)
-	{
+	{	
 		$repository = $this->getInvoiceRepository();
 		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
+		
+		$manager = $this->getDoctrine()->getEntityManager();
+		
+		if($invoice->getSequence() == null)
+		{
+			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice) {
+				$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
+
+				$manager->refresh($position);
+
+				$invoice->setSequence($position->getSequence());
+				$position->setSequence($position->getSequence() + 1);
+
+				$manager->persist($position);
+				$manager->persist($invoice);
+				$manager->flush();
+			});
+		}
 		
 		$invoice->setNumeric($this->getNumeric());
 		$invoice->setStatus($this->getParam('mode', 'cash'));
@@ -200,10 +218,6 @@ class InvoiceController extends AdminController
 		{
 			$item->setNumeric($invoice->getNumeric());
 		}
-		
-		$manager = $this->getDoctrine()->getEntityManager();
-		$manager->persist($invoice);
-		$manager->flush();
 		
 		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $this->getParam('mode', 'cash') . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
 		
@@ -228,6 +242,23 @@ class InvoiceController extends AdminController
 	public function deleteAction()
 	{
 		return $this->deleteEntity($this->getInvoiceRepository(), 'Račun je izbrisan');
+	}
+	
+	/**
+	 * @Route("/cancel/{id}", name="cancel_invoice")
+	 */
+	public function cancelAction($id)
+	{
+		$invoice = $this->getInvoiceRepository()->find($id);
+		
+		if($invoice->getItems()->count() == 0)
+		{
+			$manager = $this->getDoctrine()->getEntityManager();
+			$manager->remove($invoice);
+			$manager->flush();
+		}
+		
+		return $this->redirect($this->getParam('back'));
 	}
 	
 	/**
@@ -262,7 +293,8 @@ class InvoiceController extends AdminController
 		return $params->setTitle('Popis računa')
 				->setIcon('invoice')
 				
-				->addColumn('id', "ID")
+				->addColumn('sequenceFormated', 'ID')
+				->addColumn('dateTimeFormated', 'Datum', 125, 'center')
 				->addColumn('customer.name', 'Kupac')
 				->addColumnTrans('status', "Status")
 				

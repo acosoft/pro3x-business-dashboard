@@ -34,11 +34,11 @@
 	</div>
 	    
 	{% if invoice.customer %}    
-	    <div style="background-color: #efefef; padding: 5mm; border: solid 0.5mm black; float: right; width: 100mm;">
+	    <div style="background-color: #efefef; padding: 5mm; border: solid 0.5mm black; float: right; width: 100mm; height: 19mm;">
 		<div>{{ invoice.customer.name }}</div>
 		<div>{{ invoice.customer.address }}</div>
 		<div>{{ invoice.customer.location }}</div>
-		<div style="margin-top: 2mm;">OIB: {{ invoice.customer.taxNumber }}</div>
+		<div style="margin-top: 2mm;">{% if invoice.customer.taxNumber %}OIB: {{ invoice.customer.taxNumber }}{% endif %}</div>
 	    </div>
 	{% endif %}    
 	    

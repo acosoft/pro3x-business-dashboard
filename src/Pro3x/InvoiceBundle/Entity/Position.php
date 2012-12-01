@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 /**
  * Position
  *
- * @ORM\Table()
+ * @ORM\Table(name="pro3x_positions")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\PositionRepository")
  */
 class Position
