@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_invoice_add"></span>{% if invoice.sequence is null  %}{{ 'Novi Račun'|trans|title }}{% else %}{{ 'Račun'|trans|title }} {{ invoice.sequence }}{% endif %} | 
-    {{ invoice.position.location.name }} {{ invoice.position.name }}
+    <a href="{{ path('edit_position', {'id': invoice.position.id, 'back': app.request.uri}) }}">{{ invoice.position.location.name }} {{ invoice.position.name }}</a>
     {% if invoice.customer %} | <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> {% endif %}
 {% endblock %}
 

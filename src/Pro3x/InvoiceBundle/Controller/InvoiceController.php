@@ -194,16 +194,18 @@ class InvoiceController extends AdminController
 		$this->redirect404($invoice);
 		
 		$manager = $this->getDoctrine()->getEntityManager();
+		$mode = $this->getParam('mode', 'cash');
 		
 		if($invoice->getSequence() == null)
 		{
-			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice) {
+			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $mode) {
 				$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
 
 				$manager->refresh($position);
 
 				$invoice->setSequence($position->getSequence());
 				$position->setSequence($position->getSequence() + 1);
+				$invoice->setStatus($mode);
 
 				$manager->persist($position);
 				$manager->persist($invoice);
@@ -212,7 +214,6 @@ class InvoiceController extends AdminController
 		}
 		
 		$invoice->setNumeric($this->getNumeric());
-		$invoice->setStatus($this->getParam('mode', 'cash'));
 		
 		foreach($invoice->getItems() as $item) /* @var $item InvoiceItem */
 		{
