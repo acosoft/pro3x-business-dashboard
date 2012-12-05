@@ -13,8 +13,11 @@ class FinaClient extends \SoapClient
 	function __construct($key, $certificate, $wsdl, $options)
 	{
 		$options['classmap'] = array(
-			'PoslovniProstorOdgovor' => '\Pro3x\Online\Fina\PoslovniProstorOdgovor',
-			'ZaglavljeOdgovorType' => '\Pro3x\Online\Fina\Zaglavlje',
+			'PoslovniProstorOdgovor'	=> '\Pro3x\Online\Fina\PoslovniProstorOdgovor',
+			'ZaglavljeOdgovorType'		=> '\Pro3x\Online\Fina\Zaglavlje',
+			'RacunZahtjev'				=> '\Pro3x\Online\Fina\RacunZahtjev',
+			'RacunOdgovor'				=> '\Pro3x\Online\Fina\RacunOdgovor',
+			'GreskaType'				=> '\Pro3x\Online\Fina\Greska',
 		);
 		
 		parent::__construct($wsdl, $options);
@@ -55,6 +58,33 @@ class FinaClient extends \SoapClient
 	
 	/**
 	 * 
+	 * @param Fina\RacunZahtjev $racun
+	 * @return Fina\RacunOdgovor
+	 */
+	public function racuni(Fina\RacunZahtjev $zahtjev)
+	{
+		$this->node = 'RacunZahtjev';
+		
+		$racun = $zahtjev->getRacun();
+		
+		$temp = $racun->getOib();
+		$temp .= \DateTime::createFromFormat('d.m.Y\TH:i:s', $racun->getDatVrijeme())->format('d.m.Y H:i:s');
+		$temp .= $racun->getBrRac()->getBrOznRac();
+		$temp .= $racun->getBrRac()->getOznPosPr();
+		$temp .= $racun->getBrRac()->getOznNapUr();
+		$temp .= $racun->getIznosUkupno();
+		
+		$sign = new \XMLSecurityDSig();
+		$potpis = $sign->signData($this->key, $temp);
+		
+		$racun->setZastKod(md5($potpis));
+		
+		$data = $this->__soapCall('racuni', array($zahtjev));
+		return $data;
+	}
+	
+	/**
+	 * 
 	 * @param \Pro3x\Online\Fina\PoslovniProstorZahtjev $zahtjev
 	 * @return Fina\PoslovniProstorOdgovor
 	 */
@@ -62,6 +92,7 @@ class FinaClient extends \SoapClient
 	{
 		$this->node = 'PoslovniProstorZahtjev';
 		$data = $this->__soapCall('poslovniProstor', array($zahtjev));
+		
 		return $data;
 	}
 	

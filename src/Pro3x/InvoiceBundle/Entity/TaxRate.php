@@ -34,6 +34,34 @@ class TaxRate
     private $rate;
 	
 	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $taxGroup;
+	
+	public function getTaxGroup()
+	{
+		return $this->taxGroup;
+	}
+
+	public function setTaxGroup($taxGroup)
+	{
+		$this->taxGroup = $taxGroup;
+	}
+	
+	public function getTaxGroupFormated()
+	{
+		$descriptions = array(
+			'Pdv' => 'Porez na dodanu vrijednost', 
+			'Pnp' => 'Porez na potrošnju',
+			'OstaliPor' => 'Ostalo');
+		
+		if(array_key_exists($this->getTaxGroup(), $descriptions))
+			return $descriptions[$this->getTaxGroup()];
+		else
+			return $this->getTaxGroup();
+	}
+
+	/**
 	 *
 	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="taxRates")
 	 */

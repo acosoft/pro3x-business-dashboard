@@ -11,6 +11,7 @@ class TaxRateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+			->add('taxGroup', 'choice', array('label' => 'Porezna grupa', 'choices' => array('Pdv' => 'Porez na dodanu vrijednost', 'Pnp' => 'Porez na potrošnju')))
             ->add('name', 'text', array('label' => 'Naziv porezne stope'))
             ->add('rate', 'text', array('label' => 'Iznos porezne stope'))
         ;

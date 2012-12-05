@@ -50,7 +50,10 @@ input[type=text], input[type=password], input[type=email]
     { margin-bottom: 2em; }
     
 .pro3x_header
-    { background-color: black; padding: 0.5em 0em 0.5em 16px; border-bottom: solid 3px #449adc; box-shadow: 0px 2px 2px gray; color: #efefef; }
+    { background-color: black; border-bottom: solid 5px #449adc; box-shadow: 0px 0px 0px gray; color: #efefef; }
+    
+.pro3x_header_content
+    { border-bottom: solid 1px #f2f2f2; padding: 0.75em 1em 0.75em 1em; }
     
 .pro3x_header a
     { color: white; text-decoration: none; }
@@ -134,7 +137,7 @@ table.pro3x td.pro3x_no_data
     { padding: 1px; margin-bottom: 2em; }
     
 .pro3x_dashboard_panel_header
-    { padding: 0.5em 0.75em; }
+    { padding: 0.5em 0.75em; margin: 1px 1px 0px 1px; }
     
 .pro3x_dashboard_panel .button
     { display: inline-block; width: 128px; margin: 0.5em 0.0em 0.0em 0.5em; }
@@ -170,7 +173,7 @@ table.pro3x td.pro3x_no_data
     { background-image: url("../bundles/pro3xapp/group_delete.png"); }    
     
 .pro3x_header ul
-    { float: right; list-style: none; margin: 0em 16px 0em 0em; }
+    { float: right; list-style: none; margin: 0em 0em 0em 0em; }
 
 .pro3x_header ul li
     { float: left; margin: 0em 0em 0em 1em; }
@@ -240,6 +243,10 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_inventory_edit
     { background-image: url("../bundles/pro3xapp/small/database_edit.png"); }
     
+/* * * reports * * */
+
+.pro3x_icon_report
+    { background-image: url("../bundles/pro3xapp/chart.png"); } 
     
 /* * * location * * */
 
@@ -282,6 +289,25 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_position_edit
     { background-image: url("../bundles/pro3xapp/small/computer_edit.png"); }
     
+/* * * template * * */
+
+.pro3x_icon_template
+    { background-image: url("../bundles/pro3xapp/design.png"); } 
+
+.pro3x_icon_template_add
+    { background-image: url("../bundles/pro3xapp/design_add.png"); }  
+
+.pro3x_icon_template_delete
+    { background-image: url("../bundles/pro3xapp/design_delete.png"); } 
+
+.pro3x_small_icon_template
+    { background-image: url("../bundles/pro3xapp/small/design.png"); }
+    
+.pro3x_small_icon_template_add
+    { background-image: url("../bundles/pro3xapp/small/design_add.png"); }
+
+.pro3x_small_icon_template_edit
+    { background-image: url("../bundles/pro3xapp/small/design_edit.png"); }
     
 /* * * invoice * * */
 

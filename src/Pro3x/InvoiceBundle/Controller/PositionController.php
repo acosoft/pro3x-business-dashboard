@@ -24,7 +24,7 @@ class PositionController extends AdminController
 	{
 		$handler = new \Pro3x\Online\AddHandler($this);
 		
-		$handler->setTitle('Izmjena pozicije')
+		$handler->setTitle('Izmjena blagajne')
 				->setIcon('position_add')
 				->setSuccessMessage('Blagajna je uspješno spremljena')
 				->setFormType(new PositionType());
@@ -41,7 +41,7 @@ class PositionController extends AdminController
 		$handler = new EditHandler($this, $id);
 		
 		$handler->setIcon('position_edit')
-				->setTitle('Izmjena pozicije')
+				->setTitle('Izmjena blagajne')
 				->setSuccessMessage('Blagajna je uspješno izmjenjena')
 				->setRepository($this->getPositionRepository())
 				->setFormType(new PositionType());

@@ -33,7 +33,7 @@ security:
                 login_path: /login
             logout:
                 path:   /logout
-                target: /
+                target: /admin
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"

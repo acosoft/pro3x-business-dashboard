@@ -1,21 +1,21 @@
 {% extends '::login.html.twig' %}
 
 {% block page_title %}
-    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>Register or <a href="{{ path("login") }}">Login</a>
+    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>{{ 'Registracija ili'|trans }} <a href="{{ path("login") }}">{{ 'Prijava'|trans }}</a>
 {% endblock %}
 
 {% block body %}
     <div class="grid_8 push_2 pro3x_login_page">
 	<div class="pro3x_tabs">
 	    <ul>
-		<li><a href="#register">Register</a></li>
+		<li><a href="#register">{{ 'Registracija'|trans }}</a></li>
 	    </ul>
 	    <div id="register">
 		<form class="pro3x_login" method="post" autocomplete="off">
 		    {{ form_widget(register) }}
 			
 		    <div class="pro3x_buttons">
-			<input type="submit" class="button" value="Register" />
+			<input type="submit" class="button" value="{{ 'Registracija'|trans }}" />
 		    </div>
 		</form>
 	    </div>

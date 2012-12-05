@@ -46,18 +46,23 @@
     <div class="container_12">
 	<div class="grid_9">
 	    <form action="{{ path('add_invoice_item') }}">
-		<input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod ili šifra artikla" name="code" />
-		<input type="hidden" name="invoice" value="{{ invoice.id }}" />
-		<input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
-		<input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
-		<div style="display: inline-block; margin-right: 2px;">
-		    <input  id="print" data-mode="cash" class="button" type="button" name="action" value="Ispis" />
-		    <button  id="select" class="button" type="button" name="action" value="">Odabir akcije</button>
-		</div>
-		<ul id="invoice-templates">
-		    <li><a data-mode="cash" href="#">Gotovinski</a></li>
-		    <li><a data-mode="wire" href="#">Bez gotovinski</a></li>
-		</ul>
+		{% if invoice.sequence == null %}
+		    <input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod ili šifra artikla" name="code" />
+		    <input type="hidden" name="invoice" value="{{ invoice.id }}" />
+		    <input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
+		    <input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
+		    <div style="display: inline-block; margin-right: 2px;">
+			<input  id="print" data-mode="{{ invoice.position.location.templates[0].id }}" data-cloud="{{ invoice.position.location.templates[0].useGoogleCloud }}" class="button" type="button" name="action" value="Ispis" />
+			<button  id="select" class="button" type="button" name="action" value="">Odabir akcije</button>
+		    </div>
+		    <ul id="invoice-templates">
+			{% for item in invoice.position.location.templates %}
+			    <li><a data-cloud="{{ item.useGoogleCloud }}" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
+			{% endfor %}
+		    </ul>
+		{% else %}
+		    <input  id="print" data-mode="{{ invoice.template.id }}" data-cloud="{{ invoice.template.useGoogleCloud }}" class="button" type="button" name="action" value="Ispis" />
+		{% endif %}
 		<input type="button" class="button link" data-href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}" value="{{ 'Odustani'|trans }}" />
 	    </form>
 	</div>
@@ -99,16 +104,23 @@
 		.menu();
     		
     $('#print, ul#invoice-templates a').click(function(event) {
-	//window.location = '{{ path('print_invoice', {'id': invoice.id}) }}';
 	event.preventDefault();
+	
+	var me = $(this);
+	
+	if(me.data('cloud') == true) {
+	    $.post('{{ url('print_invoice', {'id': invoice.id}) }}', {mode: $(this).data('mode')}, function(data){
+		var gadget = new cloudprint.Gadget();
+		gadget.setPrintDocument("text/html", "Invoice {{ invoice.id }}", data, "base64");
+		gadget.setOnCloseCallback(function(data) { window.location = '{{ path('add_invoice', {'back': app.request.get('back')}) }}'; });
+		gadget.openPrintDialog();
 
-	$.post('{{ url('print_invoice', {'id': invoice.id}) }}', {mode: $(this).data('mode')}, function(data){
-	    var gadget = new cloudprint.Gadget();
-	    gadget.setPrintDocument("text/html", "Invoice {{ invoice.id }}", data, "base64");
-	    gadget.setOnCloseCallback(function(data) { window.location = '{{ path('add_invoice', {'back': app.request.get('back')}) }}'; });
-	    gadget.openPrintDialog();
-	    
-	}, 'text');
+	    }, 'text');
+	}
+	else {
+	    window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&print=false&mode=' + me.data('mode');
+	}
+	
     });
     
     function addItem(form) {

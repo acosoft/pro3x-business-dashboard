@@ -1,10 +1,12 @@
 <div class="pro3x_header">
-    <a href="{{ path('dashboard') }}">{{ 'Pro3x Online'|trans }}</a>
-    <ul>
-	<li>
-	    {% if is_granted('ROLE_USER') %}
-		<a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.displayName }}</a> :: <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
-	    {% endif %}
-	</li>
-    </ul>
+    <div class="pro3x_header_content">
+	<a href="{{ path('dashboard') }}">{{ 'Pro3x Online Dashboard'|trans }}</a>
+	<ul>
+	    <li>
+		{% if is_granted('ROLE_USER') %}
+		    <a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.displayName }}</a> | <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
+		{% endif %}
+	    </li>
+	</ul>
+    </div>
 </div>

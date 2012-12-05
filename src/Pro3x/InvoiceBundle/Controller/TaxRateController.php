@@ -60,8 +60,9 @@ class TaxRateController extends AdminController
 		return $params->setTitle('Popis poreznih stopa')
 				->setIcon('tax')
 				
-				->addColumn('name', "Naziv")
-				->addColumn('rate', "Stopa")
+				->addColumnTrans('taxGroupFormated', 'Porezna grupa')
+				->addColumn('name', 'Naziv', '400')
+				->addColumn('rate', 'Stopa', '75')
 				
 				->setAddRoute('add_tax_rate')
 				->setEditRoute('edit_tax_rate')

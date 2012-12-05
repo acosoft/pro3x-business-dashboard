@@ -193,19 +193,22 @@ class InvoiceController extends AdminController
 		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
-		$manager = $this->getDoctrine()->getEntityManager();
-		$mode = $this->getParam('mode', 'cash');
+		//$manager = $this->getDoctrine()->getEntityManager();
 		
 		if($invoice->getSequence() == null)
 		{
-			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $mode) {
+			$template = $this->getTemplateRepository()->find($this->getParam('mode')); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
+			$this->redirect404($template);
+		
+			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $template) {
 				$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
 
 				$manager->refresh($position);
 
 				$invoice->setSequence($position->getSequence());
 				$position->setSequence($position->getSequence() + 1);
-				$invoice->setStatus($mode);
+				$invoice->setStatus($template->getName());
+				$invoice->setTemplate($template);
 
 				$manager->persist($position);
 				$manager->persist($invoice);
@@ -220,7 +223,7 @@ class InvoiceController extends AdminController
 			$item->setNumeric($invoice->getNumeric());
 		}
 		
-		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $this->getParam('mode', 'cash') . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
 		
 		$direct = $this->getParam('print', 'true');
 		
@@ -295,6 +298,7 @@ class InvoiceController extends AdminController
 				->setIcon('invoice')
 				
 				->addColumn('sequenceFormated', 'ID')
+				->addColumn('UserDisplayName', 'Operater')
 				->addColumn('dateTimeFormated', 'Datum', 125, 'center')
 				->addColumn('customer.name', 'Kupac')
 				->addColumnTrans('status', "Status")

@@ -31,6 +31,141 @@ class Location
 	 * @ORM\Column(type="string")
 	 */
 	private $name;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $companyTaxNumber;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $postalCode;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $houseNumber;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $houseNumberExtension;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $settlement;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $city;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $street;
+	
+	/**
+	 * @ORM\Column(type="string", length=500)
+	 */
+	private $workingHours;
+	
+	/**
+	 * @OneToMany(targetEntity="Template", mappedBy="location")
+	  */
+	private $templates;
+	
+	public function getTemplates()
+	{
+		return $this->templates;
+	}
+
+	public function setTemplates($templates)
+	{
+		$this->templates = $templates;
+	}
+
+	public function getWorkingHours()
+	{
+		return $this->workingHours;
+	}
+
+	public function setWorkingHours($workingHours)
+	{
+		$this->workingHours = $workingHours;
+	}
+	
+	public function getCompanyTaxNumber()
+	{
+		return $this->companyTaxNumber;
+	}
+
+	public function setCompanyTaxNumber($companyTaxNumber)
+	{
+		$this->companyTaxNumber = $companyTaxNumber;
+	}
+
+	public function getPostalCode()
+	{
+		return $this->postalCode;
+	}
+
+	public function setPostalCode($postalCode)
+	{
+		$this->postalCode = $postalCode;
+	}
+
+	public function getHouseNumber()
+	{
+		return $this->houseNumber;
+	}
+
+	public function setHouseNumber($houseNumber)
+	{
+		$this->houseNumber = $houseNumber;
+	}
+
+	public function getHouseNumberExtension()
+	{
+		return $this->houseNumberExtension;
+	}
+
+	public function setHouseNumberExtension($houseNumberExtension)
+	{
+		$this->houseNumberExtension = $houseNumberExtension;
+	}
+
+	public function getSettlement()
+	{
+		return $this->settlement;
+	}
+
+	public function setSettlement($settlement)
+	{
+		$this->settlement = $settlement;
+	}
+
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	public function setCity($city)
+	{
+		$this->city = $city;
+	}
+
+	public function getStreet()
+	{
+		return $this->street;
+	}
+
+	public function setStreet($street)
+	{
+		$this->street = $street;
+	}
 
 	public function getPositions()
 	{

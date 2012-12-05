@@ -23,7 +23,7 @@ class TableParams
 	private $selectColumn;
 	private $noSelection;
 	private $placeholder;
-	
+
 	public function getPlaceholder()
 	{
 		return $this->placeholder;

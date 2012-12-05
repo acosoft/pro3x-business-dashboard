@@ -18,9 +18,14 @@ class DefaultController extends Controller
 	{
 		$form = $this->createFormBuilder(null, array('attr' => array('class' => 'pro3x_form_content')))
 				->setAttribute('attr', array('class' => 'pro3x_form_content'))
-				->add('username', 'text')
-				->add('email', 'email')
-				->add('password', 'repeated', array('first_name' => 'password', 'second_name' => 'confirm_password', 'type' => 'password'))
+				->add('username', 'text', array('label' => 'Korisničko ime'))
+				->add('email', 'email', array('label' => 'Email'))
+				->add('password', 'repeated', array(
+					'first_name' => 'password', 
+					'first_options' => array('label' => 'Zaporka'), 
+					'second_name' => 'confirm_password', 
+					'second_options' => array('label' => 'Ponovite zaporku'),
+					'type' => 'password'))
 				->getForm();
 		
 		if($this->getRequest()->isMethod('post'))

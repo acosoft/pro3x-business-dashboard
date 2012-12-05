@@ -11,7 +11,15 @@ class LocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+			->add('companyTaxNumber', 'text', array('label' => 'OIB Tvrtke'))
             ->add('name', 'text', array('label' => 'Naziv lokacije'))
+			->add('street', 'text', array('label' => 'Ulica', 'required' => false))
+			->add('houseNumber', 'text', array('label' => 'Kućni broj', 'required' => false))
+			->add('houseNumberExtension', 'text', array('label' => 'Dodatak kućnom broju', 'required' => false))
+			->add('postalCode', 'text', array('label' => 'Poštanski broj', 'required' => false))
+			->add('city', 'text', array('label' => 'Grad', 'required' => false))
+			->add('settlement', 'text', array('label' => 'Naselje'))
+			->add('workingHours', 'text', array('label' => 'Radno vrijeme'))
         ;
     }
 

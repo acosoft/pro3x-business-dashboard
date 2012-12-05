@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}{% endblock %}
+
+{% block body %}
+    <div class="grid_12">
+	{% for item in items %}
+	    {{ item.price }}
+	{% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

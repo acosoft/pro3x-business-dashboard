@@ -43,15 +43,34 @@ class InvoiceItemTax
 	 * @ManyToOne(targetEntity="InvoiceItem", inversedBy="taxes")
 	  */
 	private $item;
-
 	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $taxGroup;
+
+	/**
+	 * 
+	 * @param TaxRate $taxRate
+	 */
 	function __construct($taxRate)
 	{
 		$this->taxId = $taxRate->getId();
 		$this->taxDescription = $taxRate->getName();
 		$this->taxRate = $taxRate->getRate();
+		$this->taxGroup = $taxRate->getTaxGroup();
 	}
 	
+	public function getTaxGroup()
+	{
+		return $this->taxGroup;
+	}
+
+	public function setTaxGroup($taxGroup)
+	{
+		$this->taxGroup = $taxGroup;
+	}
+
 	/**
 	 * 
 	 * @return InvoiceItem

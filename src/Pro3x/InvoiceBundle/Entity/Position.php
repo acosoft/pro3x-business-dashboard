@@ -94,6 +94,10 @@ class Position
 		$this->sequence = $sequence;
 	}
 
+	/**
+	 * 
+	 * @return Location
+	 */
 	public function getLocation()
 	{
 		return $this->location;

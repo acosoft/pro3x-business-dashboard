@@ -5,12 +5,17 @@ namespace Pro3x\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Invoice
  *
  * @ORM\Table(name="pro3x_invoices")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\InvoiceRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Invoice
 {
@@ -59,12 +64,93 @@ class Invoice
 	 */
 	private $sequence;
 	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $uuid;
+
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $companyTaxNumber;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $uniqueInvoiceNumber;
+	
+	/**
+	 * @ManyToOne(targetEntity="Template", inversedBy="invoices")
+	  */
+	private $template;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $invoiceTotal;
+	
 	private $numeric;
 
 	public function __construct()
 	{
 		$this->created = new \DateTime('now');
+		
 		$this->sequence = null;
+		$this->invoiceTotal = 200;
+		$this->items = new ArrayCollection();
+	}
+	
+	/**
+	 * @PrePersist
+	 * @PreUpdate
+	 */
+	public function prePersist()
+	{
+		$this->invoiceTotal = $this->getTotal();
+	}
+	
+	public function getInvoiceTotal()
+	{
+		return $this->invoiceTotal;
+	}
+
+	public function setInvoiceTotal($invoiceTotal)
+	{
+		$this->invoiceTotal = $invoiceTotal;
+	}
+
+	/**
+	 * 
+	 * @return Template
+	 */
+	public function getTemplate()
+	{
+		return $this->template;
+	}
+
+	public function setTemplate($template)
+	{
+		$this->template = $template;
+	}
+
+	public function getUniqueInvoiceNumber()
+	{
+		return $this->uniqueInvoiceNumber;
+	}
+
+	public function setUniqueInvoiceNumber($uniqueInvoiceNumber)
+	{
+		$this->uniqueInvoiceNumber = $uniqueInvoiceNumber;
+	}
+
+	public function getCompanyTaxNumber()
+	{
+		return $this->companyTaxNumber;
+	}
+
+	public function setCompanyTaxNumber($companyTaxNumber)
+	{
+		$this->companyTaxNumber = $companyTaxNumber;
 	}
 
 	public function getSequence()
@@ -77,6 +163,26 @@ class Invoice
 		$this->sequence = $sequence;
 	}
 	
+	public function getCreated()
+	{
+		return $this->created;
+	}
+
+	public function setCreated($created)
+	{
+		$this->created = $created;
+	}
+
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
+
+	public function setUuid($uuid)
+	{
+		$this->uuid = $uuid;
+	}
+
 	public function getSequenceFormated()
 	{
 		if($this->getSequence() == null)
@@ -109,11 +215,21 @@ class Invoice
 		return $this->position;
 	}
 
+	/**
+	 * 
+	 * @param Position $position
+	 */
 	public function setPosition($position)
 	{
 		$this->position = $position;
+		
+		$this->setCompanyTaxNumber($position->getLocation()->getCompanyTaxNumber());
 	}
 
+	/**
+	 * 
+	 * @return \Pro3x\SecurityBundle\Entity\User
+	 */
 	public function getUser()
 	{
 		return $this->user;
@@ -122,6 +238,11 @@ class Invoice
 	public function setUser($user)
 	{
 		$this->user = $user;
+	}
+	
+	public function getUserDisplayName()
+	{
+		return $this->getUser()->getDisplayName();
 	}
 
 	/**
@@ -222,6 +343,7 @@ class Invoice
 			$item['rate'] = $taxItems[0]->getTaxRate();
 			$item['description'] = $taxItems[0]->getTaxDescription();
 			$item['total'] = 0;
+			$item['group'] = $taxItems[0]->getTaxGroup();
 			
 			foreach ($taxItems as $taxItem) /* @var $taxItem InvoiceItemTax */
 			{
@@ -236,9 +358,16 @@ class Invoice
 		$nf = $this->getNumeric()->getNumberFormatter();
 		foreach ($aggTax as &$item)
 		{
+			$item['baseNumeric'] = $item['base'];
 			$item['base'] = $nf->format($item['base']);
+			
+			$item['totalNumeric'] = $item['total'];
 			$item['total'] = $nf->format($item['total']);
+			
+			$item['amountNumeric'] = $item['amount'];
 			$item['amount'] = $nf->format($item['amount']);
+			
+			$item['rateNumeric'] = $item['rate'] * 100;
 			$item['rate'] = $nf->format($item['rate'] * 100);
 		}
 		
@@ -253,7 +382,7 @@ class Invoice
 		{
 			$total += $item->getTaxedPrice();
 		}
-		
+
 		return $total;
 	}
 	

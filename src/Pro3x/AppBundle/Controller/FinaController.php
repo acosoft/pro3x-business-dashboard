@@ -152,11 +152,83 @@ tHsYoXY=
 	 * @Route("/invoice/{id}", name="fina_invoice")
 	 * @Template()
 	 */
-	public function invoiceAction()
+	public function invoiceAction($id)
 	{
 		$soap = $this->getSoapClient();
+		$invoice = $this->getInvoiceRepository()->find($id); /* @var $invoice \Pro3x\InvoiceBundle\Entity\Invoice */
+		
+		if(!$invoice->getUuid())
+		{
+			$invoice->setUuid($soap->randomGuid());
+			
+			$manager = $this->getDoctrine()->getEntityManager();
+			$manager->persist($invoice);
+			$manager->flush();
+		}
+		
+		$zahtjev = new \Pro3x\Online\Fina\RacunZahtjev($invoice->getUuid());
+		
+		$racun = $zahtjev->getRacun();
+		$racun->setOib('61543907467');
+		$racun->setUSustPdv(true);
+		$racun->setDatVrijeme($invoice->getCreated()->format('d.m.Y\TH:i:s'));
+		$racun->setOznSlijed('N');
+		
+		$oznaka = $racun->getBrRac();
+		$oznaka->setBrOznRac($invoice->getSequence());
+		$oznaka->setOznPosPr($invoice->getPosition()->getLocationName());
+		$oznaka->setOznNapUr($invoice->getPosition()->getName());
 
-		return array();
+		$map = array('pdv' => array(), 'pot' => array());
+		
+		$invoice->setNumeric($this->getNumeric());
+		foreach($invoice->getTaxItems() as $item) /* @var $item \Pro3x\InvoiceBundle\Entity\InvoiceItemTax */
+		{
+			$porez = new \Pro3x\Online\Fina\Porez();
+			
+			$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+			$porez->setStopa(number_format($item['rateNumeric'], 2));
+			$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+			
+			$map[$item['group']][] = $porez;
+		}
+		
+		if(count($map['Pdv']) > 0)
+			$racun->setPdv($map['Pdv']);
+		
+		if(count($map['Pnp']) > 0)
+			$racun->setPnp ($map['Pnp']);
+		
+		$racun->setIznosUkupno($invoice->getTotal());
+		$racun->setNacinPlac('G');
+		$racun->setOibOper($invoice->getUser()->getOib());
+		$racun->setNakDost(false);
+		
+		
+		$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+		
+		if($data instanceof \Pro3x\Online\Fina\RacunOdgovor && !$invoice->getUniqueInvoiceNumber())
+		{
+			$invoice->setUniqueInvoiceNumber($data->getJir());
+			
+			$manager = $this->getDoctrine()->getEntityManager();
+			$manager->persist($invoice);
+			$manager->flush();
+		}
+		
+		$result = array();
+		
+		$result[] = $soap->__getLastRequest();
+		$result[] = $soap->__getLastResponse();
+		
+		return new \Symfony\Component\HttpFoundation\Response(implode("\n\n", $result));
+		
+//		return new \Symfony\Component\HttpFoundation\JsonResponse(array(
+//			'total' => $invoice->getTotal(),
+//			'jir' => $data->getJir(),
+//			'oznaka' => $data->getIdPoruke(),
+//			'datum' => $data->getDatumVrijeme()->format('d.m.Y H:i'),
+//		));
 	}
 }
 

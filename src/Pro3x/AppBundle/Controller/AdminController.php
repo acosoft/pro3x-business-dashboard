@@ -168,6 +168,15 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Product');
 	}
 	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\TemplateRepository
+	 */
+	public function getTemplateRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Template');
+	}
+	
 	public function deleteEntity($repository, $message)
 	{
 		$id = $this->getRequest()->get('id');

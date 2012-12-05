@@ -13,8 +13,10 @@
     <body>
 	{% block head %}
 	    <div class="pro3x_header">
-	    <a href="{{ path('home') }}">Pro3x Online</a>
-	</div>
+		<div class="pro3x_header_content">
+		    <a href="{{ path('home') }}">{{ 'Pro3x Online Dashboard' }}</a>
+		</div>
+	    </div>
 	{% endblock %}
 	    
 	<div class="container_12 pro3x_content">

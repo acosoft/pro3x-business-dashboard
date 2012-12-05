@@ -1,7 +1,7 @@
 {% extends '::login.html.twig' %}
 
 {% block page_title %}
-    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>Login or <a href="{{ path("register") }}">Register</a>
+    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>{{ 'Prijava ili'|trans }} <a href="{{ path("register") }}">{{ 'Registracija'|trans }}</a>
 {% endblock %}
 
 {% block body %}
@@ -15,22 +15,22 @@
 	    
 	<div class="pro3x_tabs">
 	    <ul>
-		<li><a href="#login">Login</a></li>
+		<li><a href="#login">{{ 'Prijava'|trans }}</a></li>
 	    </ul>
 	    <div id="login">
 		<form class="pro3x_login" action="{{ path("_security_check") }}" method="post" id="login">
 		    <div class="pro3x_form_content">
 			<div>
-			    <label for="username">Korisničko ime</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
+			    <label for="username">{{ 'Korisničko ime'|trans }}</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
 			</div>
 
 			<div>
-			    <label for="password">Zaporka</label><input type="password" id="password" name="_password" />
+			    <label for="password">{{ 'Zaporka'|trans }}</label><input type="password" id="password" name="_password" />
 			</div>
 		    </div>
 		    <div class="pro3x_buttons">
-			<div class="pro3x_info"><a href="#">Lost password?</a></div>
-			<input type="submit" class="button" value="Login" />
+			<div class="pro3x_info"><a href="#">{{ 'Izgubili ste zaporku?'|trans }}</a></div>
+			<input type="submit" class="button" value="{{ 'Prijava'|trans }}" />
 		    </div>
 		</form>
 	    </div>

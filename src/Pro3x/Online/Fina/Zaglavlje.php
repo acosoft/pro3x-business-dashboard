@@ -29,6 +29,14 @@ class Zaglavlje
 		return $this->DatumVrijeme;
 	}
 
+	/**
+	 * 
+	 * @param \DateTime $datumVrijeme
+	 */
+	public function setDatumVrijeme($datumVrijeme)
+	{
+		$this->DatumVrijeme = $datumVrijeme->format('d.m.Y\TH:i:s');
+	}
 }
 
 ?>
