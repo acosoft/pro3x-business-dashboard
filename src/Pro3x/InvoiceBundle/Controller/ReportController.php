@@ -24,33 +24,28 @@ class ReportController extends AdminController
 	public function dailyTotalAction()
 	{
 		$userId = $this->getUser()->getId();
+		
 		$items = $this->getInvoiceRepository()->createQueryBuilder('i')
-				->select('sum(s.unitPrice * s.amount ) price')
-				->join('i.user', 'u')
-				->join('i.items', 's')
-				->where('i.user = :user')
+				->select('t.transactionType, sum(i.invoiceTotal ) total')
+				->join('i.template', 't')
+				->where('i.user = :user AND i.sequence IS NOT null')
 				->setParameter('user', $this->getUser())
+				->groupBy('t.transactionType')
 				->getQuery()
 				->getResult();
 //				->where('u.id = :user_id')
 //				->setParameter('user_id', $userId);
 		
+		foreach ($items as &$item)
+		{
+			$item['transactionType'] = TemplateType::formatTransactionType($item['transactionType']);
+		}
 				
 		$params = new TableParams();
 		
 		$editUserUrl = $this->generateUrl('edit_user', array('id' => $this->getUser()->getId(), 'back' => $this->getRequest()->getUri()));
 
-		$params->setTitle('Pregled Dnevnog Prometa')
-				->setIcon('template')
-				->addColumn('price', 'Naziv lokacije')
-				->setDeleteType('predložak')
-				->setDeleteColumn('name')
-				->setRoutes('template')
-				->setItems($items)
-				->setPagerVisible(false);
-				
-		
-		return $params->getParams();
+		return array('items' => $items);
 	}
 }
 

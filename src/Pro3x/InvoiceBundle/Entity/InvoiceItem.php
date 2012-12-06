@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 
 /**
  * InvoiceItem
@@ -39,6 +42,30 @@ class InvoiceItem
 	 */
 	private $amount;
 	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $taxedPrice;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $totalTaxedPrice;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $dicountPrice;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $discountAmount;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $totalPrice;
 
 	/**
 	 * @ORM\Column(type="decimal", scale=2)
@@ -51,6 +78,16 @@ class InvoiceItem
 	private $taxes;
 	
 	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $taxAmount;
+	
+	/**
+	 * @ORM\Column(type="decimal", scale=2)
+	 */
+	private $totalTaxAmount;
+	
+	/**
 	 * @ORM\Column(type="string")
 	 */
 	private $unit;
@@ -61,6 +98,11 @@ class InvoiceItem
 	private $invoice;
 	
 	private $numeric;
+	
+	public function getTotalTaxAmount()
+	{
+		return $this->totalTaxAmount;
+	}
 
 	/**
 	 * 
@@ -74,6 +116,11 @@ class InvoiceItem
 	public function setNumeric($numeric)
 	{
 		$this->numeric = $numeric;
+	}
+
+	public function getTotalPrice()
+	{
+		return $this->totalPrice;
 	}
 
 	/**
@@ -97,9 +144,45 @@ class InvoiceItem
 		}	
 	}
 
+	/**
+	 * 
+	 * @return invoice
+	 */
 	public function getInvoice()
 	{
 		return $this->invoice;
+	}
+	
+	/**
+	 * @PrePersist
+	 * @PreUpate
+	 */
+	public function calculate()
+	{
+		$this->taxAmount = $this->getUnitPrice() * $this->getTaxRate();
+		$this->taxedPrice = round($this->getUnitPrice() + $this->getTaxAmount(), 2);
+		
+		$this->totalTaxedPrice = round($this->getTaxedPrice() * $this->getAmount(), 2);
+		$this->discountAmount = round($this->getTotalTaxedPrice() * $this->getDiscount(), 2);
+		$this->dicountPrice = round($this->getTotalTaxedPrice() - $this->getDiscountAmount(), 2);
+
+		$this->totalPrice = round($this->getDicountPrice() / (1 + $this->getTaxRate()), 2);
+		$this->totalTaxAmount = round($this->getTotalTaxedPrice() - $this->getTotalPrice(), 2);
+	}
+	
+	public function getTotalTaxedPrice()
+	{
+		return $this->totalTaxedPrice;
+	}
+
+	public function getDicountPrice()
+	{
+		return $this->dicountPrice;
+	}
+
+	public function getDiscountAmount()
+	{
+		return $this->discountAmount;
 	}
 
 	public function setInvoice($invoice)
@@ -194,7 +277,7 @@ class InvoiceItem
 	
 	public function getTaxRate()
 	{
-		$rate = 1;
+		$rate = 0;
 		
 		foreach($this->getTaxes() as $tax) /* @var $tax InvoiceItemTax */
 		{
@@ -206,7 +289,7 @@ class InvoiceItem
 	
 	public function getTaxAmount()
 	{
-		return $this->getTaxedPrice() - $this->getPrice();
+		return $this->taxAmount;
 	}
 
 	public function getTaxAmountFormated()
@@ -216,21 +299,21 @@ class InvoiceItem
 
 	public function getTaxedPrice()
 	{
-		return $this->getPrice() * $this->getTaxRate();
+		return $this->taxedPrice;
 	}
 	
 	public function getTaxedPriceFormated()
 	{
 		return $this->getNumeric()->getNumberFormatter(2)->format($this->getTaxedPrice());
 	}
-
-	public function getPrice()
+	
+	public function getTotalTaxedPriceFormated()
 	{
-		return $this->getUnitPrice() * $this->getAmount() * (1 - $this->getDiscount());
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getTotalTaxedPrice());
 	}
 	
-	public function getPriceFormated()
+	public function getDiscountPriceFormated()
 	{
-		return $this->getNumeric()->getNumberFormatter(2)->format($this->getPrice());
+		return $this->getNumeric()->getNumberFormatter(2)->format($this->getDicountPrice());
 	}
 }

@@ -117,7 +117,7 @@ class InvoiceItemTax
 	
 	public function getTaxAmount()
 	{
-		return $this->getItem()->getPrice() * $this->getTaxRate();
+		return $this->getItem()->getTotalPrice() * $this->getTaxRate();
 	}
 
     /**

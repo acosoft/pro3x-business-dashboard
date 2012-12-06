@@ -32,7 +32,15 @@ class InvoiceController extends AdminController
 		$invoice->setStatus('skica');
 		
 		$invoice->setUser($this->getUser());
+		
+		if($this->getUser()->getPosition() == null)
+		{
+			$this->setWarning('Vaš korisnički račun nije povezan sa niti jednom lokacijom, prije izdavanja računa morate izabrati lokaciju na kojoj ćete raditi');
+			return $this->goBack();
+		}
+		
 		$position = $this->getPositionRepository()->find($this->getUser()->getPosition());
+		
 		$invoice->setPosition($position);
 		
 		
@@ -60,7 +68,7 @@ class InvoiceController extends AdminController
 		{
 			$query = $this->getParam('query');
 			
-			if(strlen($query) < 3) $this->setWarningMessage('Potrebno je minimalno tri znaka za uspješno pretraživanje');
+			if(strlen($query) < 3) $this->setWarning('Potrebno je minimalno tri znaka za uspješno pretraživanje');
 			$queryBuilder->andWhere('c.name LIKE :name OR c.taxNumber LIKE :name')
 					->setParameters(array(':name' => '%' . $query . '%'));
 
@@ -148,6 +156,11 @@ class InvoiceController extends AdminController
 		$item->setDiscount($parser->getDiscount());
 		$item->setInvoice($invoice);
 		
+		$item->calculate();
+		
+		$invoice->getItems()->add($item);
+		$invoice->calculate();
+		
 		$manager = $this->getDoctrine()->getEntityManager();
 		$manager->persist($item);
 		$manager->flush();
@@ -160,23 +173,19 @@ class InvoiceController extends AdminController
 	}
 	
 	/**
-	 * @Route("/save-invoice", name="save_invoice")
-	 * @Template()
-	 */
-	public function saveInvoiceAction()
-	{
-		
-		
-		return array();
-	}
-	
-	/**
 	 * @Route("/edit/{id}", name="edit_invoice")
 	 * @Template("Pro3xInvoiceBundle:Invoice:invoice.html.twig")
 	 */
 	public function editAction($id)
 	{
 		$invoice = $this->getInvoiceRepository()->findOneById($id); /* @var $invoice Invoice */
+		
+		if($invoice->getPosition()->getLocation()->getTemplates()->count() == 0)
+		{
+			$this->setWarning('Vaša lokacija nije povezana sa niti jednim predloškom računa. Morate definirati barem jedan predložak računa za lokaciju prije izdavanja računa.');
+			return $this->goBack();
+		}
+		
 		$this->redirect404($invoice);
 				
 		$invoice->setNumeric($this->getNumeric());
@@ -271,7 +280,10 @@ class InvoiceController extends AdminController
 	public function deleteItemAction($id)
 	{
 		$item = $this->getInvoiceItemRepository()->findOneById($id); /* @var $item InvoiceItem */
-		$invoice = $item->getInvoice();
+		$invoice = $item->getInvoice(); /* @var $invoice Invoice */
+		
+		$invoice->getItems()->removeElement($item);
+		$invoice->calculate();
 		
 		$manager = $this->getDoctrine()->getManager();
 		$manager->remove($item);
@@ -281,37 +293,65 @@ class InvoiceController extends AdminController
 	}
 	
 	/**
-     * @Route("/{page}", name="invoices", defaults={"page" = 1})
+     * @Route("/{id}/{page}", name="invoices", defaults={"page" = 1})
      * @Template("::table.html.twig")
      */
-    public function indexAction($page)
-    {
-		$params = new TableParams();
-		
-		$page = $this->getRequest()->get('page', 1);
-		
-		$repository = $this->getInvoiceRepository();
-		$count = $repository->count();
-		$items = $repository->findBy(array(), array('id' => 'DESC'), $this->getPageSize(), $this->getPageOffset($page));
-		
-		return $params->setTitle('Popis računa')
-				->setIcon('invoice')
+    public function indexAction($id, $page)
+    {		
+		if($this->isInRole('edit_all_invoices') || $id == $this->getUser()->getId())
+		{
+			$params = new TableParams();
+			$page = $this->getRequest()->get('page', 1);
+
+			$repository = $this->getInvoiceRepository(); 
+			$count = $repository->countByUser($id);
+			
+			$params->addColumn('sequenceFormated', 'ID');
 				
-				->addColumn('sequenceFormated', 'ID')
-				->addColumn('UserDisplayName', 'Operater')
-				->addColumn('dateTimeFormated', 'Datum', 125, 'center')
-				->addColumn('customer.name', 'Kupac')
-				->addColumnTrans('status', "Status")
+			
+			if($this->isInRole('edit_all_invoices'))
+			{
+				$queryParams = array();
+				$params
+					->addTemplateColumn('Info', 'Pro3xInvoiceBundle:Invoice:infoColumn.html.twig')
+					->addTemplateColumn('Kupac', 'Pro3xInvoiceBundle:Invoice:customerColumn.html.twig')
+					->addTemplateColumn('Iznos', 'Pro3xInvoiceBundle:Invoice:totalColumn.html.twig');
+			}
+			else
+			{
+				$params
+					->addColumn('dateTimeFormated', 'Datum', 125, 'center')
+					->addColumn('customer.name', 'Kupac')
+					->addColumnTrans('status', "Status")
+					->addColumn('invoiceTotal', 'Ukupno', '75', 'right');
 				
-				->setAddRoute('add_invoice')
-				->setEditRoute('edit_invoice')
-				->setDeleteRoute('delete_invoice')
-				->setDeleteColumn('id')
-				->setDeleteType('račun')
-				
-				->setPagerVisible(true)
-				->setPageCount($this->getPageCount($count))
-				->setPage($page)
-				->setItems($items)->getParams();
+				$queryParams = array('user' => $id);
+				$params->setTitleExtraTemplate('Pro3xInvoiceBundle:Invoice:invoiceTitle.html.twig', array('user' => $this->getUserRepository()->find($id)));
+			}
+			
+			$items = $repository->findBy($queryParams, array('id' => 'DESC'), $this->getPageSize(), $this->getPageOffset($page));
+
+			return $params->setTitle('Popis računa')
+					->setIcon('invoice')
+
+					->setAddRoute('add_invoice')
+					->setEditRoute('edit_invoice')
+					->setDeleteRoute('delete_invoice')
+					->setDeleteColumn('id')
+					->setDeleteType('račun')
+
+					//->setToolsTemplate('Pro3xInvoiceBundle:Invoice:toolsColumn.html.twig')
+					
+					->setPagerVisible(true)
+					->setPageCount($this->getPageCount($count))
+					->setPage($page)
+					->addPagerParam('id', $id)
+					->setItems($items)->getParams();
+		}
+		else
+		{
+			$this->setWarning('Nemate dozvole za rad sa računima ostalih korisnika');
+			return $this->redirect($this->generateUrl('dashboard'));
+		}
     }
 }

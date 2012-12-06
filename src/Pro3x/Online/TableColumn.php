@@ -9,6 +9,7 @@ class TableColumn
 	private $label;
 	private $textAlign;
 	private $translate;
+	private $template;
 	
 	function __construct($name, $label=null, $width = 0, $textAlign = 'left', $translate = false)
 	{
@@ -20,6 +21,16 @@ class TableColumn
 		$this->label = ($label)?$label:$name;
 	}
 	
+	public function getTemplate()
+	{
+		return $this->template;
+	}
+
+	public function setTemplate($template)
+	{
+		$this->template = $template;
+	}
+
 	public function getTranslate()
 	{
 		return $this->translate;

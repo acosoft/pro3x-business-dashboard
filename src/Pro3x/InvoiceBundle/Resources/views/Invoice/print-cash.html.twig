@@ -85,22 +85,20 @@
 			<th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
 			<th style="text-align: right;">Cijena</th>
 			<th style="text-align: right;">Količina</th>
-			<th style="text-align: right;">Popust</th>
 			<th style="text-align: right;">Osnovica</th>
-			<th style="text-align: right;">Porez</th>
-			<th style="text-align: right;">Iznos</th>
+			<th style="text-align: right;">Popust</th>
+			<th style="text-align: right;">Ukupno</th>
 		    </tr>
 		</thead>
 		<tbody>
 		{% for  item in invoice.items %}
 			<tr>
 			    <td style="padding-left: 0;">{{ item.description }}</td>
-			    <td style="text-align: right;">{{ item.unitPriceFormated }}</td>
-			    <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
-			    <td style="text-align: right;">{{ item.discountFormated }} %</td>
-			    <td style="text-align: right;">{{ item.priceFormated }}</td>
-			    <td style="text-align: right;">{{ item.taxAmountFormated }}</td>
 			    <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
+			    <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
+			    <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
+			    <td style="text-align: right;">{{ item.discountFormated }}</td>
+			    <td style="text-align: right;">{{ item.discountPriceFormated }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>

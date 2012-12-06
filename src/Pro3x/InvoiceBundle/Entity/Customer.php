@@ -152,6 +152,16 @@ class Customer
 
 		return $description;
 	}
+	
+	public function getAddressDescription()
+	{
+		$description = array();
+		
+		if($this->getAddress()) $description[] = $this->getAddress ();
+		if($this->getLocation()) $description[] = $this->getLocation ();
+		
+		return $description;
+	}
 
 	public function getEmail()
 	{

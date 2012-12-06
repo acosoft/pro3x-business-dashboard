@@ -23,6 +23,32 @@ class TableParams
 	private $selectColumn;
 	private $noSelection;
 	private $placeholder;
+	private $titleExtraTemplate;
+	private $titleExtraParams;
+	private $toolsTemplate;
+	
+	public function getToolsTemplate()
+	{
+		return $this->toolsTemplate;
+	}
+
+	public function setToolsTemplate($toolsTemplate)
+	{
+		$this->toolsTemplate = $toolsTemplate;
+		return $this;
+	}
+
+	public function getTitleExtraTemplate()
+	{
+		return $this->titleExtraTemplate;
+	}
+
+	public function setTitleExtraTemplate($titleExtraTemplate, $params = array())
+	{
+		$this->titleExtraTemplate = $titleExtraTemplate;
+		$this->titleExtraParams = $params;
+		return $this;
+	}
 
 	public function getPlaceholder()
 	{
@@ -155,6 +181,8 @@ class TableParams
 		$this->selectColumn = 'id';
 		$this->noSelection = true;
 		$this->setDeleteColumn('id');
+		$this->setTitleExtraTemplate(null);
+		$this->setToolsTemplate(null);
 	}
 
 	public function getToolsWidth()
@@ -166,6 +194,27 @@ class TableParams
 	{
 		$this->toolsWidth = $toolsWidth;
 		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param string $header
+	 * @param string $template
+	 * @return \Pro3x\Online\TableParams
+	 */
+	public function addTemplateColumn($header, $template)
+	{
+		$column = new TableColumn($header);
+		$column->setTemplate($template);
+		
+		$this->columns[] = $column;
+		
+		return $this;
+	}
+	
+	public function addTableColumn($column)
+	{
+		$this->columns[] = $column;
 	}
 
 	public function addColumnTrans($name, $label = null, $width = 0, $align="left")
@@ -267,25 +316,28 @@ class TableParams
 	public function getParams()
 	{
 		return array(
-			'count'				=> $this->getPageCount(), 
-			'page'				=> $this->getPage(), 
-			'title'				=> $this->getTitle(),
-			'route'				=> $this->getAddRoute(),
-			'pager'				=> $this->getPagerVisible(),
-			'items'				=> $this->getItems(),
-			'icon'				=> $this->getIcon(),
-			'columns'			=> $this->getColumns(),
-			'toolsWidth'		=> $this->getToolsWidth(),
-			'editRoute'			=> $this->getEditRoute(),
-			'deleteRoute'		=> $this->getDeleteRoute(),
-			'deleteColumn'		=> $this->getDeleteColumn(),
-			'type'				=> $this->getDeleteType(),
-			'search'			=> $this->getSearchVisible(),
-			'pagerParams'		=> $this->getPagerParams(),
-			'selectParam'		=> $this->getSelectParam(),
-			'selectColumn'		=> $this->getSelectColumn(),
-			'noSelection'		=> $this->getNoSelection(),
-			'placeholder'		=> $this->getPlaceholder()
+			'count'					=> $this->getPageCount(), 
+			'page'					=> $this->getPage(), 
+			'title'					=> $this->getTitle(),
+			'route'					=> $this->getAddRoute(),
+			'pager'					=> $this->getPagerVisible(),
+			'items'					=> $this->getItems(),
+			'icon'					=> $this->getIcon(),
+			'columns'				=> $this->getColumns(),
+			'toolsWidth'			=> $this->getToolsWidth(),
+			'editRoute'				=> $this->getEditRoute(),
+			'deleteRoute'			=> $this->getDeleteRoute(),
+			'deleteColumn'			=> $this->getDeleteColumn(),
+			'type'					=> $this->getDeleteType(),
+			'search'				=> $this->getSearchVisible(),
+			'pagerParams'			=> $this->getPagerParams(),
+			'selectParam'			=> $this->getSelectParam(),
+			'selectColumn'			=> $this->getSelectColumn(),
+			'noSelection'			=> $this->getNoSelection(),
+			'placeholder'			=> $this->getPlaceholder(),
+			'titleExtraTemplate'	=> $this->getTitleExtraTemplate(),
+			'titleExtraParams'		=> $this->titleExtraParams,
+			'toolsTemplate'			=> $this->getToolsTemplate()
 		);
 	}
 }

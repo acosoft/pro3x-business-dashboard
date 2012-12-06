@@ -16,4 +16,9 @@ class InvoiceRepository extends EntityRepository
 	{
 		return $this->createQueryBuilder('c')->select('count(c)')->getQuery()->getSingleScalarResult();
 	}
+	
+	public function countByUser($userId)
+	{
+		return $this->createQueryBuilder('c')->select('count(c)')->where('c.user = :userId')->setParameter('userId', $userId)->getQuery()->getSingleScalarResult();
+	}
 }

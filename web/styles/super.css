@@ -248,6 +248,9 @@ table.pro3x td.pro3x_no_data
 .pro3x_icon_report
     { background-image: url("../bundles/pro3xapp/chart.png"); } 
     
+.pro3x_small_icon_report
+    { background-image: url("../bundles/pro3xapp/small/chart.png"); }
+    
 /* * * location * * */
 
 .pro3x_icon_location

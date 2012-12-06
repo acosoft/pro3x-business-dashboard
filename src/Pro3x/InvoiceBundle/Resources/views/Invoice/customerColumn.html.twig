@@ -1,0 +1,4 @@
+{% if item.customer %}
+    <div>{{ item.customer.name }}</div>
+    <div>{{ item.customer.addressDescription|join(', ') }}</div>
+{% endif %}

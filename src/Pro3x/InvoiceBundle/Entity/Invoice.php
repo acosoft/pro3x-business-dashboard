@@ -5,9 +5,6 @@ namespace Pro3x\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\ORM\Mapping\PreUpdate;
-use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -96,17 +93,8 @@ class Invoice
 		$this->created = new \DateTime('now');
 		
 		$this->sequence = null;
-		$this->invoiceTotal = 200;
+		$this->invoiceTotal = 0;
 		$this->items = new ArrayCollection();
-	}
-	
-	/**
-	 * @PrePersist
-	 * @PreUpdate
-	 */
-	public function prePersist()
-	{
-		$this->invoiceTotal = $this->getTotal();
 	}
 	
 	public function getInvoiceTotal()
@@ -117,6 +105,11 @@ class Invoice
 	public function setInvoiceTotal($invoiceTotal)
 	{
 		$this->invoiceTotal = $invoiceTotal;
+	}
+	
+	public function calculate()
+	{
+		$this->setInvoiceTotal($this->getTotal());
 	}
 
 	/**
@@ -347,7 +340,7 @@ class Invoice
 			
 			foreach ($taxItems as $taxItem) /* @var $taxItem InvoiceItemTax */
 			{
-				$item['base'] += $taxItem->getItem()->getPrice();
+				$item['base'] += $taxItem->getItem()->getTotalPrice();
 				$item['amount'] += $taxItem->getTaxAmount();
 				$item['total'] = $item['base'] + $item['amount'];
 			}
@@ -380,7 +373,7 @@ class Invoice
 		
 		foreach ($this->getItems() as $item) /* @var $item InvoiceItem */
 		{
-			$total += $item->getTaxedPrice();
+			$total += $item->getDicountPrice();
 		}
 
 		return $total;

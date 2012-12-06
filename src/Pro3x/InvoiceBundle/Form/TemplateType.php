@@ -23,6 +23,17 @@ class TemplateType extends AbstractType
 			
         ;
     }
+	
+	public static function getTransactionTypes()
+	{
+		return array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'O'=> 'Ostalo');
+	}		
+	
+	public static function formatTransactionType($type)
+	{
+		$types = self::getTransactionTypes();
+		return $types[$type];
+	}
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

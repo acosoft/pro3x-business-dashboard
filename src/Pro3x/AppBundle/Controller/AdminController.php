@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
 	public function getPageSize()
 	{
-		return 3;
+		return 10;
 	}
 	
 	public function getPageOffset($page)
@@ -33,9 +33,14 @@ class AdminController extends Controller
 		$this->get('session')->setFlash('message', $message);
 	}
 	
-	public function setWarningMessage($message)
+	public function setWarning($message)
 	{
 		$this->get('session')->setFlash('warning', $message);
+	}
+	
+	public function goBack()
+	{
+		return $this->redirect($this->getBackUrl());
 	}
 	
 	public function redirect404($test)
@@ -132,6 +137,11 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Location');
 	}
 	
+	public function getUserRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xSecurityBundle:User');
+	}
+	
 	/**
 	 * 
 	 * @return \Pro3x\InvoiceBundle\Entity\InvoiceRepository
@@ -210,6 +220,11 @@ class AdminController extends Controller
 		{
 			return $this->generateUrl('dashboard');
 		}
+	}
+	
+	public function isInRole($role)
+	{
+		return $this->get('security.context')->isGranted('ROLE_' . strtoupper($role));
 	}
 	
 	public function saveForm($form, $message)

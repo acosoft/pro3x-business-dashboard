@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_{{ icon }}"></span>{{ title|trans|title }}{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_{{ icon }}"></span>{{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
 
 {% block body %}
     <div class="grid_12">
@@ -15,7 +15,7 @@
 			{{ column.label|trans|title }}
 		    </th>
 		    {% endfor %}
-		    <th class="ui-widget-header ui-corner-all" style="width: 175px;">{{ 'Alati'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: {{ toolsWidth }}px;">{{ 'Alati'|trans }}</th>
 		</tr>
 	    </thead>
 	    <tbody>
@@ -31,7 +31,9 @@
 		    <tr>
 			{% for column in columns %}
 			<td {% if column.textAlign %} style="text-align: {{ column.textAlign }};" {% endif %}>
-			    {% if column.translate %}
+			    {% if column.template %}
+				{% include column.template with {'item': item} %}
+			    {% elseif column.translate %}
 				{{ attribute(item, column.name)|trans }}
 			    {% else %}
 				{{ attribute(item, column.name) }}
@@ -39,7 +41,9 @@
 			</td>
 			{% endfor %}
 			<td class="pro3x_tools">
-			    {% if search == true %}
+			    {% if toolsTemplate %}
+				{% include toolsTemplate with {'item': item} %}
+			    {% elseif search == true %}
 				<a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a>
 			    {% else %}
 				<a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
