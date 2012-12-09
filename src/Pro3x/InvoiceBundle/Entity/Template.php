@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 /**
  * Template
  *
- * @ORM\Table()
+ * @ORM\Table(name="pro3x_templates")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\TemplateRepository")
  */
 class Template

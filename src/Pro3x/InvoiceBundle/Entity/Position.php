@@ -5,6 +5,7 @@ namespace Pro3x\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * Position
@@ -21,27 +22,22 @@ class Position
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
 	/**
 	 * @ORM\Column(type="integer")
 	 */
-	private $sequence;
+	protected $sequence;
 	
 	/**
 	 * @ManyToOne(targetEntity="Location", inversedBy="positions")
 	  */
-	private $location;
+	protected $location;
 	
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $name;
-	
-	/**
-	 * @OneToMany(targetEntity="Pro3x\SecurityBundle\Entity\User", mappedBy="position")
-	  */
-	private $users;
+	protected $name;
 	
 	function __construct()
 	{
@@ -53,16 +49,6 @@ class Position
 	 * @OneToMany(targetEntity="Invoice", mappedBy="position")
 	  */
 	private $invoices;
-	
-	public function getUsers()
-	{
-		return $this->users;
-	}
-
-	public function setUsers($users)
-	{
-		$this->users = $users;
-	}
 
 	public function getInvoices()
 	{

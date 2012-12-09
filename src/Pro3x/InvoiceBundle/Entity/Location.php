@@ -196,4 +196,14 @@ class Location
     {
         return $this->id;
     }
+	
+	public function getDescription()
+	{
+		$data = array();
+		
+		if($this->getStreet()) $data[] = $this->getStreet() . ' ' . $this->getHouseNumber() . $this->getHouseNumberExtension();
+		if($this->getCity()) $data[] = $this->getPostalCode () . ' ' . $this->getCity();
+		
+		return implode(', ', $data);
+	}
 }

@@ -85,7 +85,22 @@ class Invoice
 	 * @ORM\Column(type="decimal", scale=2)
 	 */
 	private $invoiceTotal;
+
+	/**
+	 * @ManyToOne(targetEntity="DailySalesReport", inversedBy="invoices")
+	  */
+	private $dailyReport;
 	
+	public function getDailyReport()
+	{
+		return $this->dailyReport;
+	}
+
+	public function setDailyReport($report)
+	{
+		$this->dailyReport = $report;
+	}
+
 	private $numeric;
 
 	public function __construct()
@@ -95,6 +110,7 @@ class Invoice
 		$this->sequence = null;
 		$this->invoiceTotal = 0;
 		$this->items = new ArrayCollection();
+		$this->locked = false;
 	}
 	
 	public function getInvoiceTotal()

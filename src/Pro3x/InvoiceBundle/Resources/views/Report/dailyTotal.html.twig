@@ -3,7 +3,10 @@
 {% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_report"></span>{{ 'Dnevni promet'|trans|title }} | <a href="">{{ app.user.displayName }}</a>{% endblock %}
 
 {% block body %}
-    <div class="grid_12">
+    <div class="grid_12" style="margin-bottom: 1em;">
+	
+	{% include '::message.html.twig' %}
+	    
 	<table class="ui-widget-content ui-corner-all pro3x">
 	    <thead>
 		<tr>
@@ -18,21 +21,31 @@
 			<td>{{ item.total }}</td>
 		    </tr>
 		{% else %}
-		    {% if search == false or noSelection == false %}
-			<tr>
-			    <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
-			</tr>
-		    {% endif %}
+		    <tr>
+			<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+		    </tr>
 		{% endfor %}
 	    </tbody>
 	</table>
     </div>
 
-    <div class="grid_8">
-	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+    <div class="grid_9">
+	<div class="pro3x_table_buttons">
+	    <a class="pro3x_confirm button" data-icon="pro3x_small_icon_info" 
+		data-msg="{{ 'Jeste li sigurni da želite zaključiti <b>blagajnu</b>?'|trans }}" 
+		href="{{ path('lock_position', { 'id': app.user.id }) }}">{{ 'Zaključak'|trans }}</a>
 	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
 	</div>
     </div>
+    <div class="grid_1">
+	<div style="padding-top: .4em; margin-top: 2px; border-top: solid 1px transparent;">{{ 'Ukupno:'|trans }}</div>
+    </div>
+    <div class="grid_2">
+	<div class="pro3x_invoice_total">{{ total }}</div>
+    </div>
+
+    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+    
 {% endblock %}
 
 {% block javascripts %}{% endblock %}

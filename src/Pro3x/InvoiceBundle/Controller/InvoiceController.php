@@ -309,7 +309,7 @@ class InvoiceController extends AdminController
 			$params->addColumn('sequenceFormated', 'ID');
 				
 			
-			if($this->isInRole('edit_all_invoices'))
+			if($this->isInRole('edit_all_invoices') && $this->getUser()->getId() == $id)
 			{
 				$queryParams = array();
 				$params

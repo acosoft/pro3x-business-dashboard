@@ -12,7 +12,7 @@ class PositionType extends AbstractType
     {
         $builder
 			->add('location', 'entity', array(
-				'label' => 'Lokacija blagajne', 
+				'label' => 'Naziv Lokacije', 
 				'expanded' => false, 'property' => 'name', 
 				'multiple' => false, 
 				'class' => 'Pro3xInvoiceBundle:Location'))

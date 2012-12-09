@@ -61,7 +61,7 @@
 			{% endfor %}
 		    </ul>
 		{% else %}
-		    <input  id="print" data-mode="{{ invoice.template.id }}" data-cloud="{{ invoice.template.useGoogleCloud }}" class="button" type="button" name="action" value="Ispis" />
+		    <input  id="print" data-mode="{{ invoice.template.id }}" data-cloud="" class="button" type="button" name="action" value="Ispis" />
 		{% endif %}
 		<input type="button" class="button link" data-href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}" value="{{ 'Odustani'|trans }}" />
 	    </form>

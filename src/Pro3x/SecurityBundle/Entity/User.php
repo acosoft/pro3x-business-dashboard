@@ -35,22 +35,27 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 	
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $displayName;
+	protected $displayName;
 	
 	/**
 	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $position;
-	
+
+//	/**
+//	 * @ManyToOne(targetEntity="Pro3x\InvoiceBundle\Entity\Position", inversedBy="users", fetch="EAGER")
+//	  */
+//	protected $position;
+
 	/**
 	 * @OneToMany(targetEntity="Pro3x\InvoiceBundle\Entity\Invoice", mappedBy="user")
 	  */
-	private $invoices;
+	protected $invoices;
 	
 	public function getPosition()
 	{
@@ -106,7 +111,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @ORM\ManyToMany(targetEntity="Group", inversedBy="users")
 	 * @ORM\JoinTable(name="pro3x_users_groups")
 	 */
-	private $groups;
+	protected $groups;
 	
 	/**
 	 * 
@@ -122,7 +127,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var string
 	 * @ORM\Column(type="string")
 	 */
-	private $password;
+	protected $password;
 	
 	public function getPassword()
 	{
@@ -144,7 +149,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var string
 	 * @ORM\Column(type="string")
 	 */
-	private $salt;
+	protected $salt;
 	
 	public function getSalt()
 	{
@@ -156,7 +161,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var string
 	 * @ORM\Column(type="string", unique=true)
 	 */
-	private $username;
+	protected $username;
 	
 	public function getUsername()
 	{
@@ -173,7 +178,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var string
 	 * @ORM\Column(type="string", unique=true)
 	 */
-	private $email;
+	protected $email;
 
 	public function getEmail()
 	{
@@ -190,7 +195,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var boolean
 	 * @ORM\Column(type="boolean", name="is_active")
 	 */
-	private $isActive;
+	protected $isActive;
 	
 	public function isActive()
 	{
@@ -207,7 +212,7 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	 * @var string
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $oib;
+	protected $oib;
 	
 	public function getOib()
 	{

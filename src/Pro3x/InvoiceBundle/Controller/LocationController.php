@@ -70,7 +70,9 @@ class LocationController extends AdminController
 
 		$params->setTitle('Pregled lokacija')
 				->setIcon('location')
-				->addColumn('name', 'Naziv lokacije')
+				->addColumn('name', 'Naziv Lokacije')
+				->addColumn('description', 'Adresa')
+				->addColumn('workingHours', 'Radno vrijeme')
 				->setDeleteType('lokaciju')
 				->setDeleteColumn('name')
 				->setRoutes('location')
