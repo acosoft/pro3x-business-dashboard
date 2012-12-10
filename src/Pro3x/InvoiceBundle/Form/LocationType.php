@@ -20,6 +20,8 @@ class LocationType extends AbstractType
 			->add('city', 'text', array('label' => 'Grad', 'required' => false))
 			->add('settlement', 'text', array('label' => 'Naselje'))
 			->add('workingHours', 'text', array('label' => 'Radno vrijeme'))
+			->add('securityKey', 'textarea', array('label' => 'Sigurnosni ključ'))
+			->add('securityCertificate', 'textarea', array('label' => 'Sigurnosni certifikat'))
         ;
     }
 

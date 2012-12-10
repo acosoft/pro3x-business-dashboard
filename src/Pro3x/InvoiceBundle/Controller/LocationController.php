@@ -32,6 +32,39 @@ class LocationController extends AdminController
 		return $handler->execute();
 	}
 	
+	private function finaLocation(\Pro3x\InvoiceBundle\Entity\Location $location)
+	{
+		$soap = new \Pro3x\Online\FinaClient($location->getSecurityKey(), $location->getSecurityCertificate(), 
+				'http://localhost/pro3x/fina/wsdl/FiskalizacijaService.wsdl', array('trace' => true));
+		
+		$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
+		
+		$prostor = $zahtjev->getPoslovniProstor();
+		$prostor->setOib($location->getCompanyTaxNumber());
+		$prostor->setOznPoslProstora($location->getName());
+		$prostor->setRadnoVrijeme($location->getWorkingHours());
+		
+		$adresa = new \Pro3x\Online\Fina\Adresa();
+		$adresa->setBrojPoste($location->getPostalCode());
+		$adresa->setKucniBroj($location->getHouseNumber());
+		$adresa->setKucniBrojDodatak($location->getHouseNumberExtension());
+		$adresa->setNaselje($location->getSettlement());
+		$adresa->setOpcina($location->getCity());
+		$adresa->setUlica($location->getStreet());
+		
+		$prostor->setAdresniPodatak($adresa);
+		
+		$pocetak = new \DateTime('now');
+		$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
+		
+		$result = $soap->poslovniProstor($zahtjev);
+		
+		if($result instanceof \Pro3x\Online\Fina\PoslovniProstorOdgovor)
+			return true;
+		else
+			return false;
+	}
+	
 	/**
 	 * @Route("/edit/{id}", name="edit_location")
 	 * @Template("::edit.html.twig")
@@ -44,9 +77,20 @@ class LocationController extends AdminController
 				->setTitle('Izmjena lokacije')
 				->setSuccessMessage('Lokacija je uspješno izmjenjena')
 				->setRepository($this->getLocationRepository())
-				->setFormType(new LocationType());
+				->setFormType($form = new LocationType());
 		
-		return $handler->execute();
+		$result = $handler->execute();
+		
+		if($this->getRequest()->isMethod('POST'))
+		{
+			$location = $this->getLocationRepository()->find($id);
+			if($this->finaLocation($location) == true)
+				$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
+			else
+				$this->setWarning('Došlo je do iznimke prilikom prijavljivanja poslovnog prostora na Finu');
+		}
+		
+		return $result;
 	}
 	
 	/**

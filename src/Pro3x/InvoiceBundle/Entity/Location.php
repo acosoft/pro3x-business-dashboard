@@ -77,6 +77,36 @@ class Location
 	  */
 	private $templates;
 	
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	private $securityKey;
+	
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	private $securityCertificate;
+	
+	public function getSecurityKey()
+	{
+		return $this->securityKey;
+	}
+
+	public function setSecurityKey($securityKey)
+	{
+		$this->securityKey = $securityKey;
+	}
+
+	public function getSecurityCertificate()
+	{
+		return $this->securityCertificate;
+	}
+
+	public function setSecurityCertificate($securityCertificate)
+	{
+		$this->securityCertificate = $securityCertificate;
+	}
+
 	public function getTemplates()
 	{
 		return $this->templates;
