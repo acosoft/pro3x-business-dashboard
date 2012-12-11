@@ -1,7 +1,7 @@
 {% extends '::login.html.twig' %}
 
 {% block page_title %}
-    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>{{ 'Prijava ili'|trans }} <a href="{{ path("register") }}">{{ 'Registracija'|trans }}</a>
+    <span class="pro3x_small_icon pro3x_small_icon_auth"></span>{{ 'Pro3x Online Dashboard'|trans }}
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
 	
 	{% if error %}
 	    <div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin-bottom: 2em;">
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>{{ error.message }}</p>
+		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>{{ error }}</p>
 	    </div>
 	{% endif %}
 	    

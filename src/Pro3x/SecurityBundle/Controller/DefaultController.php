@@ -10,53 +10,64 @@ use Pro3x\SecurityBundle\Entity\User;
 
 class DefaultController extends Controller
 {
+//	/**
+//	 * @Route("/register", name="register")
+//	 * @Template()
+//	 */
+//	public function registerAction()
+//	{
+//		$form = $this->createFormBuilder(null, array('attr' => array('class' => 'pro3x_form_content')))
+//				->setAttribute('attr', array('class' => 'pro3x_form_content'))
+//				->add('username', 'text', array('label' => 'Korisničko ime'))
+//				->add('email', 'email', array('label' => 'Email'))
+//				->add('password', 'repeated', array(
+//					'first_name' => 'password', 
+//					'first_options' => array('label' => 'Zaporka'), 
+//					'second_name' => 'confirm_password', 
+//					'second_options' => array('label' => 'Ponovite zaporku'),
+//					'type' => 'password'))
+//				->getForm();
+//		
+//		if($this->getRequest()->isMethod('post'))
+//		{
+//			/* @var $form \Symfony\Component\Form\Form */
+//			$form->bind($this->getRequest());
+//			
+//			if($form->isValid())
+//			{
+//				$user = new User();
+//				$data = $form->getData();
+//				
+//				$encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+//				$encodedPassword = $encoder->encodePassword($data['password'], $user->getSalt());
+//				$user->setPassword($encodedPassword);
+//				
+//				$user->setEmail($data['email']);
+//				$user->setUsername($data['username']);
+//				
+//				$manager = $this->getDoctrine()->getManager();
+//				$userGroup = $manager->getRepository('Pro3xSecurityBundle:Group')->findOneBy(array('role' => 'ROLE_USER'));
+//				$user->getGroups()->add($userGroup);
+//				
+//				$manager->persist($user);
+//				$manager->flush();
+//				
+//				return $this->redirect($this->generateUrl('dashboard'));
+//			}
+//		}
+//		
+//		return array('register' => $form->createView());
+//	}
+	
 	/**
-	 * @Route("/register", name="register")
+	 * @Route("/lost-password", name="lost_password")
 	 * @Template()
 	 */
-	public function registerAction()
+	public function lostPasswordAction()
 	{
-		$form = $this->createFormBuilder(null, array('attr' => array('class' => 'pro3x_form_content')))
-				->setAttribute('attr', array('class' => 'pro3x_form_content'))
-				->add('username', 'text', array('label' => 'Korisničko ime'))
-				->add('email', 'email', array('label' => 'Email'))
-				->add('password', 'repeated', array(
-					'first_name' => 'password', 
-					'first_options' => array('label' => 'Zaporka'), 
-					'second_name' => 'confirm_password', 
-					'second_options' => array('label' => 'Ponovite zaporku'),
-					'type' => 'password'))
-				->getForm();
+
 		
-		if($this->getRequest()->isMethod('post'))
-		{
-			/* @var $form \Symfony\Component\Form\Form */
-			$form->bind($this->getRequest());
-			
-			if($form->isValid())
-			{
-				$user = new User();
-				$data = $form->getData();
-				
-				$encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-				$encodedPassword = $encoder->encodePassword($data['password'], $user->getSalt());
-				$user->setPassword($encodedPassword);
-				
-				$user->setEmail($data['email']);
-				$user->setUsername($data['username']);
-				
-				$manager = $this->getDoctrine()->getManager();
-				$userGroup = $manager->getRepository('Pro3xSecurityBundle:Group')->findOneBy(array('role' => 'ROLE_USER'));
-				$user->getGroups()->add($userGroup);
-				
-				$manager->persist($user);
-				$manager->flush();
-				
-				return $this->redirect($this->generateUrl('dashboard'));
-			}
-		}
-		
-		return array('register' => $form->createView());
+		return array();
 	}
 	
 	/**
@@ -69,6 +80,7 @@ class DefaultController extends Controller
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
             $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+			if($error) $error = 'Prijava korisnika nije prihvaćena';
         }
 
         return array(
