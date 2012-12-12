@@ -6,7 +6,9 @@
 	</p>
     </div>
 </div>
-{% elseif app.session.hasFlash('warning') %}
+{% endif %}
+
+{% if app.session.hasFlash('warning') %}
 <div class="ui-widget pro3x_message">
     <div class="ui-state-error ui-corner-all" style="padding: 0 0.7em; margin-bottom: 1.5em;">
 	<p>

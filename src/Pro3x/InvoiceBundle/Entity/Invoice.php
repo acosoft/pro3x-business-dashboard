@@ -102,6 +102,11 @@ class Invoice
 	}
 
 	private $numeric;
+	
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $isFiscalTransaction;
 
 	public function __construct()
 	{
@@ -111,6 +116,26 @@ class Invoice
 		$this->invoiceTotal = 0;
 		$this->items = new ArrayCollection();
 		$this->locked = false;
+		
+		$this->isFiscalTransaction = false;
+	}
+	
+	public function isFiscalTransaction()
+	{
+		return $this->isFiscalTransaction;
+	}
+
+	public function setFiscalTransaction($isFiscalTransaction)
+	{
+		$this->isFiscalTransaction = $isFiscalTransaction;
+	}
+
+	public function isInvalid()
+	{
+		if($this->getSequence() != null && $this->isFiscalTransaction() == true && $this->getUniqueInvoiceNumber() == null)
+			return true;
+		else
+			return false;
 	}
 	
 	public function getInvoiceTotal()
@@ -145,6 +170,14 @@ class Invoice
 	public function getUniqueInvoiceNumber()
 	{
 		return $this->uniqueInvoiceNumber;
+	}
+	
+	public function getUniqueInvoiceNumberFormated()
+	{
+		if($this->uniqueInvoiceNumber)
+			return $this->uniqueInvoiceNumber;
+		else
+			return 'Nedostupan';
 	}
 
 	public function setUniqueInvoiceNumber($uniqueInvoiceNumber)

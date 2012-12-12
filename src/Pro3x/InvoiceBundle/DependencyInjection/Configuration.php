@@ -19,6 +19,10 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('pro3x_invoice');
+		
+		$rootNode->children()
+					->scalarNode('fina_wsdl')->defaultValue('')->end()
+				->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

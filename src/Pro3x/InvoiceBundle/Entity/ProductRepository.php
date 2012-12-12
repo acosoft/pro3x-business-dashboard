@@ -16,4 +16,13 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->createQueryBuilder('c')->select('count(c)')->getQuery()->getSingleScalarResult();
 	}
+	
+	public function search($code)
+	{
+		return $this->createQueryBuilder('c')
+				->where('c.name LIKE :query OR c.barcode LIKE :query OR c.code LIKE :query')
+				->orderBy('c.name', 'ASC')
+				->setParameter('query', "%$code%")
+				->getQuery()->getResult();
+	}
 }

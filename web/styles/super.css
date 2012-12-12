@@ -31,8 +31,11 @@ form label + ul
 form label + ul + input
     { margin-left: 12em; }
 
-input[type=text], input[type=password], input[type=email]
-    { padding: 0.5em; width: 30.2em; }
+input[type=text], input[type=password], input[type=email], textarea
+    { padding: 0.5em; width: 30.2em; border: 2px inset; }
+    
+textarea
+    { height: 10em; }
 
 .pro3x_checkbox_list
     { padding: 0.25em; width: 30.2em; display: inline-block; }

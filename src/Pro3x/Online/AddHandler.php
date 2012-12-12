@@ -9,6 +9,7 @@ class AddHandler
 	private $successMessage;
 	private $title;
 	private $icon;
+	private $form;
 	
 	function __construct($controller)
 	{
@@ -59,9 +60,18 @@ class AddHandler
 		return $this;
 	}
 	
+	/**
+	 * 
+	 * @return \Symfony\Component\Form\Form
+	 */
+	public function getForm()
+	{
+		return $this->form;
+	}
+	
 	public function execute()
 	{
-		$form = $this->controller->createForm($this->getFormType());
+		$form = $this->form = $this->controller->createForm($this->getFormType());
 		if($result = $this->controller->saveForm($form, $this->getSuccessMessage())) return $result;
 
 		return $this->controller->editParams($form, $this->getTitle(), $this->getIcon());

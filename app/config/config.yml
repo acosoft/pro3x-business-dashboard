@@ -57,3 +57,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+pro3x_invoice:
+    fina_wsdl: %fina_wsdl%

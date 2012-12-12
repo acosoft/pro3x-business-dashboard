@@ -18,7 +18,7 @@ class LocationController extends AdminController
 {
 	/**
 	 * @Route("/add", name="add_location")
-	 * @Template("::edit.html.twig")
+	 * @Template("Pro3xInvoiceBundle:Location:edit.html.twig")
 	 */
 	public function addAction()
 	{
@@ -29,45 +29,67 @@ class LocationController extends AdminController
 				->setSuccessMessage('Lokacija je uspješno spremljena')
 				->setFormType(new LocationType());
 		
-		return $handler->execute();
+		$result = $handler->execute();
+		
+		if($this->getRequest()->isMethod('POST'))
+		{
+			$id = $handler->getForm()->getData()->getId();
+			$this->finaLocation($id);
+		}
+		
+		return $result;
 	}
 	
-	private function finaLocation(\Pro3x\InvoiceBundle\Entity\Location $location)
+	private function finaLocation($id)
 	{
-		$soap = new \Pro3x\Online\FinaClient($location->getSecurityKey(), $location->getSecurityCertificate(), 
-				'http://localhost/pro3x/fina/wsdl/FiskalizacijaService.wsdl', array('trace' => true));
-		
-		$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
-		
-		$prostor = $zahtjev->getPoslovniProstor();
-		$prostor->setOib($location->getCompanyTaxNumber());
-		$prostor->setOznPoslProstora($location->getName());
-		$prostor->setRadnoVrijeme($location->getWorkingHours());
-		
-		$adresa = new \Pro3x\Online\Fina\Adresa();
-		$adresa->setBrojPoste($location->getPostalCode());
-		$adresa->setKucniBroj($location->getHouseNumber());
-		$adresa->setKucniBrojDodatak($location->getHouseNumberExtension());
-		$adresa->setNaselje($location->getSettlement());
-		$adresa->setOpcina($location->getCity());
-		$adresa->setUlica($location->getStreet());
-		
-		$prostor->setAdresniPodatak($adresa);
-		
-		$pocetak = new \DateTime('now');
-		$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
-		
-		$result = $soap->poslovniProstor($zahtjev);
-		
-		if($result instanceof \Pro3x\Online\Fina\PoslovniProstorOdgovor)
-			return true;
-		else
-			return false;
+		if($this->getRequest()->isMethod('POST'))
+		{
+			try
+			{
+				$location = $this->getLocationRepository()->find($id); /* @var $location \Pro3x\InvoiceBundle\Entity\Location */
+				
+				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
+				$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
+
+				$prostor = $zahtjev->getPoslovniProstor();
+				$prostor->setOib($location->getCompanyTaxNumber());
+				$prostor->setOznPoslProstora($location->getName());
+				$prostor->setRadnoVrijeme($location->getWorkingHours());
+
+
+				$adresa = new \Pro3x\Online\Fina\Adresa();
+				$adresa->setBrojPoste($location->getPostalCode());
+				$adresa->setKucniBroj($location->getHouseNumber());
+				$adresa->setKucniBrojDodatak($location->getHouseNumberExtension());
+				$adresa->setNaselje($location->getSettlement());
+				$adresa->setOpcina($location->getCity());
+				$adresa->setUlica($location->getStreet());
+
+				$prostor->setAdresniPodatak($adresa);
+
+				$pocetak = new \DateTime('now');
+				$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
+
+				$result = $soap->poslovniProstor($zahtjev);
+				
+				$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
+				$location->setSubmited(true);
+			}
+			catch (\Exception $exc)
+			{
+				$this->setWarning('Servisi porezne uprave nisu dostupni, lokacija nije prijavljena');
+				$location->setSubmited(false);
+			}
+			
+			$manager = $this->getDoctrine()->getEntityManager();
+			$manager->persist($location);
+			$manager->flush();
+		}
 	}
 	
 	/**
 	 * @Route("/edit/{id}", name="edit_location")
-	 * @Template("::edit.html.twig")
+	 * @Template()
 	 */
 	public function editAction($id)
 	{
@@ -81,14 +103,7 @@ class LocationController extends AdminController
 		
 		$result = $handler->execute();
 		
-		if($this->getRequest()->isMethod('POST'))
-		{
-			$location = $this->getLocationRepository()->find($id);
-			if($this->finaLocation($location) == true)
-				$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
-			else
-				$this->setWarning('Došlo je do iznimke prilikom prijavljivanja poslovnog prostora na Finu');
-		}
+		$this->finaLocation($id);
 		
 		return $result;
 	}

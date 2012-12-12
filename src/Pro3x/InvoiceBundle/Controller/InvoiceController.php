@@ -128,6 +128,30 @@ class InvoiceController extends AdminController
 				->setItems($items)->getParams();
 	}
 	
+	private function addInvoiceItem($invoice, $product, $amount, $discount)
+	{
+		$item = new InvoiceItem($product);
+		$item->setNumeric($this->getNumeric());
+		$item->setAmount($amount);
+		$item->setDiscount($discount);
+		$item->setInvoice($invoice);
+
+		$item->calculate();
+
+		$invoice->getItems()->add($item);
+		$invoice->calculate();
+
+		$manager = $this->getDoctrine()->getEntityManager();
+		$manager->persist($item);
+		$manager->flush();
+		
+		$itemView = $this->renderView('Pro3xInvoiceBundle:Invoice:addItem.html.twig', array('item' => $item));
+
+		return new Response(json_encode(array(
+			'total' => $this->formatNumber($invoice->getTotal(), 2),
+			'item' => $itemView), JSON_FORCE_OBJECT));
+	}
+	
 	/**
 	 * @Route("/add-item", name="add_invoice_item")
 	 * @Template()
@@ -144,32 +168,38 @@ class InvoiceController extends AdminController
 		{
 			if($parser->parse($data))
 			{
+				$found = true;
 				break;
 			}
 		}
 		
 		$product = $this->getProductRepository()->findOneByBarcode($parser->getCode()); /* @var $product Product */
-
-		$item = new InvoiceItem($product);
-		$item->setNumeric($this->getNumeric());
-		$item->setAmount($parser->getAmount());
-		$item->setDiscount($parser->getDiscount());
-		$item->setInvoice($invoice);
 		
-		$item->calculate();
-		
-		$invoice->getItems()->add($item);
-		$invoice->calculate();
-		
-		$manager = $this->getDoctrine()->getEntityManager();
-		$manager->persist($item);
-		$manager->flush();
-		
-		$itemView = $this->renderView('Pro3xInvoiceBundle:Invoice:addItem.html.twig', array('item' => $item));
-		
-		return new Response(json_encode(array(
-			'total' => $this->formatNumber($invoice->getTotal(), 2),
-			'item' => $itemView), JSON_FORCE_OBJECT));
+		if($product)
+		{
+			return $this->addInvoiceItem($invoice, $product, $parser->getAmount(), $parser->getDiscount());
+		}
+		else
+		{
+			$items = $this->getProductRepository()->search($parser->getCode());
+			if(count($items) == 1)
+			{
+				return $this->addInvoiceItem($invoice, $items[0], $parser->getAmount(), $parser->getDiscount());
+			}
+			else
+			{
+				$jsonItems = array();
+				
+				foreach($items as $item) /* @var $item Product */
+				{
+					$item->setNumeric($this->getNumeric());
+					$jsonItems[] = array('name' => $item->getName(), 'code' => $item->getCode(), 'price' => $item->getTaxedPriceFormated());
+				}
+				
+				$jsonData = array('search' => $data, 'amount' => $parser->getAmount(), 'discount' => $parser->getDiscount() * 100, 'items' => $jsonItems);
+				return new \Symfony\Component\HttpFoundation\JsonResponse($jsonData);
+			}
+		}
 	}
 	
 	/**
@@ -192,6 +222,90 @@ class InvoiceController extends AdminController
 		return array('total' => $this->formatNumber($invoice->getTotal(), 2), 'invoice' => $invoice);
 	}
 	
+	private function finaInvoice(Invoice $invoice)
+	{
+		try
+		{
+			if ($this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
+			{
+				$location = $invoice->getPosition()->getLocation();
+				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
+
+				if (!$invoice->getUuid())
+				{
+					$invoice->setUuid($soap->randomGuid());
+
+					$manager = $this->getDoctrine()->getEntityManager();
+					$manager->persist($invoice);
+					$manager->flush();
+
+
+					$repeatedMessage = false;
+				}
+				else
+				{
+					$repeatedMessage = true;
+				}
+
+				$zahtjev = new \Pro3x\Online\Fina\RacunZahtjev($invoice->getUuid());
+
+				$racun = $zahtjev->getRacun();
+				$racun->setOib($invoice->getPosition()->getLocation()->getCompanyTaxNumber());
+				$racun->setUSustPdv($invoice->getPosition()->getLocation()->getTaxPayer());
+				$racun->setDatVrijeme($invoice->getCreated()->format('d.m.Y\TH:i:s'));
+				$racun->setOznSlijed('N');
+
+				$oznaka = $racun->getBrRac();
+				$oznaka->setBrOznRac($invoice->getSequence());
+				$oznaka->setOznPosPr($invoice->getPosition()->getLocationName());
+				$oznaka->setOznNapUr($invoice->getPosition()->getName());
+
+				if ($invoice->getPosition()->getLocation()->getTaxPayer())
+				{
+					$map = array('Pdv' => array(), 'Pnp' => array());
+
+					$invoice->setNumeric($this->getNumeric());
+					foreach ($invoice->getTaxItems() as $item) /* @var $item \Pro3x\InvoiceBundle\Entity\InvoiceItemTax */
+					{
+						$porez = new \Pro3x\Online\Fina\Porez();
+
+						$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+						$porez->setStopa(number_format($item['rateNumeric'], 2));
+						$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+
+						$map[$item['group']][] = $porez;
+					}
+
+					if (count($map['Pdv']) > 0)
+						$racun->setPdv($map['Pdv']);
+
+					if (count($map['Pnp']) > 0)
+						$racun->setPnp($map['Pnp']);
+				}
+
+				$racun->setIznosUkupno($invoice->getTotal());
+				$racun->setNacinPlac($invoice->getTemplate()->getTransactionType());
+				$racun->setOibOper($invoice->getUser()->getOib());
+				$racun->setNakDost($repeatedMessage);
+
+				$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+
+				if ($data instanceof \Pro3x\Online\Fina\RacunOdgovor && !$invoice->getUniqueInvoiceNumber())
+				{
+					$invoice->setUniqueInvoiceNumber($data->getJir());
+
+					$manager = $this->getDoctrine()->getEntityManager();
+					$manager->persist($invoice);
+					$manager->flush();
+				}
+			}
+		}
+		catch (\Exception $exc)
+		{
+			$this->setWarning('Servisi porezne uprave nisu dostupni, JIR oznaka nije dodjeljena računu');
+		}
+	}
+	
 	/**
 	 * @Route("/print/{id}", name="print_invoice")
 	 * @Template()
@@ -202,12 +316,14 @@ class InvoiceController extends AdminController
 		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
-		//$manager = $this->getDoctrine()->getEntityManager();
+		$invoice->setNumeric($this->getNumeric());
 		
 		if($invoice->getSequence() == null)
 		{
 			$template = $this->getTemplateRepository()->find($this->getParam('mode')); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
 			$this->redirect404($template);
+			
+			$invoice->setFiscalTransaction($this->getFinaClientFactory()->isFiscalTransaction($template->getTransactionType()));
 		
 			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $template) {
 				$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
@@ -225,7 +341,7 @@ class InvoiceController extends AdminController
 			});
 		}
 		
-		$invoice->setNumeric($this->getNumeric());
+		$this->finaInvoice($invoice);
 		
 		foreach($invoice->getItems() as $item) /* @var $item InvoiceItem */
 		{
@@ -306,16 +422,26 @@ class InvoiceController extends AdminController
 			$repository = $this->getInvoiceRepository(); 
 			$count = $repository->countByUser($id);
 			
-			$params->addColumn('sequenceFormated', 'ID');
-				
+			//$params->addColumn('sequenceFormated', 'ID');
+			$params->addTemplateColumn('Id', 'Pro3xInvoiceBundle:Invoice:idColumn.html.twig');
 			
-			if($this->isInRole('edit_all_invoices') && $this->getUser()->getId() == $id)
+			if($this->isInRole('edit_all_invoices'))
 			{
-				$queryParams = array();
+				if($this->getUser()->getId() == $id)
+				{
+					$queryParams = array();
+				}
+				else
+				{
+					$queryParams = array('user' => $id);
+				}
+				
 				$params
 					->addTemplateColumn('Info', 'Pro3xInvoiceBundle:Invoice:infoColumn.html.twig')
 					->addTemplateColumn('Kupac', 'Pro3xInvoiceBundle:Invoice:customerColumn.html.twig')
 					->addTemplateColumn('Iznos', 'Pro3xInvoiceBundle:Invoice:totalColumn.html.twig');
+				
+				$showPosition = false;
 			}
 			else
 			{
@@ -325,13 +451,16 @@ class InvoiceController extends AdminController
 					->addColumnTrans('status', "Status")
 					->addColumn('invoiceTotal', 'Ukupno', '75', 'right');
 				
-				$queryParams = array('user' => $id);
+				$viewUser = $this->getUserRepository()->find($id);
+				$queryParams = array('user' => $id, 'position' => $viewUser->getPosition());
 				$params->setTitleExtraTemplate('Pro3xInvoiceBundle:Invoice:invoiceTitle.html.twig', array('user' => $this->getUserRepository()->find($id)));
+				
+				$showPosition = true;
 			}
 			
 			$items = $repository->findBy($queryParams, array('id' => 'DESC'), $this->getPageSize(), $this->getPageOffset($page));
 
-			return $params->setTitle('Popis računa')
+			$viewParams = $params->setTitle('Popis računa')
 					->setIcon('invoice')
 
 					->setAddRoute('add_invoice')
@@ -347,6 +476,24 @@ class InvoiceController extends AdminController
 					->setPage($page)
 					->addPagerParam('id', $id)
 					->setItems($items)->getParams();
+			
+			if($showPosition)
+			{
+				if($viewUser->getPosition())
+				{
+					$position = $this->getPositionRepository()->find($viewUser->getPosition());
+
+					if($position)
+						$viewParams['position'] = $position;
+				}
+				else
+				{
+					$this->setWarning('Korisnik nije povezan sa niti jednom lokacijom, prije pregleda izdanih računa morate odabari lokaciju');
+					return $this->goBack();
+				}
+			}
+			
+			return $viewParams;
 		}
 		else
 		{

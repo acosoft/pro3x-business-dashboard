@@ -5,6 +5,9 @@
     <style type="text/css">
 	.ui-menu 
 	    { position: absolute; width: 200px; margin-top: 10px; }
+	    
+	.ui-dialog-content
+	    { padding: 2px 0px 2px 0px !important; }
     </style>
 {% endblock %}
 
@@ -30,7 +33,7 @@
 		    </tr>
 		</thead>
 
-		<tbody>
+		<tbody class="pro3x_invoice_items">
 		{% for item in invoice.items %}
 			{% include 'Pro3xInvoiceBundle:Invoice:addItem.html.twig' with {'item': item} %}
 		{% else %}
@@ -45,9 +48,9 @@
 
     <div class="container_12">
 	<div class="grid_9">
-	    <form action="{{ path('add_invoice_item') }}">
+	    <form id="add_invoice_form" action="{{ path('add_invoice_item') }}">
 		{% if invoice.sequence == null %}
-		    <input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod ili šifra artikla" name="code" />
+		    <input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod, šifra ili naziv artikla" name="code" />
 		    <input type="hidden" name="invoice" value="{{ invoice.id }}" />
 		    <input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
 		    <input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
@@ -72,6 +75,12 @@
 	<div class="grid_2">
 	    <div class="pro3x_invoice_total">{{ total }}</div>
 	</div>
+    </div>
+    
+    <div class="pro3x_dialog" title="Izbor artikla">
+	<table class="pro3x">
+	    
+	</table>
     </div>
 
 {% endblock %}
@@ -127,10 +136,45 @@
 	$('#actionCode').addClass('ajax');
     
 	$.get(form.attr('action'), form.serialize(), function(data) {
-	    $('tbody').append($(data.item));
-	    $('tbody .pro3x_no_data').parents('tr').remove();
-	    $('.pro3x_invoice_total').text(data.total);
-	    $("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
+	    if(data.search)
+	    {
+		var table = $('.pro3x_dialog table');
+		table.empty();
+		
+		$.each(data.items, function(index, value) {
+		    var item = $('<tr><td>' + value.name + '</td><td>' + value.price + '</td></tr>');
+		    item.append($('<td class="pro3x_tools"></td>').append($('<a href="">{{ 'odaberi'|trans }}</a>').data('code', value.code).data('amount', data.amount).data('discount', data.discount).click(function(event) { 
+			event.preventDefault();
+			var me = $(this);
+			$('#actionCode').val(me.data('amount') + '*' + me.data('code') + '-' + me.data('discount'));
+			$('.pro3x_dialog').dialog( "close" );
+			addItem($('#add_invoice_form'));
+			$('#actionCode').val('').focus();
+		    })));
+		    
+		    table.append(item);
+		});
+		
+		$('.pro3x_dialog').dialog({
+		    resizable: false,
+		    width: 640,
+		    height:400,
+		    modal: true,
+		    buttons: {
+			"{{ 'Odustani'|trans }}": function() {
+			    $( this ).dialog( "close" );
+			}
+		    }
+		});
+	    }
+	    else
+	    {
+		$('tbody').append($(data.item));
+		$('tbody .pro3x_no_data').parents('tr').remove();
+		$('.pro3x_invoice_total').text(data.total);
+		$("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
+	    }
+	    
 	    $('#actionCode').removeClass('ajax');
 	}, 'json');
     }
@@ -162,8 +206,8 @@
 	    ajax.parents('tr').remove();
 	    $('.pro3x_invoice_total').text(data.total);
 
-	    if($('tbody td').size() == 0) {
-		$('tbody').append($('<tr><td colspan="100" class="pro3x_no_data">{{ 'Upišite barkod ili šifru artikla i kliknite enter ili gumb Dodaj'|trans }}</td></tr>'));
+	    if($('tbody.pro3x_invoice_items td').size() == 0) {
+		$('tbody.pro3x_invoice_items').append($('<tr><td colspan="100" class="pro3x_no_data">{{ 'Upišite barkod ili šifru artikla i kliknite enter ili gumb Dodaj'|trans }}</td></tr>'));
 	    }
 	}, 'json');
     });

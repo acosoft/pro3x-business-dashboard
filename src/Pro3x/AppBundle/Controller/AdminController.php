@@ -56,6 +56,20 @@ class AdminController extends Controller
 		return new Numeric($this->getLocale());
 	}
 	
+	public function getConfigParam($name)
+	{
+		return $this->container->getParameter($name);
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\Online\FinaClientFactory
+	 */
+	public function getFinaClientFactory()
+	{
+		return $this->get('fina.client.factory');
+	}
+	
 	/**
 	 * 
 	 * @return \NumberFormatter

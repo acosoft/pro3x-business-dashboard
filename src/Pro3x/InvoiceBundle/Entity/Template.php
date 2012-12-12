@@ -53,6 +53,27 @@ class Template
 	 */
 	private $useGoogleCloud;
 	
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $priority;
+	
+	function __construct()
+	{
+		$this->setPriority(1);
+	}
+
+	
+	public function getPriority()
+	{
+		return $this->priority;
+	}
+
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
 	public function getUseGoogleCloud()
 	{
 		return $this->useGoogleCloud;

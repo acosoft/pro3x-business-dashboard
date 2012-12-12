@@ -1,0 +1,51 @@
+{% extends '::form.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon {{ cssClass }}"></span>{{ title|trans|title }}{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2">
+	<form method="post">
+	<div class="pro3x_tabs">
+	    <ul>
+		<li><a href="#info">{{ 'Informacije'|trans }}</a></li>
+		<li><a href="#security">{{ 'Fiskalizacija'|trans }}</a></li>
+	    </ul>
+	    <div id="info">
+		<div class="pro3x_form_content">
+		    
+		    {{ form_row(form.name) }}
+		    {{ form_row(form.street) }}
+		    {{ form_row(form.houseNumber) }}
+		    {{ form_row(form.houseNumberExtension) }}
+		    {{ form_row(form.postalCode) }}
+		    {{ form_row(form.city) }}
+		    {{ form_row(form.settlement) }}
+		    {{ form_row(form.workingHours) }}
+
+		    {% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
+		    <div class="pro3x_buttons" style="margin-bottom: 0em;">
+			<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+			<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+		    </div>
+		</div>
+	    </div>
+	    <div id="security">
+		<div class="pro3x_form_content">
+		    
+		    {{ form_row(form.taxPayer) }}
+		    {{ form_row(form.companyTaxNumber) }}
+		    {{ form_row(form.securityKey) }}
+		    {{ form_row(form.securityCertificate) }}
+		    {{ form_rest(form) }}
+		    <div class="pro3x_buttons" style="margin-bottom: 0em;">
+			<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+			<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+		    </div>
+		</div>
+	    </div>
+	</div>
+	</form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

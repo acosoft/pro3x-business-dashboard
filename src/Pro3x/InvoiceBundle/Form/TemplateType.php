@@ -19,6 +19,7 @@ class TemplateType extends AbstractType
 			->add('transactionType', 'choice', array('choices' => array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'O' => 'Ostalo'), 'label' => 'Način plaćanja'))
 			->add('useGoogleCloud', 'choice', array('label' => 'Način ispisa', 'choices' => array(true => 'Google Cloud Ispis', false => 'Direktni ispis')))
             ->add('name', 'text', array('label' => 'Naziv'))
+			->add('priority', 'text', array('label' => 'Prioritet'))
             ->add('filename', 'text', array('label' => 'Datoteka'))
 			
         ;

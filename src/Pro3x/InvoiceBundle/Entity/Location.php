@@ -68,7 +68,7 @@ class Location
 	private $street;
 	
 	/**
-	 * @ORM\Column(type="string", length=500)
+	 * @ORM\Column(type="string", length=500, nullable=true)
 	 */
 	private $workingHours;
 	
@@ -78,14 +78,49 @@ class Location
 	private $templates;
 	
 	/**
-	 * @ORM\Column(type="text")
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $securityKey;
 	
 	/**
-	 * @ORM\Column(type="text")
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $securityCertificate;
+	
+	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $taxPayer;
+	
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $submited;
+	
+	function __construct()
+	{
+		$this->submited = false;
+	}
+	
+	public function getSubmited()
+	{
+		return $this->submited;
+	}
+
+	public function setSubmited($submited)
+	{
+		$this->submited = $submited;
+	}
+
+	public function getTaxPayer()
+	{
+		return $this->taxPayer;
+	}
+
+	public function setTaxPayer($taxPayer)
+	{
+		$this->taxPayer = $taxPayer;
+	}
 	
 	public function getSecurityKey()
 	{

@@ -12,6 +12,8 @@ class FinaClient extends \SoapClient
 	
 	function __construct($key, $certificate, $wsdl, $options)
 	{
+		$options['exceptions'] = true;
+		
 		$options['classmap'] = array(
 			'PoslovniProstorOdgovor'	=> '\Pro3x\Online\Fina\PoslovniProstorOdgovor',
 			'ZaglavljeOdgovorType'		=> '\Pro3x\Online\Fina\Zaglavlje',
@@ -19,6 +21,9 @@ class FinaClient extends \SoapClient
 			'RacunOdgovor'				=> '\Pro3x\Online\Fina\RacunOdgovor',
 			'GreskaType'				=> '\Pro3x\Online\Fina\Greska',
 		);
+		
+		//TODO: this is a workaround for SOAP-ERROR and XDEBUG problems
+		if(function_exists('xdebug_disable')) xdebug_disable();
 		
 		parent::__construct($wsdl, $options);
 		

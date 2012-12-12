@@ -11,6 +11,7 @@ class LocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+			->add('taxPayer', 'choice', array('choices' => array(true => 'U sustavu PDV-a', false => 'Nije u sustavu PDV-a'), 'label' => 'Obračun poreza'))
 			->add('companyTaxNumber', 'text', array('label' => 'OIB Tvrtke'))
             ->add('name', 'text', array('label' => 'Naziv lokacije'))
 			->add('street', 'text', array('label' => 'Ulica', 'required' => false))
@@ -18,10 +19,10 @@ class LocationType extends AbstractType
 			->add('houseNumberExtension', 'text', array('label' => 'Dodatak kućnom broju', 'required' => false))
 			->add('postalCode', 'text', array('label' => 'Poštanski broj', 'required' => false))
 			->add('city', 'text', array('label' => 'Grad', 'required' => false))
-			->add('settlement', 'text', array('label' => 'Naselje'))
-			->add('workingHours', 'text', array('label' => 'Radno vrijeme'))
-			->add('securityKey', 'textarea', array('label' => 'Sigurnosni ključ'))
-			->add('securityCertificate', 'textarea', array('label' => 'Sigurnosni certifikat'))
+			->add('settlement', 'text', array('label' => 'Naselje', 'required' => false))
+			->add('workingHours', 'text', array('label' => 'Radno vrijeme', 'required' => false))
+			->add('securityKey', 'textarea', array('label' => 'Sigurnosni ključ', 'required' => false))
+			->add('securityCertificate', 'textarea', array('label' => 'Sigurnosni certifikat', 'required' => false))
         ;
     }
 

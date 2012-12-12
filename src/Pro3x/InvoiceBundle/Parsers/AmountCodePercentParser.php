@@ -7,7 +7,7 @@ class AmountCodePercentParser extends BaseParser
 	public function parse($value)
 	{
 		$parts = array();
-		if(preg_match('#(\d*)\*(\d*)-(.*)#', $value, $parts))
+		if(preg_match('#(\d*)\*(.*)-(.*)#', $value, $parts))
 		{
 			$this->setAmount($parts[1]);
 			$this->setCode($parts[2]);
