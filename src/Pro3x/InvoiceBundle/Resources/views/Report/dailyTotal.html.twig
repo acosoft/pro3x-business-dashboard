@@ -1,6 +1,14 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_report"></span>{{ 'Dnevni promet'|trans|title }} | <a href="">{{ app.user.displayName }}</a>{% endblock %}
+{% block header %}
+    <script src="http://www.google.com/cloudprint/client/cpgadget.js"></script>
+    <style type="text/css">
+	.ui-menu 
+	    { position: absolute; width: 200px; margin-top: 10px; z-index: 100; }
+    </style>
+{% endblock %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_report"></span>{{ 'Dnevni promet'|trans|title }} | {{ selectedDate|date('d.m.Y | H:i\\h') }} | <a href="">{{ operator.displayName }}</a>{% endblock %}
 
 {% block body %}
     <div class="grid_12" style="margin-bottom: 1em;">
@@ -18,7 +26,7 @@
 		{% for item in items %}
 		    <tr>
 			<td>{{ item.transactionType }}</td>
-			<td>{{ item.total }}</td>
+			<td style="text-align: right;">{{ item.total }}</td>
 		    </tr>
 		{% else %}
 		    <tr>
@@ -31,10 +39,18 @@
 
     <div class="grid_9">
 	<div class="pro3x_table_buttons">
-	    <a class="pro3x_confirm button" data-icon="pro3x_small_icon_info" 
-		data-msg="{{ 'Jeste li sigurni da želite zaključiti <b>blagajnu</b>?'|trans }}" 
-		href="{{ path('lock_position', { 'id': app.user.id }) }}">{{ 'Zaključak'|trans }}</a>
-	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
+	    <div class="pro3x_print_options" style="display: inline-block; margin-right: .4em;">
+		<a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Ispis</a>
+		<button  id="select" class="button" type="button" name="action" value="">Odabir akcije</button>
+	    </div>
+	    <ul>
+		<li><a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Direktni Ispis</a></li>
+		<li><a class="pro3x_google_cloud_print" href="#">Google Cloud Print</a></li>
+	    </ul>
+	    {% if app.request.get('report') is null %}
+		<a class="pro3x_confirm button" data-icon="pro3x_small_icon_info" 
+		    data-msg="{{ 'Jeste li sigurni da želite zaključiti <b>blagajnu</b>?'|trans }}" 
+		    href="{{ path('lock_position', { 'id': app.request.get('id'), 'position': app.request.get('position') }) }}">{{ 'Zaključak'|trans }}</a>{% endif %}<input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
 	</div>
     </div>
     <div class="grid_1">
@@ -44,8 +60,100 @@
 	<div class="pro3x_invoice_total">{{ total }}</div>
     </div>
 
+    <div class="grid_12">
+	<h1><span class="pro3x_small_icon pro3x_small_icon_report"></span>{{ 'Zaključeni dnevni prometi'|trans|title }} | <a href="{{ path('edit_user', {'id': app.request.get('id')}) }}">{{ operator.displayName }}</a></h1>
+    </div>
+    
+    <div class="grid_12">
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    <th class="ui-widget-header ui-corner-all">Datum</th>
+		    <th class="ui-widget-header ui-corner-all">Ukupno</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">Alati</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		{% if page == 1 %}
+		    <tr class="pro3x_no_selection">
+			<td>Trenutni promet</td>
+			<td style="text-align: right;">{{ currentTotal }}</td>
+			<td class="pro3x_tools">
+			    {% if app.request.get('report') is null %}
+				<span style="margin: 0 0.25em;">pregled</span>
+			    {% else %}
+			    <a href="{{ path('daily_total', {'id': app.request.get('id'), 'position': app.request.get('position'), 'page': page}) }}">{{ 'detaljni pregled'|trans }}</a>
+			    {% endif %}
+			</td>
+		    </tr>
+		{% endif %}
+		{% for item in reports %}
+		    <tr>
+			<td>{{ item.created|date('d.m.Y') }}</td>
+			<td style="text-align: right;">{{ item.total|number_format(2, ',', '') }}</td>
+			<td class="pro3x_tools">
+			    {% if item.id == app.request.get('report') %}
+				<span style="margin: 0 0.25em;">pregled</span>
+			    {% else %}
+			    <a href="{{ path('daily_total', {'id': item.operator.id, 'position': item.position.id, 'page': page, 'report': item.id}) }}">{{ 'detaljni pregled'|trans }}</a>
+			    {% endif %}
+			</td>
+		    </tr>
+		{% else %}
+		    <tr>
+			<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+		    </tr>
+		{% endfor %}
+	    </tbody>
+	</table>
+    </div>
+
+    <div class="grid_8">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
+	</div>
+    </div>
+
+    <div class="grid_4">
+	{% include '::pager.html.twig' %}
+    </div>
+
     <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
     
 {% endblock %}
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+
+     $( "#select")
+	.button({
+	    text: false,
+	    icons: {
+		primary: "ui-icon-triangle-1-s"
+	    }
+	})
+	.click(function() {
+	    var menu = $( this ).parent().next().show().position({
+		my: "left top",
+		at: "left-58 bottom+2",
+		of: this
+	    });
+	    $( document ).one( "click", function() {
+		menu.hide();
+	    });
+	    return false;
+	})
+	.parent()
+	    .buttonset()
+	    .next()
+		.hide()
+		.menu();
+    
+    $('.pro3x_google_cloud_print').click(function(event) {
+	event.preventDefault();
+	$.post('{{ url('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'print': false}) }}', null, function(data){
+	    var gadget = new cloudprint.Gadget();
+	    gadget.setPrintDocument("text/html", "Dnevni promet-{{ operator.displayName }}-{{ selectedDate|date('YmdHi') }}", data, "base64");
+	    gadget.openPrintDialog();
+	}, 'text');
+    });
+{% endblock %}

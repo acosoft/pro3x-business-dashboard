@@ -1,1 +1,1 @@
- | {{ position.description }} | <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">{{ user.displayName }}</a>
+| <a href="{{ path('edit_position', {'id': position.id, 'back': app.request.uri}) }}">{{ position.description }}</a> | <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">{{ user.displayName }}</a>

@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class DailySalesReportRepository extends EntityRepository
 {
+	public function getCount()
+	{
+		return $this->createQueryBuilder('c')->select('count(c)')->getQuery()->getSingleScalarResult();
+	}
 }

@@ -34,10 +34,45 @@ class DailySalesReport
 	private $total;
 	
 	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private $created;
+	
+	/**
+	 * @ManyToOne(targetEntity="Position")
+	  */
+	private $position;
+	
+	/**
 	 * @OneToMany(targetEntity="Invoice", mappedBy="dailyReport")
 	  */
 	private $invoices;
 	
+	function __construct()
+	{
+		$this->created = new \DateTime();
+	}
+
+	public function getPosition()
+	{
+		return $this->position;
+	}
+
+	public function setPosition($position)
+	{
+		$this->position = $position;
+	}
+
+	public function getCreated()
+	{
+		return $this->created;
+	}
+
+	public function setCreated($created)
+	{
+		$this->created = $created;
+	}
+
 	public function getOperator()
 	{
 		return $this->operator;
@@ -46,6 +81,7 @@ class DailySalesReport
 	public function setOperator($operator)
 	{
 		$this->operator = $operator;
+		$this->setPosition($operator->getPosition());
 	}
 
 	public function getTotal()

@@ -151,6 +151,15 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Location');
 	}
 	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\DailySalesReportRepository
+	 */
+	public function getDailyReportRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:DailySalesReport');
+	}
+	
 	public function getUserRepository()
 	{
 		return $this->getDoctrine()->getRepository('Pro3xSecurityBundle:User');

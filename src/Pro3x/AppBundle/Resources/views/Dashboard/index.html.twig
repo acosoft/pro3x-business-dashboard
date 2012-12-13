@@ -40,7 +40,7 @@
 		</a><a class="button" href="{{ path('templates') }}">
 		    <span class="pro3x_icon pro3x_icon_template"></span>
 		    {{ 'Predlošci'|trans }}
-		</a><a class="button" href="{{ path('daily_total') }}">
+		</a><a class="button" href="{{ path('daily_total', {'id': app.user.id, 'position': app.user.position}) }}">
 		    <span class="pro3x_icon pro3x_icon_report"></span>
 		    {{ 'Dnevni promet'|trans }}
 		</a>

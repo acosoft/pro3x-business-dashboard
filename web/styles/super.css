@@ -371,8 +371,11 @@ table.pro3x td.pro3x_no_data
 a.ui-state-default:link
     { color: #2e6e9e; }
     
-a.ui-state-hover:hover
+a.ui-state-hover:hover, li a.ui-tabs-anchor:hover
     { color: #1d5987; }
+    
+li.ui-state-active a.ui-tabs-anchor
+    { color: #e17009; }
     
 a.ui-state-active:hover
     { color: #e17009; }
