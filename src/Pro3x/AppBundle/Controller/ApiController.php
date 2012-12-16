@@ -41,7 +41,7 @@ class ApiController extends AdminController
 		$username = $data->username;
 		$password = $data->password;
 		
-		$user = $this->getUserRepository()->findOneByName($username); /* @var $user \Pro3x\SecurityBundle\Entity\User */
+		$user = $this->getUserRepository()->findOneByUsername($username); /* @var $user \Pro3x\SecurityBundle\Entity\User */
 		
 		//TODO: exception handlin when user doesn't exist
 		
