@@ -238,23 +238,41 @@ class InvoiceController extends AdminController
 		{
 			$template = $this->getTemplateRepository()->find($this->getParam('mode')); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
 			$this->redirect404($template);
-			
-			$invoice->setFiscalTransaction($this->getFinaClientFactory()->isFiscalTransaction($template->getTransactionType()));
 		
-			$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $template) {
-				$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
-
-				$manager->refresh($position);
-
-				$invoice->setSequence($position->getSequence());
-				$position->setSequence($position->getSequence() + 1);
-				$invoice->setStatus($template->getName());
+			if(!$invoice->getTenderSequence() && \Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
+			{
+				$position = $invoice->getPosition();
+				$invoice->setTenderSequence($position->getTenderSequence());
+				$position->setTenderSequence($position->getTenderSequence() + 1);
 				$invoice->setTemplate($template);
-
-				$manager->persist($position);
+				$invoice->setStatus($template->getName());
+				
+				$manager = $this->getDoctrine()->getEntityManager();
+				
 				$manager->persist($invoice);
+				$manager->persist($position);
+				
 				$manager->flush();
-			});
+			}
+			else if(!\Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
+			{
+				$invoice->setFiscalTransaction($this->getFinaClientFactory()->isFiscalTransaction($template->getTransactionType()));
+
+				$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $template) {
+					$position = $invoice->getPosition(); /* @var $position Pro3x\InvoiceBundle\Entity\Position */
+
+					$manager->refresh($position);
+
+					$invoice->setSequence($position->getSequence());
+					$position->setSequence($position->getSequence() + 1);
+					$invoice->setStatus($template->getName());
+					$invoice->setTemplate($template);
+
+					$manager->persist($position);
+					$manager->persist($invoice);
+					$manager->flush();
+				});
+			}
 		}
 		
 		$this->finaInvoice($invoice);
@@ -284,9 +302,25 @@ class InvoiceController extends AdminController
 	 * @Route("/delete/{id}", name="delete_invoice")
 	 * @Template()
 	 */
-	public function deleteAction()
+	public function deleteAction($id)
 	{
-		return $this->deleteEntity($this->getInvoiceRepository(), 'Račun je izbrisan');
+		$invoice = $this->getInvoiceRepository()->find($id); /* @var $invoice Invoice */
+		
+		if($invoice->getSequence() == null || $this->isInRole('delete_invoice'))
+		{
+			$manager = $this->getDoctrine()->getEntityManager();
+			$manager->remove($invoice);
+			$manager->flush();
+			
+			$this->setMessage("Račun je izbrisan");
+		}
+		else
+		{
+			$this->setWarning("Nemate dozvolu za brisanje ispisanih računa");
+		}
+		
+		return $this->goBack();
+		
 	}
 	
 	/**
@@ -382,7 +416,7 @@ class InvoiceController extends AdminController
 					->setAddRoute('add_invoice')
 					->setEditRoute('edit_invoice')
 					->setDeleteRoute('delete_invoice')
-					->setDeleteColumn('id')
+					->setDeleteColumn('sequenceFormated')
 					->setDeleteType('račun')
 
 					//->setToolsTemplate('Pro3xInvoiceBundle:Invoice:toolsColumn.html.twig')

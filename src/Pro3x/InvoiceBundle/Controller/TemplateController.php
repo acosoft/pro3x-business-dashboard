@@ -66,13 +66,19 @@ class TemplateController extends AdminController
 	 */
 	public function locationsAction()
 	{
-		$items = $this->getTemplateRepository()->findAll();
+		$items = $this->getTemplateRepository()->createQueryBuilder('c')
+				->join('c.location', 'l')
+				->orderBy('l.id', 'ASC')
+				->addOrderBy('c.priority', 'DESC')->getQuery()->getResult();
+				
+				//findBy(array(), array('location' => 'ASC', 'priority' => 'DESC'));
 		$params = new TableParams();
 
 		$params->setTitle('Pregled predložaka')
 				->setIcon('template')
 				->addColumn('locationName', 'Naziv lokacije')
 				->addColumn('name', 'Naziv predloška')
+				->addColumn('priority', 'Prioritet')
 				->addColumn('useGoogleCloudFormated', "Način ispisa")
 				->setDeleteType('predložak')
 				->setDeleteColumn('name')

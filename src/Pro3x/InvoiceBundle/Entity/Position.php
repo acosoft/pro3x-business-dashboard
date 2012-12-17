@@ -39,12 +39,28 @@ class Position
 	 */
 	protected $name;
 	
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $tenderSequence;
+	
 	function __construct()
 	{
 		$this->invoices = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->tenderSequence = 1;
+		$this->sequence = 1;
 	}
 
-	
+	public function getTenderSequence()
+	{
+		return $this->tenderSequence;
+	}
+
+	public function setTenderSequence($tenderSequence)
+	{
+		$this->tenderSequence = $tenderSequence;
+	}
+
 	/**
 	 * @OneToMany(targetEntity="Invoice", mappedBy="position")
 	  */

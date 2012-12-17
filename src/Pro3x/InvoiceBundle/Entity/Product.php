@@ -75,6 +75,7 @@ class Product
 	{
 		$this->unitPrice = 0;
 		$this->taxRates = new ArrayCollection();
+		$this->unit = "kom";
 	}
 
     /**

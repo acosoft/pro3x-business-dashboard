@@ -62,6 +62,11 @@ class Invoice
 	private $sequence;
 	
 	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $tenderSequence;
+	
+	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $uuid;
@@ -103,6 +108,16 @@ class Invoice
 
 	private $numeric;
 	
+	public function getTenderSequence()
+	{
+		return $this->tenderSequence;
+	}
+
+	public function setTenderSequence($tenderSequence)
+	{
+		$this->tenderSequence = $tenderSequence;
+	}
+
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
@@ -229,7 +244,14 @@ class Invoice
 	{
 		if($this->getSequence() == null)
 		{
-			return '- - -';
+			if($this->getTenderSequence() == null)
+			{
+				return '- - -';
+			}
+			else
+			{
+				return 'T' . $this->getTenderSequence();
+			}
 		}
 		else
 		{

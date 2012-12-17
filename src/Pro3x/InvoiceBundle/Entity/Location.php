@@ -141,6 +141,26 @@ class Location
 	{
 		$this->securityCertificate = $securityCertificate;
 	}
+	
+	public function getTemplatesSorted()
+	{
+		$templates = $this->getTemplates()->toArray();
+		
+		usort($templates, function($a, $b) { 
+			
+			/* @var $a Template */
+			/* @var $b Template */
+			
+			if($a->getPriority() == $b->getPriority())
+			{
+				return 0;
+			}
+			
+			return ($a->getPriority() > $b->getPriority())? -1 : 1;
+		});
+		
+		return $templates;
+	}
 
 	public function getTemplates()
 	{

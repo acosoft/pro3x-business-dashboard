@@ -16,7 +16,7 @@ class TemplateType extends AbstractType
 				'expanded' => false, 'property' => 'name', 
 				'multiple' => false, 
 				'class' => 'Pro3xInvoiceBundle:Location'))
-			->add('transactionType', 'choice', array('choices' => array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'O' => 'Ostalo'), 'label' => 'Način plaćanja'))
+			->add('transactionType', 'choice', array('choices' => self::getTransactionTypes(), 'label' => 'Vrsta predloška'))
 			->add('useGoogleCloud', 'choice', array('label' => 'Način ispisa', 'choices' => array(true => 'Google Cloud Ispis', false => 'Direktni ispis')))
             ->add('name', 'text', array('label' => 'Naziv'))
 			->add('priority', 'text', array('label' => 'Prioritet'))
@@ -27,8 +27,20 @@ class TemplateType extends AbstractType
 	
 	public static function getTransactionTypes()
 	{
-		return array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'O'=> 'Ostalo');
+		return array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'P' => 'Ponuda', 'O' => 'Ostalo');
 	}		
+	
+	public static function isTenderTransaction($transactionType)
+	{
+		if($transactionType == 'P')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	public static function formatTransactionType($type)
 	{

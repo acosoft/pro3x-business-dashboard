@@ -10,10 +10,16 @@ class AddHandler
 	private $title;
 	private $icon;
 	private $form;
+	private $item;
 	
-	function __construct($controller)
+	function __construct($controller, $item = null)
 	{
 		$this->controller = $controller;
+		
+		if($item != null)
+		{
+			$this->item = $item;
+		}
 	}
 
 	public function getFormType()
@@ -71,7 +77,7 @@ class AddHandler
 	
 	public function execute()
 	{
-		$form = $this->form = $this->controller->createForm($this->getFormType());
+		$form = $this->form = $this->controller->createForm($this->getFormType(), $this->item);
 		if($result = $this->controller->saveForm($form, $this->getSuccessMessage())) return $result;
 
 		return $this->controller->editParams($form, $this->getTitle(), $this->getIcon());

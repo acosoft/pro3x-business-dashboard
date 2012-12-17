@@ -11,7 +11,7 @@ security:
 
     role_hierarchy:
         ROLE_USER:	[]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_OIB, ROLE_EDIT_ALL_INVOICES]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_OIB, ROLE_EDIT_ALL_INVOICES, ROLE_DELETE_INVOICE]
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:

@@ -22,7 +22,7 @@ class PositionController extends AdminController
 	 */
 	public function addAction()
 	{
-		$handler = new \Pro3x\Online\AddHandler($this);
+		$handler = new \Pro3x\Online\AddHandler($this, new \Pro3x\InvoiceBundle\Entity\Position());
 		
 		$handler->setTitle('Izmjena blagajne')
 				->setIcon('position_add')
@@ -73,6 +73,7 @@ class PositionController extends AdminController
 				->addColumn('locationName', 'Naziv lokacije')
 				->addColumn('name', 'Naziv blagajne')
 				->addColumn('sequence', 'Sljedeći račun')
+				->addColumn('tenderSequence', 'Sljedeća ponuda')
 				->setDeleteType('poziciju')
 				->setDeleteColumn('name')
 				->setRoutes('position')
