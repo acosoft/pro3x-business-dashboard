@@ -4,16 +4,16 @@
         <meta charset="UTF-8" />
         <title>{{ 'Pro3x Online'|trans }}</title>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('styles/print.css') }}" />
 	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-1.8.2.js') }}"></script>
 	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-ui-1.9.1.custom.js') }}"></script>
 	<style type="text/css">
 		
+	    
 	    @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
-
+	    
 	    @page 
-		{ margin: 0mm 15mm 15mm 15mm; size: A4; }
-	
+		{ margin: 0mm 0mm 10mm 0mm; padding-bottom: 10mm; size: auto; }
+	    
 	    @media print
 		{ 
 		    .close,
@@ -21,7 +21,7 @@
 			{ display: none; }
 		
 		    body
-			{ padding-top: 0px; }
+			{ padding-top: 0px; margin: 0mm 0mm 10mm 0mm; }
 		}
 	
 	    .close
@@ -34,10 +34,10 @@
 		{ color: #99cc00; }
 
 	    body 
-		{ font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 0mm; padding-top: 0px; }
+		{ font-size: 75%; font-family: 'Ubuntu', sans-serif; width: 67mm; padding: 0mm; padding-top: 0px; }
 
 	    th
-		{ text-align: left; padding-left: 5mm; }
+		{ text-align: left; padding-left: 5mm; border-bottom: solid 0.75mm black; }
 
 	    td
 		{ padding-left: 5mm; }
@@ -45,72 +45,75 @@
 	    @media screen
 		{ 
 		    body 
-			{ padding-top: 30px; } 
+			{ padding-top: 30px; padding-bottom: 10mm;  margin: 0mm auto; } 
 		}
 
 	</style>
     </head>
     <body>
-	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print(); return false;">Ispis računa</a>
+	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print();">Ispis prometa</a>
 		<a href="{{ app.request.get('back') }}">Zatvori</a></div></div>
-	
-	<div style="width: 210mm; margin: 0mm auto;" style="cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
-	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
-		<img src="http://mali-zeleni.hr/arhiva/mali-zeleni-print.png" style="width: 50mm" />
-		<div style="float: right; text-align: right;">
-		    <div>Mali zeleni d.o.o, Baretićevo 7c, 51000 Rijeka</div>
-		    <div>http://www.mali-zeleni.hr</div>
-		</div>
+
+	    <div style="margin: 0mm; cursor: pointer; font-size: 8pt;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
+	    <div class="header" style="text-align: center; border-bottom: solid 0.5mm black; padding-bottom: 3mm; margin-bottom: 0mm; margin-top: 15mm;">
+		<img src="{{ asset('customer/pilgrim/pilgrim.png') }}" style="width: 67mm;" />
+		
 		<div style="clear: both"></div>
 	    </div>
 
+	    <h1 style="margin-bottom: 0px; padding-top: 0mm; font-size: 12pt;">Ponuda: {{ invoice.tenderSequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
+	    
 	    {% if invoice.customer %}    
-		<div style="background-color: #efefef; padding: 5mm; border: solid 0.5mm black; float: right; width: 100mm; height: 19mm;">
+		<div style="background-color: #efefef; padding: 3mm; margin-top: 3mm; border: solid 0.5mm black;">
 		    <div>{{ invoice.customer.name }}</div>
 		    <div>{{ invoice.customer.address }}</div>
 		    <div>{{ invoice.customer.location }}</div>
-		    <div style="margin-top: 2mm;">{% if invoice.customer.taxNumber %}OIB: {{ invoice.customer.taxNumber }}{% endif %}</div>
+		    {% if invoice.customer.taxNumber %}<div style="margin-top: 2mm;">OIB: {{ invoice.customer.taxNumber }}</div>{% endif %}
 		</div>
 	    {% endif %}    
-
-	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Ponuda: {{ invoice.tenderSequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
+	    
 	    <div style="">
-		<div style="margin-top: 3.75mm;">Ponudu pripremio:  {{ invoice.user.displayName }}</div>
+		<div style="margin-top: 3mm;">Operater:  {{ invoice.user.displayName }}</div>
 		<div>Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
 		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
 	    </div>
 
 	    <div style="clear: both"></div>
-	    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px;">
+	    <table style="width: 100%; margin-top: 10mm; border-spacing: 0px;">
 		<thead>
 		    <tr>
-			<th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
+			<th style="padding-left: 0mm;">Naziv</th>
 			<th style="text-align: right;">Cijena</th>
 			<th style="text-align: right;">Količina</th>
-			<th style="text-align: right;">Osnovica</th>
-			<th style="text-align: right;">Popust</th>
 			<th style="text-align: right;">Ukupno</th>
 		    </tr>
 		</thead>
 		<tbody>
 		{% for  item in invoice.items %}
+			{% if loop.index > 1 %}
 			<tr>
-			    <td style="padding-left: 0;">{{ item.description }}</td>
-			    <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
+			    <td style="padding-left: 0mm;" colspan="4"><div style="border-bottom: solid 0.5mm black; width: 100%;"></div></td>
+			</tr>
+			{% endif %}
+			<tr>
+			    <td style="padding-left: 0;" colspan="4">{{ item.description }}</td>
+			</tr>
+			<tr>
+			    <td style="text-align: right;" colspan="2">{{ item.taxedPriceFormated }}</td>
 			    <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
-			    <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
-			    <td style="text-align: right;">{{ item.discountFormated }}</td>
 			    <td style="text-align: right;">{{ item.discountPriceFormated }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>
 	    </table>
-	    <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 3mm;">
+	    <div style="text-align: right; border-top: solid 0.75mm black; margin-top: 0mm;">
 		<h2>Ukupno za platiti: {{ invoice.totalFormated }} kn</h2>
 	    </div>
 
 	    <div style="clear: both;"></div>
-	    <table style="margin-top: 15mm; border-spacing: 0px;">
+	    
+	    {% if invoice.taxItems %}
+	    <table style="width: 100%; margin-top: 10mm; border-spacing: 0px;">
 		<thead>
 		    <tr>
 			<th style="padding-left: 0mm;">Porezna stopa</th>
@@ -124,12 +127,18 @@
 			<tr>
 			    <td style="padding-left: 0;">{{ item.description }}</td>
 			    <td style="text-align: right;">{{ item.base }}</td>
-			    <td style="text-align: right;">{{ item.rate }} %</td>
+			    <td style="text-align: right;">{{ item.rate }}%</td>
 			    <td style="text-align: right;">{{ item.amount }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>
 	    </table>
+	    {% endif %}
+	    
+	    <div style="text-align: center; margin-top: 10mm; font-size: 8pt; line-height: 8pt;">
+		<div>- - - Pro3x Online Dashboard - - - </div>
+		<div>www.pro3x.com | www.mali-zeleni.hr</div>
+	    </div>
 	</div>
     </body>
 </html>

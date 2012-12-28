@@ -31,6 +31,7 @@
 		<td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
 		<td class="pro3x_tools">
 		    <a href="{{ path('edit_permissions', {'id': user.id, 'back': app.request.uri}) }}">{{ 'dozvole'|trans }}</a>
+		    <a href="{{ path('daily_total', {'id': user.id}) }}">{{ 'promet'|trans }}</a>
 		    <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
 		    <a class="pro3x_confirm" data-icon="pro3x_icon_user_delete" 
 		       data-msg="{{ 'Jeste li sigurni da želite izbrisati korisnika <b>%username%</b>?'|trans({ '%username%': user.username }) }}" 

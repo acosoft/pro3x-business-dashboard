@@ -13,7 +13,7 @@ class FinaClient extends \SoapClient
 	function __construct($key, $certificate, $wsdl, $options)
 	{
 		$options['exceptions'] = true;
-		$options['cache_wsdl'] = WSDL_CACHE_DISK;
+		$options['cache_wsdl'] = WSDL_CACHE_BOTH;
 		
 		$options['classmap'] = array(
 			'PoslovniProstorOdgovor'	=> '\Pro3x\Online\Fina\PoslovniProstorOdgovor',

@@ -214,7 +214,9 @@ class AdminController extends Controller
 	{
 		try
 		{
-			if ($this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
+			$location = $invoice->getPosition()->getLocation();
+			
+			if ($location->getSecurityKey() && $location->getSecurityCertificate() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
 			{
 				$location = $invoice->getPosition()->getLocation();
 				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
@@ -285,6 +287,14 @@ class AdminController extends Controller
 					$manager->persist($invoice);
 					$manager->flush();
 				}
+			}
+			else
+			{
+				$invoice->setFiscalTransaction(false);
+				
+				$manager = $this->getDoctrine()->getEntityManager();
+				$manager->persist($invoice);
+				$manager->flush();
 			}
 		}
 		catch (\Exception $exc)

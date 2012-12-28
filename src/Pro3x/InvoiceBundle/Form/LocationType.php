@@ -12,7 +12,7 @@ class LocationType extends AbstractType
     {
         $builder
 			->add('taxPayer', 'choice', array('choices' => array(true => 'U sustavu PDV-a', false => 'Nije u sustavu PDV-a'), 'label' => 'Obračun poreza'))
-			->add('companyTaxNumber', 'text', array('label' => 'OIB Tvrtke'))
+			->add('companyTaxNumber', 'text', array('label' => 'OIB Tvrtke', 'required' => false))
             ->add('name', 'text', array('label' => 'Naziv lokacije'))
 			->add('street', 'text', array('label' => 'Ulica', 'required' => false))
 			->add('houseNumber', 'text', array('label' => 'Kućni broj', 'required' => false))

@@ -72,7 +72,7 @@ class Invoice
 	private $uuid;
 
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $companyTaxNumber;
 	
@@ -246,11 +246,11 @@ class Invoice
 		{
 			if($this->getTenderSequence() == null)
 			{
-				return '- - -';
+				return 'skica';
 			}
 			else
 			{
-				return 'T' . $this->getTenderSequence();
+				return 'ponuda | ' . $this->getTenderSequence();
 			}
 		}
 		else

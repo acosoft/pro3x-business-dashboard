@@ -48,32 +48,35 @@ class LocationController extends AdminController
 			{
 				$location = $this->getLocationRepository()->find($id); /* @var $location \Pro3x\InvoiceBundle\Entity\Location */
 				
-				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
-				$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
+				if($location->getSecurityKey() && $location->getSecurityCertificate() && $location->getCompanyTaxNumber())
+				{
+					$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
+					$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
 
-				$prostor = $zahtjev->getPoslovniProstor();
-				$prostor->setOib($location->getCompanyTaxNumber());
-				$prostor->setOznPoslProstora($location->getName());
-				$prostor->setRadnoVrijeme($location->getWorkingHours());
+					$prostor = $zahtjev->getPoslovniProstor();
+					$prostor->setOib($location->getCompanyTaxNumber());
+					$prostor->setOznPoslProstora($location->getName());
+					$prostor->setRadnoVrijeme($location->getWorkingHours());
 
 
-				$adresa = new \Pro3x\Online\Fina\Adresa();
-				$adresa->setBrojPoste($location->getPostalCode());
-				$adresa->setKucniBroj($location->getHouseNumber());
-				$adresa->setKucniBrojDodatak($location->getHouseNumberExtension());
-				$adresa->setNaselje($location->getSettlement());
-				$adresa->setOpcina($location->getCity());
-				$adresa->setUlica($location->getStreet());
+					$adresa = new \Pro3x\Online\Fina\Adresa();
+					$adresa->setBrojPoste($location->getPostalCode());
+					$adresa->setKucniBroj($location->getHouseNumber());
+					$adresa->setKucniBrojDodatak($location->getHouseNumberExtension());
+					$adresa->setNaselje($location->getSettlement());
+					$adresa->setOpcina($location->getCity());
+					$adresa->setUlica($location->getStreet());
 
-				$prostor->setAdresniPodatak($adresa);
+					$prostor->setAdresniPodatak($adresa);
 
-				$pocetak = new \DateTime('now');
-				$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
+					$pocetak = new \DateTime('now');
+					$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
 
-				$result = $soap->poslovniProstor($zahtjev);
-				
-				$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
-				$location->setSubmited(true);
+					$result = $soap->poslovniProstor($zahtjev);
+
+					$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
+					$location->setSubmited(true);
+				}
 			}
 			catch (\Exception $exc)
 			{

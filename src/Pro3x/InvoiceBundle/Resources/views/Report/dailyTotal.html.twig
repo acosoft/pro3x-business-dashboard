@@ -45,7 +45,7 @@
 	    </div>
 	    <ul>
 		<li><a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Direktni Ispis</a></li>
-		<li><a class="pro3x_google_cloud_print" href="#">Google Cloud Print</a></li>
+		<!-- <li><a class="pro3x_google_cloud_print" href="#">Google Cloud Print</a></li> -->
 	    </ul>
 	    {% if app.request.get('report') is null %}
 		<a class="pro3x_confirm button" data-icon="pro3x_small_icon_info" 
@@ -69,6 +69,7 @@
 	    <thead>
 		<tr>
 		    <th class="ui-widget-header ui-corner-all">Datum</th>
+		    <th class="ui-widget-header ui-corner-all">Vrijeme</th>
 		    <th class="ui-widget-header ui-corner-all">Ukupno</th>
 		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">Alati</th>
 		</tr>
@@ -77,6 +78,7 @@
 		{% if page == 1 %}
 		    <tr class="pro3x_no_selection">
 			<td>Trenutni promet</td>
+			<td>{{ selectedDate|date('H:i\\h') }}</td>
 			<td style="text-align: right;">{{ currentTotal }}</td>
 			<td class="pro3x_tools">
 			    {% if app.request.get('report') is null %}
@@ -90,6 +92,7 @@
 		{% for item in reports %}
 		    <tr>
 			<td>{{ item.created|date('d.m.Y') }}</td>
+			<td>{{ item.created|date('H:i\\h') }}</td>
 			<td style="text-align: right;">{{ item.total|number_format(2, ',', '') }}</td>
 			<td class="pro3x_tools">
 			    {% if item.id == app.request.get('report') %}

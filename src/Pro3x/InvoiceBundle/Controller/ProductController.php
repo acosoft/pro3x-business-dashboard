@@ -89,7 +89,7 @@ class ProductController extends AdminController
 		$form = $this->createForm(new ProductType(), $product);
 		if($result = $this->saveForm($form, 'Proizvod je uspješno izmjenjen')) return $result;
 		
-		return $this->editParams($form, 'Edit product', 'inventory_edit');
+		return $this->editParams($form, 'Izmjena proizvoda', 'inventory_edit');
 	}
 	
 	/**
@@ -130,7 +130,7 @@ class ProductController extends AdminController
 				->addColumn('taxedPriceFormated', 'MPC', 0, 'right')
 				->addColumn("Unit", "Jedinica")
 				
-				->setToolsWidth(200)
+				->setToolsWidth(150)
 				
 				->setAddRoute('pro3x_invoice_product_add')
 				->setEditRoute('pro3x_invoice_product_edit')

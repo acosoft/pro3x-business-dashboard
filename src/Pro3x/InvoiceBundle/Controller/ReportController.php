@@ -19,17 +19,17 @@ use Pro3x\InvoiceBundle\Form\TemplateType;
 class ReportController extends AdminController
 {
 	/**
-	 * @Route("/lock-position/{id}/{position}", name="lock_position")
+	 * @Route("/lock-position/{id}", name="lock_position")
 	 */
-	public function lockInvoicesAction($id, $position)
+	public function lockInvoicesAction($id)
 	{
 		if($this->getUser()->getId() == $id || $this->isInRole('close_daily_reports'))
 		{
 			$manager = $this->getDoctrine()->getEntityManager();
 			$repository = $this->getInvoiceRepository();
 			
-			$user = $this->getUserRepository()->find($id);
-			$position = $this->getPositionRepository()->find($position);
+			$user = $this->getUserRepository()->find($id); /* @var $user \Pro3x\SecurityBundle\Entity\User */
+			$position = $this->getPositionRepository()->find($user->getPosition());
 			
 			$controller = $this;
 			
@@ -66,7 +66,6 @@ class ReportController extends AdminController
 					$manager->flush();
 					
 					$controller->setMessage('Blagajna je zaključena');
-					
 				}
 				else
 				{
@@ -146,10 +145,10 @@ class ReportController extends AdminController
 	
 	
 	/**
-	 * @Route("/{id}/{position}/{page}/{report}", name="daily_total", defaults={"report"=null, "page"=1})
+	 * @Route("/daily-total/{id}/{page}/{report}", name="daily_total", defaults={"report"=null, "page"=1})
 	 * @Template()
 	 */
-	public function dailyTotalAction($id, $position, $report, $page)
+	public function dailyTotalAction($id, $report, $page)
 	{
 		//selected report
 		$result = $this->buildReport($id, $report);
@@ -176,8 +175,7 @@ class ReportController extends AdminController
 		$pagerParams = new \Pro3x\Online\PagerParams();
 		$pagerParams->setPage($page)->setPageCount($pageCount)
 				->addRouteParam('id', $id)
-				->addRouteParam('report', $report)
-				->addRouteParam('position', $position);
+				->addRouteParam('report', $report);
 		
 		$user = $this->getUserRepository()->find($id);
 		
