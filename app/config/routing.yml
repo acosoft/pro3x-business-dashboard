@@ -14,8 +14,11 @@ pro3x_security:
     prefix:   /
 
 home:
-    pattern:  /
-    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+    pattern: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: dashboard
+        permanent: true
     
 _demo_secured:
     resource: "@AcmeDemoBundle/Controller/SecuredController.php"
