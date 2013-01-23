@@ -86,7 +86,21 @@ class FinaClient extends \SoapClient
 		$racun->setZastKod(md5($potpis));
 		
 		$data = $this->__soapCall('racuni', array($zahtjev));
-		return $data;
+		
+		/* @var $data Fina\RacunOdgovor */
+		if($data instanceof Fina\RacunOdgovor && $data->getGreska())
+		{
+			$greska = $data->getGreska(); /* @var $greska Fina\Greska */
+			throw new \Exception($data->Greske->Greska->PorukaGreske);
+		}
+		else if($data instanceof Fina\RacunOdgovor)
+		{
+			return $data;
+		}
+		else
+		{
+			throw new \Exception("Nepoznata iznimka u komunikaciji sa servisima");
+		}
 	}
 	
 	/**

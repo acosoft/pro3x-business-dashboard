@@ -6,20 +6,20 @@ class RacunOdgovor
 {
 	private $Zaglavlje;
 	private $Jir;
-	private $Greska;
+	private $Greske;
 			
 	/**
 	 * 
-	 * @return GreskaType
+	 * @return Greska
 	 */
 	public function getGreska()
 	{
-		return $this->Greska;
+		return $this->Greske;
 	}
 
 	public function setGreska($Greska)
 	{
-		$this->Greska = $Greska;
+		$this->Greske = $Greska;
 	}
 
 	/**

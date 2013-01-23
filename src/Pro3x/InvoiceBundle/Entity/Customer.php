@@ -62,6 +62,11 @@ class Customer
 	  */
 	private $invoices;
 	
+	/**
+	 * @OneToMany(targetEntity="\Pro3x\RegistrationKeysBundle\Entity\RegistrationKey", mappedBy="customer")
+	  */
+	private $registrationKeys;
+	
 	public function getInvoices()
 	{
 		return $this->invoices;
@@ -151,6 +156,11 @@ class Customer
 		if($this->getLocation()) $description[] = $this->getLocation ();
 
 		return $description;
+	}
+	
+	public function getDescriptionFormated()
+	{
+		return implode(", ", $this->getDescription());
 	}
 	
 	public function getAddressDescription()

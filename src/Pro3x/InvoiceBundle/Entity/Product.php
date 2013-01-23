@@ -4,6 +4,7 @@ namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Product
@@ -46,6 +47,11 @@ class Product
 	 * @ORM\Column(type="string")
 	 */
 	private $unit;
+
+	/**
+	 * @OneToMany(targetEntity="\Pro3x\RegistrationKeysBundle\Entity\RegistrationKey", mappedBy="product")
+	  */
+	private $registrationKeys;
 	
 	private $numeric;
 	

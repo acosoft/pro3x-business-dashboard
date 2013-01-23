@@ -133,6 +133,12 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Customer');
 	}
 	
+	
+	public function getRegistrationKeysRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xRegistrationKeysBundle:RegistrationKey');
+	}
+	
 	/**
 	 * 
 	 * @return \Pro3x\InvoiceBundle\Entity\PositionRepository
@@ -216,7 +222,7 @@ class AdminController extends Controller
 		{
 			$location = $invoice->getPosition()->getLocation();
 			
-			if ($location->getSecurityKey() && $location->getSecurityCertificate() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
+			if ($location->getTaxPayer() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
 			{
 				$location = $invoice->getPosition()->getLocation();
 				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
@@ -297,9 +303,9 @@ class AdminController extends Controller
 				$manager->flush();
 			}
 		}
-		catch (\Exception $exc)
+		catch (\Exception $exc) /* @var $exc \Exception */
 		{
-			$this->setWarning('Servisi porezne uprave nisu dostupni, JIR oznaka nije dodjeljena računu');
+			$this->setWarning('Iznimka u komunikacija sa servisima: ' . $exc->getMessage());
 		}
 	}
 	

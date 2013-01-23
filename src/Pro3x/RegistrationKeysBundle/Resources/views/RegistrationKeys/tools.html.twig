@@ -1,0 +1,6 @@
+<a href="{{ path('download_registration_key', {'id': item.id }) }}">{{ 'download'|trans }}</a>
+<a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
+<a class="pro3x_confirm" data-icon="pro3x_icon_{{ icon }}_delete" 
+   data-msg="{{ 'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?'|trans({'%type%': type|trans, '%description%': attribute(item, deleteColumn) }) }}" 
+   href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+
