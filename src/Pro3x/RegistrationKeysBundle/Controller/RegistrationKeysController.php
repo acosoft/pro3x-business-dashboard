@@ -56,39 +56,24 @@ class RegistrationKeysController extends AdminController
 	{
 		$reg = $this->getRegistrationKeysRepository()->find($id); /* @var $reg RegistrationKey */
 		
-		$filename = $reg->getCustomer()->getName() . ".xml";
+		$filename = 'registracijski-kljuc-' . $reg->getId() . '-' . str_replace(' ', '-', strtolower($reg->getProduct()->getName())) . ".xml";
 		
 		$document = new \DOMDocument();
 		$document->appendChild($licence = $document->createElement("licence"));
 		
-		//product details
-		$licence->appendChild($document->createElement('pid', $reg->getProduct()->getBarcode()));
-
 		$signatureParts = array();
-//		$signatureParts['pcode'] = $reg->getProduct()->getName();
-//		$signatureParts['refno'] = $reg->getId();
-//		$signatureParts['firstname'] = '';
-//		$signatureParts['lastname'] = '';
-//		$signatureParts['company'] = $reg->getCustomer()->getName();
-//		$signatureParts['email'] = $reg->getCustomer()->getEmail();
-//		$signatureParts['country'] = '';
-//		$signatureParts['zipcode'] = '';
-//		$signatureParts['validfrom'] = $reg->getValidFromFormated();
-//		$signatureParts['validto'] = $reg->getValidToFormated();
-		
-		//TODO: remove, this is just for test
-		$signatureParts['pid'] = '3750997';
-		$signatureParts['pcode'] = 'UltimatePOS';
-		$signatureParts['refno'] = '2012-0020';
-		$signatureParts['firstname'] = 'Vladim';
-		$signatureParts['lastname'] = 'Bystriakov';
-		$signatureParts['company'] = 'SILVAN d.o.o';
-		$signatureParts['email'] = 'fitness.zagrad@gmail.com';
-		$signatureParts['country'] = 'HR';
-		$signatureParts['city'] = 'Lokve';
+		$signatureParts['pid'] = $reg->getProduct()->getBarcode();
+		$signatureParts['pcode'] = $reg->getProduct()->getName();
+		$signatureParts['refno'] = $reg->getId();
+		$signatureParts['firstname'] = '';
+		$signatureParts['lastname'] = '';
+		$signatureParts['company'] = $reg->getCustomer()->getName();
+		$signatureParts['email'] = $reg->getCustomer()->getEmail();
+		$signatureParts['country'] = '';
+		$signatureParts['city'] = '';
 		$signatureParts['zipcode'] = '';
-		$signatureParts['validfrom'] = '18.12.2012';
-		$signatureParts['validto'] = '16.12.2022';
+		$signatureParts['validfrom'] = $reg->getValidFromFormated();
+		$signatureParts['validto'] = $reg->getValidToFormated();
 		
 		foreach ($signatureParts as $key => $value)
 		{
@@ -99,10 +84,7 @@ class RegistrationKeysController extends AdminController
 		$sha1signature = sha1($source, true);
 		$signature = base64_encode($sha1signature);
 		
-		$password = pack("h*", md5($reg->getProduct()->getName()));
-		
-		//$password = 'EFAEF68F2B22A123';
-		$base64password = base64_encode($password);
+		$password = md5($reg->getProduct()->getName(), true);
 		
 		$blockSize = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_ECB);
 		$padding = $blockSize - (strlen($signature) % $blockSize);
@@ -113,9 +95,32 @@ class RegistrationKeysController extends AdminController
 		
 		$licence->appendChild($document->createElement("signature", $base64encryptedSignature));
 		
-//		return new Response($document->saveXML(), 200, array('Content-type' => "text/xml",
-//					'Content-Disposition' => 'attachment; filename=' . $filename));
-		return new Response($document->saveXML(), 200, array('Content-type' => "text/xml"));
+		//default options
+		$licence->appendChild($options = $document->createElement("options"));
+		$options->appendChild($document->createElement('maloprodaja', 'true'));
+		$options->appendChild($document->createElement('userMode', 'false'));
+		$options->appendChild($document->createElement('ispisRacuna', 'true'));
+		$options->appendChild($document->createElement('skraceniKodovi', 'false'));
+		$options->appendChild($document->createElement('izmjenaSekvenci', 'true'));
+		$options->appendChild($document->createElement('stanjeSkladista', 'true'));
+		$options->appendChild($document->createElement('tempTasks', 'false'));
+		$options->appendChild($document->createElement('brisanjeKartice', 'false'));
+		$options->appendChild($document->createElement('skriveniNormativi', 'true'));
+		$options->appendChild($document->createElement('koristiNormativeArtikala', 'true'));
+		$options->appendChild($document->createElement('koristiMigracijuArtikala', 'false'));
+		$options->appendChild($document->createElement('koristiZapisnikePromjeneCijena', 'false'));
+		$options->appendChild($document->createElement('koristiTehnickuPodrsku', 'false'));
+		$options->appendChild($document->createElement('koristiGotovinskeTransakcije', 'false'));
+		$options->appendChild($document->createElement('koristiUsporedivanjeSkladista', 'false'));
+		$options->appendChild($document->createElement('koristiDeklaracije', 'false'));
+		$options->appendChild($document->createElement('koristiPopupEditorCijena', 'true'));
+		$options->appendChild($document->createElement('koristiIzracunOstatka', 'true'));
+		$options->appendChild($document->createElement('koristiDisplayZaKupca', 'false'));
+		$options->appendChild($document->createElement('poslinkDisplayZaKupca'));			
+		
+		return new Response($document->saveXML(), 200, array('Content-type' => "text/xml",
+					'Content-Disposition' => 'attachment; filename=' . $filename));
+//		return new Response($document->saveXML(), 200, array('Content-type' => "text/xml"));
 	}
 	
 	/**
