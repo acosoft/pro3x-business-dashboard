@@ -78,6 +78,7 @@
 	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R2: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
 		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
+		<div>Rok plaćanja: {{ invoice.dateCreated|date_modify('+7 days')|date('d.m.Y') }}</div>
 		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
 	    </div>
 
@@ -135,7 +136,7 @@
 	    </table>
 	    {% endif %}
 	    
-	    <div style="margin-top: 10mm;">Račun je naplaćen u gotovini.</div>
+	    <div style="margin-top: 10mm;">Uplata na žiro račun pri Privrednoj banci Zagreb, broj računa 234009-3101142865</div>
 	    
 	    <div style="float: left;">
 		<div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
