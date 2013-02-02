@@ -19,6 +19,15 @@ use Pro3x\InvoiceBundle\Form\TemplateType;
 class ReportController extends AdminController
 {
 	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\ReportingServices
+	 */
+	public function getReportingServices()
+	{
+		return $this->get('invoice.reporting.services');
+	}
+	
+	/**
 	 * @Route("/lock-position/{id}", name="lock_position")
 	 */
 	public function lockInvoicesAction($id)
@@ -84,7 +93,7 @@ class ReportController extends AdminController
 	}
 	
 	/**
-	 * @Route("/print-daily-report/{id}/{report}", name="print_daily_total", defaults={"report"=null})
+	 * @Route("/print-daily-totals/{id}/{report}", name="print_daily_total", defaults={"report"=null})
 	 * @Template()
 	 */
 	public function printDailyReportAction($id, $report)
@@ -92,24 +101,45 @@ class ReportController extends AdminController
 		$report = $this->buildReport($id, $report);
 		$user = $this->getUserRepository()->find($id);
 		
+		$dailyReportTemplate = $this->getReportingServices()->getDailyReportTemplate();
 		$params = array('items' => $report[0], 'total' => $report[1], 'created' => $report[2], 'operator' => $user);
 		
 		if($this->getParam('print', true) == 'true')
 		{
-			return $params;
+			return $this->render($dailyReportTemplate, $params);
 		}
 		else
 		{
-			return new Response(base64_encode($this->renderView('Pro3xInvoiceBundle:Report:printDailyReport.html.twig', $params)));
+			return new Response(base64_encode($this->renderView($dailyReportTemplate, $params)));
 		}
 	}
 	
-	public function buildReport($id, $report)
+	/**
+	 * @Route("/printy-daily-product-report/{user}/{report}", name="print_daily_product_report", defaults={"report"=null})
+	 * @Template()
+	 */
+	public function printDailyProductReportAction($user, $report)
+	{
+		$params = $this->buildProductReport($user, $report);
+		$params['operator'] = $this->getUserRepository()->find($user);
+		
+		return $params;
+	}
+	
+	public function buildProductReport($user, $report)
 	{
 		$query = $this->getInvoiceRepository()->createQueryBuilder('i')
-				->select('t.transactionType, sum(i.invoiceTotal ) total')
-				->join('i.template', 't');
+				->join('i.items', 'ii')
+				->select('ii.description AS description, ii.unitPrice AS unitPrice, sum(ii.amount) AS totalAmount')
+				->groupBy('ii.description, ii.unitPrice');
 		
+		$selectedDate = $this->appendWhere($query, $user, $report);
+		
+		return array('data' => $query->getQuery()->getResult(), 'created' => $selectedDate);
+	}
+	
+	private function appendWhere($query, $user, $report)
+	{
 		if($report == null)
 		{
 			$query->where('i.user = :user AND i.sequence IS NOT null AND i.dailyReport IS null');
@@ -124,8 +154,20 @@ class ReportController extends AdminController
 			$selectedDate = $selectedReport->getCreated();
 		}
 		
-		$items = $query->setParameter('user', intval($id))
-				->groupBy('t.transactionType')
+		$query->setParameter('user', intval($user));
+		
+		return $selectedDate;
+	}
+	
+	public function buildReport($id, $report)
+	{
+		$query = $this->getInvoiceRepository()->createQueryBuilder('i')
+				->select('t.transactionType, sum(i.invoiceTotal ) total')
+				->join('i.template', 't');
+		
+		$selectedDate = $this->appendWhere($query, $id, $report);
+		
+		$items = $query->groupBy('t.transactionType')
 				->getQuery()
 				->getResult();
 		

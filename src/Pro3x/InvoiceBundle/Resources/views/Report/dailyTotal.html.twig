@@ -44,7 +44,8 @@
 		<button  id="select" class="button" type="button" name="action" value="">Odabir akcije</button>
 	    </div>
 	    <ul>
-		<li><a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Direktni Ispis</a></li>
+		<li><a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Financijski izvještaj</a></li>
+		<li><a href="{{ path('print_daily_product_report', {'user': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Materijalni izvještaj</a></li>
 		<!-- <li><a class="pro3x_google_cloud_print" href="#">Google Cloud Print</a></li> -->
 	    </ul>
 	    {% if app.request.get('report') is null %}

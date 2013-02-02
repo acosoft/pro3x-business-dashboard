@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
 		
 		$rootNode->children()
 					->scalarNode('fina_wsdl')->defaultValue('')->end()
+					//->scalarNode('daily_report')->defaultValue('')->end()
 				->end();
 
         // Here you should define the parameters that are allowed to

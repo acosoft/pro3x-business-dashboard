@@ -26,5 +26,6 @@ class Pro3xInvoiceExtension extends Extension
         $loader->load('services.xml');
 		
 		$container->setParameter('fina.wsdl', $config['fina_wsdl']);
+		//$container->setParameter('daily.report', $config['daily_report']);
     }
 }
