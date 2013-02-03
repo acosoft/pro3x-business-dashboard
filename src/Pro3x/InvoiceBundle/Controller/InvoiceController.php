@@ -237,7 +237,8 @@ class InvoiceController extends AdminController
 		
 		if($invoice->getSequence() == null)
 		{
-			$template = $this->getTemplateRepository()->find($this->getParam('mode')); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
+			$templateId = $this->getParam('mode');
+			$template = $this->getTemplateRepository()->find($templateId); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
 			$this->redirect404($template);
 		
 			if(!$invoice->getTenderSequence() && \Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
@@ -338,7 +339,7 @@ class InvoiceController extends AdminController
 			$manager->flush();
 		}
 		
-		return $this->redirect($this->getParam('back'));
+		return $this->goBack();
 	}
 	
 	/**

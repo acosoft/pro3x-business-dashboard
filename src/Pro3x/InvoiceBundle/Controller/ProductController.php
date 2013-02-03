@@ -136,7 +136,7 @@ class ProductController extends AdminController
 				->setEditRoute('pro3x_invoice_product_edit')
 				->setDeleteRoute('pro3x_invoice_product_delete')
 				->setDeleteColumn('name')
-				->setDeleteType('poreznu stopu')
+				->setDeleteType('proizvod ili uslugu')
 				
 				->setPagerVisible(true)
 				->setPageCount($this->getPageCount($count))
