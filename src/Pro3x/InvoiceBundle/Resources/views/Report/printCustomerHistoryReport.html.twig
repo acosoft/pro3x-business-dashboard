@@ -48,6 +48,8 @@
 			{ padding-top: 30px; } 
 		}
 
+	    .week_separator td
+		{ border-top: dashed 1px gray; }
 	</style>
     </head>
     <body>
@@ -64,27 +66,48 @@
 		<div style="clear: both"></div>
 	    </div>
 
-	    <h1 style="margin-bottom: 0mm;">Dnevni promet</h1>
-	    <div>{{ operator.displayName }}, {{ created|date('d.m.Y, H:i\\h') }}</div>
+	    <h1 style="margin-bottom: 10mm;">Kartica kupca</h1>
+	    
+	    <div>{{ customer.descriptionFormated }}</div>
+	    <div>Operater: {{ operator.displayName }}, {{ created|date('d.m.Y, H:i\\h') }}</div>
 	   
-	    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px;">
+	    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px; margin-bottom: 10mm;">
 		<thead>
 		    <tr>
-			<th style="padding-left: 0mm;">Način plaćanja</th>
-			<th style="text-align: right;">Iznos prometa</th>
+			<th style="padding-left: 0mm;">Datum</th>
+			<th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
+			<th style="text-align: right;">Jedinična cijena</th>
+			<th style="text-align: right;">Količina</th>
+			<th style="text-align: right;">Osnovica</th>
+			<th style="text-align: right;">Popust</th>
+			<th style="text-align: right;">Ukupno</th>
 		    </tr>
 		</thead>
 		<tbody>
-		{% for  item in items %}
+		{% set total = 0 %}
+		{% set week = -1 %}
+			
+		{% for  item in data %}
+			<tr{% if week != item.purchased|date('W') %} {% if week != -1 %} class="week_separator"{% endif %}{% set week = item.purchased|date('W') %}{% endif %}>
+			    <td style="padding-left: 0;">{{ item.purchased|date('d.m.Y') }}</td>
+			    <td style="padding-left: 0;">{{ item.description }}</td>
+			    <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',') }}</td>
+			    <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',') }}</td>
+			    <td style="text-align: right;">{{ item.totalPrice|number_format(2, ',') }}</td>
+			    <td style="text-align: right;">{{ item.discount|number_format(2, ',') }}</td>
+			    <td style="text-align: right;">{{ item.total|number_format(2, ',') }}</td>
+			</tr>
+			{% set total = total + item.total %}
+		{% else %}
 			<tr>
-			    <td style="padding-left: 0;">{{ item.transactionType }}</td>
-			    <td style="text-align: right;">{{ item.total }}</td>
+			    <td colspan="100" style="padding: 5mm 0mm;">Nema rezultata</td>
 			</tr>
 		{% endfor %}
 		</tbody>
 	    </table>
-	    <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 3mm;">
-		<h2>Ukupni promet: {{ total }} kn</h2>
+	    
+	     <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
+		<h2 style="margin: 0mm 0mm 10mm 0mm;">Ukupni promet: {{ total|number_format(2, ',') }} kn</h2>
 	    </div>
 
 	</div>

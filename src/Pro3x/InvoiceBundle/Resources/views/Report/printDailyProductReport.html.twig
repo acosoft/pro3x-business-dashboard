@@ -12,7 +12,7 @@
 	    @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
 
 	    @page 
-		{ margin: 0mm 0mm 0mm 0mm; }
+		{ margin: 0mm 15mm 0mm 15mm; size: A4; }
 	
 	    @media print
 		{ 
@@ -21,7 +21,7 @@
 			{ display: none; }
 		
 		    body
-			{ padding-top: 0px; width: 67mm; }
+			{ padding-top: 0px; }
 		}
 	
 	    .close
@@ -45,7 +45,7 @@
 	    @media screen
 		{ 
 		    body 
-			{ padding-top: 30px; width: 67mm; } 
+			{ padding-top: 30px; } 
 		}
 
 	</style>
@@ -54,10 +54,13 @@
 	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print(); return false;">Ispis računa</a>
 		<a href="{{ app.request.get('back') }}">Zatvori</a></div></div>
 	
-	<div style="margin: 0mm auto;" style="cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
+	<div style="width: 210mm; height: 305mm; margin: 0mm auto;" style="cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
 	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
-		<img src="{{ asset('customer/pilgrim/pilgrim.png') }}" style="width: 67mm;" />
-		
+		<img src="{{ asset('customer/logo.jpg') }}" style="width: 25mm" />
+		<div style="float: right; text-align: right;">
+		    <div>Socijalna Samoposluga</div>
+		    <div>Žabica 4, 51000 Rijeka</div>
+		</div>
 		<div style="clear: both"></div>
 	    </div>
 
@@ -70,15 +73,23 @@
 			<th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
 			<th style="text-align: right;">Jedinična cijena</th>
 			<th style="text-align: right;">Količina</th>
+			<th style="text-align: right;">Osnovica</th>
+			<th style="text-align: right;">Popust</th>
+			<th style="text-align: right;">Ukupno</th>
 		    </tr>
 		</thead>
 		<tbody>
+		{% set total = 0 %}
 		{% for  item in data %}
 			<tr>
 			    <td style="padding-left: 0;">{{ item.description }}</td>
 			    <td style="text-align: right;">{{ item.unitPrice }}</td>
 			    <td style="text-align: right;">{{ item.totalAmount }}</td>
+			    <td style="text-align: right;">{{ item.totalPrice }}</td>
+			    <td style="text-align: right;">{{ item.discount }}</td>
+			    <td style="text-align: right;">{{ item.total }}</td>
 			</tr>
+			{% set total = total + item.total %}
 		{% else %}
 			<tr>
 			    <td colspan="100" style="padding: 5mm 0mm;">Nema rezultata</td>
@@ -86,6 +97,10 @@
 		{% endfor %}
 		</tbody>
 	    </table>
+	    
+	     <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
+		<h2 style="margin: 0mm 0mm 10mm 0mm;">Ukupni promet: {{ total }} kn</h2>
+	    </div>
 
 	</div>
     </body>

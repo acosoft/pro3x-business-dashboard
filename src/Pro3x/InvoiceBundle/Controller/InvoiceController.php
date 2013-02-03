@@ -125,6 +125,7 @@ class InvoiceController extends AdminController
 				->setPlaceholder('Naziv ili OIB kupca')
 				
 				->addPagerParam('query', $this->getParam('query'))
+				->setToolsTemplate('Pro3xInvoiceBundle:Invoice:invoiceCustomerTools.html.twig')
 				->setItems($items)->getParams();
 	}
 	

@@ -1,0 +1,2 @@
+<a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a>
+<a href="{{ path('customer_history', {'customer': item.id, 'back': app.request.uri}) }}">kartica</a>

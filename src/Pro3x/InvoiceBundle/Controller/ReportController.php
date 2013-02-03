@@ -28,6 +28,64 @@ class ReportController extends AdminController
 	}
 	
 	/**
+	 * @Route("/print-customer-history/{customer}", name="customer_history")
+	 * @Template("Pro3xInvoiceBundle:Report:printCustomerHistoryReport.html.twig")
+	 */
+	public function customerHistoryAction($customer)
+	{
+		$sql = "SELECT 
+					weekofyear(p1_.created) week,
+					date(p1_.created) purchased,
+					p0_.description AS description, 
+					p0_.taxedPrice AS unitPrice, 
+					sum(
+					  p0_.amount 
+					) AS totalAmount, 
+					sum(
+					  p0_.totalTaxedPrice 
+					) AS totalPrice, 
+					sum(
+					  p0_.discountAmount 
+					) AS discount, 
+					sum(
+					  p0_.dicountPrice 
+					) AS total 
+				  FROM 
+					pro3x_invoices p1_ 
+				  INNER JOIN 
+					pro3x_clients p2_ ON p1_.customer_id = p2_.id 
+				  INNER JOIN 
+					pro3x_invoice_items p0_ ON p1_.id = p0_.invoice_id 
+				  WHERE 
+					p1_.customer_id = :customer
+				  GROUP BY 
+					date(p1_.created),
+					p0_.description, 
+					p0_.unitPrice
+				  ORDER BY date(p1_.created) desc";
+		
+		
+		
+		$database = $this->get('database_connection'); /* @var $service \Doctrine\DBAL\Connection */
+		$query = $database->prepare($sql); /* @var $query \Doctrine\DBAL\Statement */
+		$query->bindParam('customer', $customer, \PDO::PARAM_INT);
+		$query->execute();
+		$data = $query->fetchAll();
+		
+//		$data = $this->getInvoiceRepository()->createQueryBuilder('i')
+//				->join('i.customer', 'c')->join('i.items', 'ii')
+//				->select('ii.description AS description, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
+//						. 'sum(ii.totalTaxedPrice) AS totalPrice, sum(ii.discountAmount) AS discount, sum(ii.dicountPrice) AS total')
+//				->where('i.customer = :customer')->setParameter('customer', $customer)
+//				->groupBy('ii.description, ii.unitPrice')
+//				->getQuery()
+//				->getResult();
+
+		$customerInfo = $this->getCustomerRepository()->find($customer);
+		return array('customer' => $customerInfo, 'data' => $data, 'operator' => $this->getUser(), 'created' => date('now'));
+	}
+	
+	/**
 	 * @Route("/lock-position/{id}", name="lock_position")
 	 */
 	public function lockInvoicesAction($id)
@@ -130,7 +188,8 @@ class ReportController extends AdminController
 	{
 		$query = $this->getInvoiceRepository()->createQueryBuilder('i')
 				->join('i.items', 'ii')
-				->select('ii.description AS description, ii.unitPrice AS unitPrice, sum(ii.amount) AS totalAmount')
+				->select('ii.description AS description, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
+						. 'sum(ii.totalTaxedPrice) AS totalPrice, sum(ii.discountAmount) AS discount, sum(ii.dicountPrice) AS total')
 				->groupBy('ii.description, ii.unitPrice');
 		
 		$selectedDate = $this->appendWhere($query, $user, $report);
