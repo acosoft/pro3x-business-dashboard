@@ -22,9 +22,9 @@ class ProductController extends AdminController
 	public function addAction()
 	{
 		$form = $this->createForm(new ProductType, new \Pro3x\InvoiceBundle\Entity\Product());
-		if($result = $this->saveForm($form, 'Novi artikal je uspješno spremljen')) return $result;
+		if($result = $this->saveForm($form, 'Novi proizvod je uspješno spremljen')) return $result;
 
-		return $this->editParams($form, 'Novi artikal', 'inventory_add');
+		return $this->editParams($form, 'Novi proizvod', 'inventory_add');
 	}
 	
 	/**
