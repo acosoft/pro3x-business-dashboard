@@ -8,4 +8,11 @@ update pro3x_invoices
 set tenderTemplate_id = 6,
     template_id = null,
     tenderDate = created
-where tenderSequence is not null;
+where tenderSequence is not null
+    and sequence is null;
+
+update pro3x_invoices
+set tenderTemplate_id = 6,
+    tenderDate = created
+where tenderSequence is not null
+    and sequence is not null;

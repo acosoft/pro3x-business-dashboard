@@ -51,17 +51,12 @@
 	</style>
     </head>
     <body>
-	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print(); return false;">Ispis računa</a>
+	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print();">Ispis računa</a>
 		<a href="{{ app.request.get('back') }}">Zatvori</a></div></div>
 	
-	<div style="width: 210mm; height: 305mm; margin: 0mm auto;" style="cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
+	<div style="width: 210mm; height: 305mm; margin: 0mm auto; cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
 	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 30mm; margin-top: 15mm;">
-		<img src="http://mali-zeleni.hr/arhiva/mali-zeleni-print.png" style="width: 50mm" />
-		<div style="float: right; text-align: right;">
-		    <div>Mali zeleni d.o.o, Baretićevo 7c, 51000 Rijeka</div>
-		    <div>OIB: 61543907467, Žiro: 2340009-1110492761</div>
-		    <div>http://www.mali-zeleni.hr | Mob: 095 / 910-8324</div>
-		</div>
+		{{ logo|raw }} {{ company|raw }}
 		<div style="clear: both"></div>
 	    </div>
 
@@ -77,7 +72,6 @@
 	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R1: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
 		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
-		<div>Rok plaćanja: {{ invoice.dateCreated|date_modify('+7 days')|date('d.m.Y') }}</div>
 		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
 	    </div>
 

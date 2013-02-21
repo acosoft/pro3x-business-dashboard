@@ -12,4 +12,7 @@ parameters:
     locale: en
     secret: 
     database_path: null
-
+    fina_wsdl: http://localhost/pro3x/fina/wsdl/FiskalizacijaService.wsdl
+    daily_report: Pro3xInvoiceBundle:Report:printDailyReport.html.twig
+    logo_url: 
+    company_info: 
