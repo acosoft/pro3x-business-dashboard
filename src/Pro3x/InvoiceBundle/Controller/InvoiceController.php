@@ -2,6 +2,8 @@
 
 namespace Pro3x\InvoiceBundle\Controller;
 
+use \Pro3x\InvoiceBundle\Form\TemplateType as TemplateType;
+
 use Pro3x\AppBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -233,6 +235,8 @@ class InvoiceController extends AdminController
 		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
+		$type = $this->getParam("type", "auto");
+		
 		$invoice->setNumeric($this->getNumeric());
 		
 		if($invoice->getSequence() == null)
@@ -241,23 +245,31 @@ class InvoiceController extends AdminController
 			$template = $this->getTemplateRepository()->find($templateId); /* @var $template \Pro3x\InvoiceBundle\Entity\Template */
 			$this->redirect404($template);
 		
-			if(!$invoice->getTenderSequence() && \Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
+			if(\Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
 			{
-				$position = $invoice->getPosition();
-				$invoice->setTenderSequence($position->getTenderSequence());
-				$position->setTenderSequence($position->getTenderSequence() + 1);
-				$invoice->setTemplate($template);
-				$invoice->setStatus($template->getName());
+				if($type == 'auto') $type = 'tender';
 				
-				$manager = $this->getDoctrine()->getEntityManager();
-				
-				$manager->persist($invoice);
-				$manager->persist($position);
-				
-				$manager->flush();
+				if(!$invoice->getTenderSequence())
+				{
+					$position = $invoice->getPosition();
+					$invoice->setTenderSequence($position->getTenderSequence());
+					$position->setTenderSequence($position->getTenderSequence() + 1);
+
+					$invoice->setTenderDate(new \DateTime('now'));
+					$invoice->setTenderTemplate($template);
+					$invoice->setStatus($template->getName());
+
+					$manager = $this->getDoctrine()->getEntityManager();
+
+					$manager->persist($invoice);
+					$manager->persist($position);
+
+					$manager->flush();
+				}
 			}
 			else if(!\Pro3x\InvoiceBundle\Form\TemplateType::isTenderTransaction($template->getTransactionType()))
 			{
+				if($type == 'auto') $type = 'invoice';
 				$invoice->setFiscalTransaction($this->getFinaClientFactory()->isFiscalTransaction($template->getTransactionType()));
 
 				$this->getDoctrine()->getEntityManager()->transactional(function($manager) use ($invoice, $template) {
@@ -269,6 +281,7 @@ class InvoiceController extends AdminController
 					$position->setSequence($position->getSequence() + 1);
 					$invoice->setStatus($template->getName());
 					$invoice->setTemplate($template);
+					$invoice->setCreated(new \DateTime('now'));
 
 					$manager->persist($position);
 					$manager->persist($invoice);
@@ -284,7 +297,11 @@ class InvoiceController extends AdminController
 			$item->setNumeric($invoice->getNumeric());
 		}
 		
-		$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		if($type == "invoice" || $invoice->getTenderTemplate() == null)
+			$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		else
+			$print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+		
 		
 		$direct = $this->getParam('print', 'true');
 		

@@ -76,7 +76,7 @@
 
 	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Ponuda: {{ invoice.tenderSequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
-		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
+		<div style="margin-top: 3.75mm;">Datum: {{ invoice.tenderDate|date('d.m.Y | H:i') }}h</div>
 		<div>Vrijedi do: {{ invoice.dateCreated|date_modify('+15 days')|date('d.m.Y') }}</div>
 		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
 	    </div>
@@ -137,7 +137,7 @@
 	    
 	    <div style="margin-top: 10mm;">
 	    Molimo Vas da gore navedeni iznos uplatite na naš žiro račun <br />
-	    2340009-1110492761 sa pozivom na broj {{ invoice.customer.taxNumber }}-{{ ((200 + invoice.position.id) * 100000) + invoice.tenderSequence }}
+	    2340009-1110492761 sa pozivom na broj {% if invoice.customer and invoice.customer.taxNumber %}{{ invoice.customer.taxNumber }}-{% endif %}{{ ((200 + invoice.position.id) * 100000) + invoice.tenderSequence }}
 	    </div>
 	    
 	    <div style="margin-top: 10mm;">Ponudu izradio:  {{ invoice.user.displayName }}</div>

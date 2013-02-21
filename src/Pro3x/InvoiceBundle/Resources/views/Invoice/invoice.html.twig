@@ -50,17 +50,19 @@
 	<div class="grid_9">
 	    <form id="add_invoice_form" action="{{ path('add_invoice_item') }}">
 		{% if invoice.sequence == null %}
-		    <input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod, šifra ili naziv artikla" name="code" />
 		    <input type="hidden" name="invoice" value="{{ invoice.id }}" />
-		    <input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
-		    <input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
+		    {% if invoice.tenderSequence == null %}
+			<input type="text" id="actionCode" style="width: 218px; padding: 4px; line-height: 16px;" placeholder="Barkod, šifra ili naziv artikla" name="code" />
+			<input  id="addProduct" class="button" type="button" name="action" value="Dodaj" />
+			<input type="button" class="button link" data-href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}" value="{{ 'Kupac'|trans }}" />
+		    {% endif %}
 		    <div style="display: inline-block; margin-right: 2px;">
 			<input  id="print" data-mode="{{ invoice.position.location.templatesSorted[0].id }}" data-cloud="{{ invoice.position.location.templatesSorted[0].useGoogleCloud }}" class="button" type="button" name="action" value="Ispis" />
 			<button  id="select" class="pro3x_select_button button" type="button" name="action" value="">Odabir akcije</button>
 		    </div>
 		    <ul id="invoice-templates">
 			{% for item in invoice.position.location.templatesSorted %}
-			    <li><a data-cloud="{{ item.useGoogleCloud }}" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
+			    <li><a data-cloud="{{ item.useGoogleCloud }}" data-type="auto" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
 			{% endfor %}
 		    </ul>
 		{% else %}
@@ -69,7 +71,12 @@
 			<button class="pro3x_select_button button" type="button" name="action" value="">Odabir akcije</button>
 		    </div>
 		    <ul id="invoice-templates">
-			<li><a data-back="false" data-cloud="" data-mode="{{ invoice.template.id }}" href="#">Direktni Ispis</a></li>
+			{% if(invoice.template) %}
+			<li><a data-back="false" data-cloud="" data-type="invoice" data-mode="{{ invoice.template.id }}" href="#">Ispis računa</a></li>
+			{% endif %}
+			{% if(invoice.tenderTemplate) %}
+			<li><a data-back="false" data-cloud="" data-type="tender" data-mode="{{ invoice.template.id }}" href="#">Ispis ponude</a></li>
+			{% endif %}
 			<!-- <li><a data-back="false" data-cloud="1" data-mode="{{ invoice.template.id }}" href="#">Google Cloud Print</a></li> -->
 		    </ul>
 		{% endif %}
@@ -125,7 +132,7 @@
 	var me = $(this);
 	
 	if(me.data('cloud') == true) {
-	    $.post('{{ url('print_invoice', {'id': invoice.id}) }}', {mode: $(this).data('mode')}, function(data){
+	    $.post('{{ url('print_invoice', {'id': invoice.id}) }}', {mode: $(this).data('mode'), type: $(this).data('type')}, function(data){
 		var gadget = new cloudprint.Gadget();
 		gadget.setPrintDocument("text/html", "Invoice {{ invoice.id }}", data, "base64");
 		
@@ -138,10 +145,10 @@
 	    }, 'text');
 	}
 	else if(me.data('back') != false) {
-	    window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&print=false&mode=' + me.data('mode');
+	    window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
 	}
 	else {
-	    window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&print=false&mode=' + me.data('mode');
+	    window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
 	}
 	
     });

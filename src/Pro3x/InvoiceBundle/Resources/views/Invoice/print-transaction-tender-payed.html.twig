@@ -77,7 +77,7 @@
 	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R1: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
 		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
-		<div>Rok plaćanja: {{ invoice.dateCreated|date_modify('+7 days')|date('d.m.Y') }}</div>
+		<div>Plaćeno prema ponudi: {{ invoice.tenderSequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</div>
 		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
 	    </div>
 
@@ -131,10 +131,6 @@
 		{% endfor %}
 		</tbody>
 	    </table>
-	    <div style="margin-top: 10mm;">
-	    Molimo Vas da gore navedeni iznos uplatite na naš žiro račun <br />
-	    2340009-1110492761 sa pozivom na broj {% if invoice.customer and invoice.customer.taxNumber %}{{ invoice.customer.taxNumber }}-{% endif %}{{ ((100 + invoice.position.id) * 100000) + invoice.sequence }}
-	    </div>
 	    
 	    <div style="margin-top: 10mm;">Način plaćanja: Transakcijski račun</div>
 	    <div>Operater:  {{ invoice.user.displayName }}</div>

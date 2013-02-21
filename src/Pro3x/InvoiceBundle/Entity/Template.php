@@ -49,6 +49,11 @@ class Template
 	private $invoices;
 	
 	/**
+	 * @OneToMany(targetEntity="Invoice", mappedBy="tenderTemplate")
+	  */
+	private $tenders;
+	
+	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	private $useGoogleCloud;
@@ -63,7 +68,16 @@ class Template
 		$this->setPriority(1);
 	}
 
-	
+	public function getTenders()
+	{
+		return $this->tenders;
+	}
+
+	public function setTenders($tenders)
+	{
+		$this->tenders = $tenders;
+	}
+
 	public function getPriority()
 	{
 		return $this->priority;

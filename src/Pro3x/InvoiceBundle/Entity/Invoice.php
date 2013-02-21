@@ -57,6 +57,11 @@ class Invoice
 	private $created;
 	
 	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	private $tenderDate;
+	
+	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $sequence;
@@ -87,6 +92,11 @@ class Invoice
 	private $template;
 	
 	/**
+	 * @ManyToOne(targetEntity="Template", inversedBy="tenders")
+	  */
+	private $tenderTemplate;
+	
+	/**
 	 * @ORM\Column(type="decimal", scale=2)
 	 */
 	private $invoiceTotal;
@@ -96,6 +106,16 @@ class Invoice
 	  */
 	private $dailyReport;
 	
+	public function getTenderTemplate()
+	{
+		return $this->tenderTemplate;
+	}
+
+	public function setTenderTemplate($tenderTemplate)
+	{
+		$this->tenderTemplate = $tenderTemplate;
+	}
+
 	public function getDailyReport()
 	{
 		return $this->dailyReport;
@@ -135,6 +155,16 @@ class Invoice
 		$this->isFiscalTransaction = false;
 	}
 	
+	public function getTenderDate()
+	{
+		return $this->tenderDate;
+	}
+
+	public function setTenderDate($tenderDate)
+	{
+		$this->tenderDate = $tenderDate;
+	}
+
 	public function isFiscalTransaction()
 	{
 		return $this->isFiscalTransaction;
