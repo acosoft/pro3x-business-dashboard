@@ -14,15 +14,23 @@ class ProductType extends AbstractType
             ->add('name', 'text', array('label' => 'Naziv artikla'))
             ->add('barcode', 'text', array('label' => 'Barkod'))
             ->add('code', 'text', array('label' => 'Interna oznaka'))
-            ->add('unitPrice', 'number', array('label' => 'Jedinična cijena'))
+			->add('inputTaxRate', 'entity', array(
+				'label' => 'Porez u nabavi', 
+				'expanded' => false, 'property' => 'display', 
+				'multiple' => false, 
+				'required' => false,
+				'class' => 'Pro3xInvoiceBundle:TaxRate'))	
+            ->add('unitPrice', 'number', array('precision' => 6, 'label' => 'Jedinična cijena'))
 			->add('taxRates', 'entity', array(
 				'label' => 'Porezne stope', 
-				'expanded' => true, 'property' => 'name', 
+				'expanded' => true, 'property' => 'display', 
 				'multiple' => true, 
 				'class' => 'Pro3xInvoiceBundle:TaxRate', 
 				'attr' => array('class' => 'pro3x_checkbox_list')))
 			->add('taxAmount', 'number', array('mapped' => false, 'label' => 'Iznos poreza', 'read_only' => true))
-			->add('taxedPrice', 'number', array('mapped' => false, 'label' => 'Ukupna cijena'))
+			->add('taxedPrice', 'number', array('precision' => 2, 'mapped' => false, 'label' => 'Prodajna cijena'))
+			->add('taxedInputPrice', 'number', array('precision' => 2,'label' => 'Nabavna cijena'))
+			->add('inputPrice', 'number', array('precision' => 6, 'label' => 'Nabavna cijena'))
             ->add('unit', 'text', array('label' => 'Mjerna jedinica'))
             
         ;

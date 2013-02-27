@@ -43,10 +43,28 @@
 		</a><a class="button" href="{{ path('daily_total', {'id': app.user.id}) }}">
 		    <span class="pro3x_icon pro3x_icon_report"></span>
 		    {{ 'Dnevni promet'|trans }}
+		</a>{% if is_granted('ROLE_TOTAL_SALES_REPORT') %}<a class="button" href="{{ path('daily_total', {'id': app.user.id}) }}">
+		    <span class="pro3x_icon pro3x_icon_total_sales"></span>
+		    {{ 'Ukupni promet'|trans }}
+		</a>{% endif %}
+	    </div>
+	</div>
+	
+	{% if is_granted('ROLE_WAREHOUSE') %}
+	<div class="ui-widget ui-corner-all ui-widget-content pro3x_dashboard_panel_box">
+	    <div class="ui-widget-header ui-corner-all pro3x_dashboard_panel_header">{{ 'Skladišno poslovanje'|trans}}</div>
+	    <div class="pro3x_dashboard_panel">
+	
+		<a class="button" href="{{ path('add_invoice', {'back': app.request.uri}) }}">
+		    <span class="pro3x_icon pro3x_icon_invoice_add"></span>
+		    {{ 'Kalkulacija'|trans }}
+		</a><a class="button" href="{{ path('add_supplier', {'back': app.request.uri}) }}">
+		    <span class="pro3x_icon pro3x_icon_client_add"></span>
+		    {{ 'Dobavljač'|trans }}
 		</a>
 	    </div>
 	</div>
-	    
+	{% endif %}
 	<div class="ui-widget ui-corner-all ui-widget-content pro3x_dashboard_panel_box">
 	    <div class="ui-widget-header ui-corner-all pro3x_dashboard_panel_header">{{ 'Sigurnosne postavke'|trans }}</div>
 	    <div class="pro3x_dashboard_panel">

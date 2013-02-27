@@ -3,6 +3,7 @@
 namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * TaxRate
@@ -38,6 +39,17 @@ class TaxRate
 	 */
 	private $taxGroup;
 	
+	
+	/**
+	 * @OneToMany(targetEntity="Product", mappedBy="inputTaxRate")
+	  */
+	private $inputProducts;
+	
+	public function getInputProducts()
+	{
+		return $this->inputProducts;
+	}
+
 	public function getTaxGroup()
 	{
 		return $this->taxGroup;
@@ -124,4 +136,9 @@ class TaxRate
     {
         return $this->rate;
     }
+	
+	public function getDisplay()
+	{
+		return $this->getName() . " " . ($this->getRate() * 100) . "%";
+	}
 }

@@ -48,7 +48,7 @@ $('.pro3x_confirm').click(function(event) {
     if(item.data('confirm') != 'skip')
     {
 	event.preventDefault();
-	$(".pro3x_dialog" ).html('<span class="pro3x_icon ' + item.data('icon') + '"></span><div class="pro3x_message">' + item.data('msg') + '</div>').data('href', item.attr('href')).dialog({
+	$(".pro3x_dialog" ).html('<span class="pro3x_icon ' + item.data('icon') + '"></span><div class="pro3x_dialog_message">' + item.data('msg') + '</div>').data('href', item.attr('href')).dialog({
 	    resizable: false,
 	    width: 420,
 	    height:210,
@@ -74,4 +74,4 @@ $('body').on('click', '.pro3x_message', function() { $(this).slideUp(); });
 $('body').on('mouseover', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.removeClass(icon.data('icon')).addClass('ui-icon-closethick'); });
 $('body').on('mouseout', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.addClass(icon.data('icon')).removeClass('ui-icon-closethick'); });
 
-$('input[type="text"]').first().focus();
+$('input[type="text"], textarea').first().focus();

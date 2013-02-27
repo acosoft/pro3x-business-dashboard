@@ -24,7 +24,7 @@ class PositionController extends AdminController
 	{
 		$handler = new \Pro3x\Online\AddHandler($this, new \Pro3x\InvoiceBundle\Entity\Position());
 		
-		$handler->setTitle('Izmjena blagajne')
+		$handler->setTitle('Nova blagajna')
 				->setIcon('position_add')
 				->setSuccessMessage('Blagajna je uspješno spremljena')
 				->setFormType(new PositionType());

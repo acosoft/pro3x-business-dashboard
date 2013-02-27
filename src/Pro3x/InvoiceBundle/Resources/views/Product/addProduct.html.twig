@@ -4,37 +4,55 @@
 
 {% block body %}
     <div class="grid_8 push_2">
-	<div class="pro3x_tabs">
-	    <ul>
-		<li><a href="#info">{{ 'Informacije'|trans }}</a></li>
-	    </ul>
-	    <div id="info">
-		<div class="pro3x_form_content">
-		    <form method="post">
-			{{ form_widget(form) }}
+	<form method="post">
+	    <div class="pro3x_tabs">
+		<ul>
+		    <li><a href="#info">{{ 'Nabava'|trans }}</a></li>
+		    <li><a href="#sales">{{ 'Prodaja'|trans }}</a></li>
+		</ul>
+		<div id="info">
+		    <div class="pro3x_form_content">
+
+			{{ form_row(form.name) }}
+			{{ form_row(form.barcode) }}
+			{{ form_row(form.code) }}
+			{{ form_row(form.inputPrice) }}
+			{{ form_row(form.inputTaxRate) }}
+			{{ form_row(form.taxedInputPrice) }}
+			
+			
+			    
 			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
 			<div class="pro3x_buttons">
 			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
 			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
 			</div>
-		    </form>
+
+		    </div>
+		</div>
+		<div id="sales">
+		    <div class="pro3x_form_content">
+			{{ form_row(form.unitPrice) }}
+			{{ form_row(form.taxRates) }}
+			{{ form_row(form.taxAmount) }}
+			{{ form_row(form.taxedPrice) }}
+			{{ form_rest(form) }}
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+			</div>
+		    </div>
 		</div>
 	    </div>
-	</div>
+	</form>
     </div>
 {% endblock %}
     
 {% block javascripts %}
-    function calculateTax(item, target, route) {
-	if(item.val() != '') {
-	    var taxes = Array();
-	    target.addClass('ajax');
 
-	    $('.pro3x_checkbox_list input').each(function() {
-		if($(this).attr('checked') == 'checked') {
-		    taxes.push($(this).val());
-		}
-	    })
+    function calculateTax(taxes, item, target, route) {
+	if(item.val() != '') {
+	    target.addClass('ajax');
 	
 	    $.get(route, {'tax-rates': taxes, 'amount': item.val()}, function(data) {
 		$('#pro3x_invoicebundle_producttype_unitPrice').val(data.amount);
@@ -44,19 +62,67 @@
 	    }, 'json');
 	}
     }
+    
+    function getTaxes() {
+	var taxes = Array();
+	
+	$('.pro3x_checkbox_list input').each(function() {
+	    if($(this).attr('checked') == 'checked') {
+		taxes.push($(this).val());
+	    }
+	})
+	
+	return taxes;
+    }
 	
     $('#pro3x_invoicebundle_producttype_unitPrice').blur(function() {
-	calculateTax($(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
+	calculateTax(getTaxes(), $(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
     });
     
     $('#pro3x_invoicebundle_producttype_taxedPrice').blur(function() {
-	calculateTax($(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
+	calculateTax(getTaxes(), $(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
     });
     
     $('.pro3x_checkbox_list input').click(function() {
-	calculateTax($('#pro3x_invoicebundle_producttype_taxedPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
+	calculateTax(getTaxes(), $('#pro3x_invoicebundle_producttype_taxedPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
     });
     
-    calculateTax($('#pro3x_invoicebundle_producttype_unitPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
+    function calculateInputTax(taxes, item, target, route) {
+	if(item.val() != '') {
+	    target.addClass('ajax');
+	
+	    $.get(route, {'tax-rates': taxes, 'amount': item.val()}, function(data) {
+		$('#pro3x_invoicebundle_producttype_inputPrice').val(data.amount);
+		$('#pro3x_invoicebundle_producttype_taxedInputPrice').val(data.total);
+		target.removeClass('ajax');
+	    }, 'json');
+	}
+    }
+    
+    function getInputTax() {
+	var taxes = Array();
+	var id = $('#pro3x_invoicebundle_producttype_inputTaxRate').val();
+	
+	if(id != '') taxes.push(id);
+	
+	return taxes;
+    }
+    
+    $('#pro3x_invoicebundle_producttype_inputPrice').blur(function() {
+	calculateInputTax(getInputTax(), $(this), $('#pro3x_invoicebundle_producttype_taxedInputPrice'), '{{ path('calculate_total_price')}}');
+    });
+    
+    $('#pro3x_invoicebundle_producttype_inputTaxRate').change(function() {
+	calculateInputTax(getInputTax(), $('#pro3x_invoicebundle_producttype_taxedInputPrice'), $('#pro3x_invoicebundle_producttype_inputPrice'), '{{ path('calculate_base_price')}}');
+    });
+    
+    $('#pro3x_invoicebundle_producttype_taxedInputPrice').blur(function() {
+	calculateInputTax(getInputTax(), $('#pro3x_invoicebundle_producttype_taxedInputPrice'), $('#pro3x_invoicebundle_producttype_inputPrice'), '{{ path('calculate_base_price')}}');
+    });
+    
+    calculateTax(getTaxes(), $('#pro3x_invoicebundle_producttype_unitPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_total_price')}}');
+    
+    calculateInputTax(getInputTax(), $('#pro3x_invoicebundle_producttype_taxedInputPrice'), $('#pro3x_invoicebundle_producttype_inputPrice'), '{{ path('calculate_base_price')}}');
+    
     
 {% endblock %}

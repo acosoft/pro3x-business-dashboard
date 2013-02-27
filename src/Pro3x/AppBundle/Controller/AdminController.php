@@ -133,6 +133,32 @@ class AdminController extends Controller
 		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Customer');
 	}
 	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\NoteRepository
+	 */
+	public function getNoteRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:Note');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\CustomerRelationRepository
+	 */
+	public function getRelationsRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:CustomerRelation');
+	}
+	
+	/**
+	 * 
+	 * @return \Pro3x\InvoiceBundle\Entity\RelationType
+	 */
+	public function getRelationTypeRepository()
+	{
+		return $this->getDoctrine()->getRepository('Pro3xInvoiceBundle:RelationType');
+	}
 	
 	public function getRegistrationKeysRepository()
 	{
@@ -347,6 +373,11 @@ class AdminController extends Controller
 	public function isInRole($role)
 	{
 		return $this->get('security.context')->isGranted('ROLE_' . strtoupper($role));
+	}
+	
+	public function isPost()
+	{
+		return $this->getRequest()->isMethod("POST");
 	}
 	
 	public function saveForm($form, $message)

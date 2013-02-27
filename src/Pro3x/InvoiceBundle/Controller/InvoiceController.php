@@ -25,10 +25,10 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class InvoiceController extends AdminController
 {
 	/**
-	 * @Route("/add", name="add_invoice")
+	 * @Route("/add/{customer}", name="add_invoice", defaults={"customer" = null})
 	 * @Template("Pro3xInvoiceBundle:Invoice:invoice.html.twig")
 	 */
-	public function addAction()
+	public function addAction($customer)
 	{
 		$invoice = new Invoice();
 		$invoice->setStatus('skica');
@@ -39,6 +39,12 @@ class InvoiceController extends AdminController
 		{
 			$this->setWarning('Vaš korisnički račun nije povezan sa niti jednom lokacijom, prije izdavanja računa morate izabrati lokaciju na kojoj ćete raditi');
 			return $this->goBack();
+		}
+		
+		if($customer != null)
+		{
+			$customer = $this->getCustomerRepository()->find($customer);
+			$invoice->setCustomer($customer);
 		}
 		
 		$position = $this->getPositionRepository()->find($this->getUser()->getPosition());

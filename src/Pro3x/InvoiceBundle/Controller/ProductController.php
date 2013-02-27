@@ -10,13 +10,11 @@ use Pro3x\Online\TableParams;
 use Symfony\Component\HttpFoundation\Response;
 use Pro3x\InvoiceBundle\Entity\TaxRate;
 
-/**
- * @Route("/admin/products")
- */
+
 class ProductController extends AdminController
 {
 	/**
-	 * @Route("/add")
+	 * @Route("/admin/products/add")
 	 * @Template("Pro3xInvoiceBundle:Product:addProduct.html.twig")
 	 */
 	public function addAction()
@@ -28,7 +26,7 @@ class ProductController extends AdminController
 	}
 	
 	/**
-	 * @Route("/calculate-total-price", name="calculate_total_price")
+	 * @Route("/admin/products/calculate-total-price", name="calculate_total_price")
 	 */
 	public function calculateTotalPriceAction()
 	{
@@ -53,7 +51,7 @@ class ProductController extends AdminController
 	}
 	
 	/**
-	 * @Route("/calculate-base-price", name="calculate_base_price")
+	 * @Route("/admin/products/calculate-base-price", name="calculate_base_price")
 	 */
 	public function calculateBasePrice()
 	{
@@ -78,7 +76,7 @@ class ProductController extends AdminController
 	
 	
 	/**
-	 * @Route("/edit/{id}")
+	 * @Route("/admin/products/edit/{id}")
 	 * @Template("Pro3xInvoiceBundle:Product:addProduct.html.twig")
 	 */
 	public function editAction($id)
@@ -93,7 +91,7 @@ class ProductController extends AdminController
 	}
 	
 	/**
-	 * @Route("/delete/{id}")
+	 * @Route("/admin/products/delete/{id}")
 	 * @Template()
 	 */
 	public function deleteAction()
@@ -102,7 +100,7 @@ class ProductController extends AdminController
 	}
 	
 	/**
-     * @Route("/{page}", name="products", defaults={"page" = 1})
+     * @Route("/admin/products/{page}", name="products", defaults={"page" = 1})
      * @Template("::table.html.twig")
      */
     public function indexAction($page)
@@ -125,10 +123,10 @@ class ProductController extends AdminController
 				
 				->addColumn('barcode', 'Barkod')
 				->addColumn('name', 'Naziv')
-				->addColumn('unitPriceFormated', 'Jedinična cijena', 0, 'right')
-				->addColumn('taxAmountFormated', 'Iznos poreza', 0, 'right')
-				->addColumn('taxedPriceFormated', 'MPC', 0, 'right')
 				->addColumn("Unit", "Jedinica")
+				->addColumn('taxedInputPrice', 'Nabavna', 0, 'right')
+				->addColumn('taxedPriceFormated', 'Prodajna', 0, 'right')
+				
 				
 				->setToolsWidth(150)
 				

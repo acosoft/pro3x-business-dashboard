@@ -10,8 +10,8 @@ body
 a:focus
     { outline: none; }    
     
-.pro3x_buttons
-    { text-align: right; }
+.pro3x_buttons, .pro3x_form_content > div.pro3x_buttons
+    { text-align: right; margin-bottom: 0px; }
     
 .pro3x_table_buttons
     { text-align: left; }
@@ -151,7 +151,7 @@ table.pro3x td.pro3x_no_data
 .pro3x_dialog .pro3x_icon
     { float: left; margin-right: 1.5em; margin-left: 0.5em; }
     
-.pro3x_dialog .pro3x_message
+.pro3x_dialog .pro3x_dialog_message
     { padding: 1em 0em; }
     
 .pro3x_message
@@ -246,15 +246,34 @@ table.pro3x td.pro3x_no_data
 .pro3x_small_icon_inventory_edit
     { background-image: url("../bundles/pro3xapp/small/database_edit.png"); }
     
+/* * * NOTES * * */
+
+.pro3x_small_icon_add_note
+    { background-image: url("../bundles/pro3xapp/small/notes_add.png"); }  
+    
+.pro3x_small_icon_edit_note
+    { background-image: url("../bundles/pro3xapp/small/notes_edit.png"); }     
+    
 /* * * reports * * */
 
 .pro3x_icon_report
-    { background-image: url("../bundles/pro3xapp/chart.png"); } 
+    { background-image: url("../bundles/pro3xapp/calendar.png"); } 
     
 .pro3x_small_icon_report
-    { background-image: url("../bundles/pro3xapp/small/chart.png"); }
+    { background-image: url("../bundles/pro3xapp/small/calendar.png"); }
     
 .pro3x_small_icon_info
+    { background-image: url("../bundles/pro3xapp/calendar-lock.png"); }
+
+/* * * total sales report * * */
+
+.pro3x_icon_total_sales
+    { background-image: url("../bundles/pro3xapp/chart.png"); } 
+    
+.pro3x_small_icon_total_sales
+    { background-image: url("../bundles/pro3xapp/small/cart.png"); }
+    
+.pro3x_icon_total_sales_delete
     { background-image: url("../bundles/pro3xapp/chart_info.png"); }
 
     
@@ -395,10 +414,10 @@ a.ui-state-active:hover
     { line-height: 16px; }
     
 .ajax
-    { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }
+    { background-image: url("../bundles/pro3xapp/commands/ajax-loader.gif"); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }
 
 .pro3x_ajax
-    { background-image: url(../bundles/pro3xapp/commands/ajax-loader.gif); display: inline-block; width: 16px; height: 11px; float: right; margin-top: 0.25em; }
+    { background-image: url("../bundles/pro3xapp/commands/ajax-loader.gif"); display: inline-block; width: 16px; height: 11px; float: right; margin-top: 0.25em; }
     
 input[type="text"].pro3x_query
     { width: 54.6em; }
@@ -408,3 +427,18 @@ input[type="text"].pro3x_query
     
 a.ui-state-focus
     { color: #1D5987 !important; }
+    
+.pro3x_table_buttons form.pro3x
+    { display: inline-block; }
+    
+.pro3x_table_buttons form.pro3x input[type="text"].pro3x 
+    { line-height: 16px; padding: 4px; width: 200px; }
+   
+form.pro3x_separate_right
+    { border-right: solid 1px #449ADC; padding-right: 8px; margin-right: 5px; }
+    
+form.pro3x select.pro3x
+    { height: 28px; width: 200px; }
+    
+textarea.extra-height	
+    { height: 350px; }

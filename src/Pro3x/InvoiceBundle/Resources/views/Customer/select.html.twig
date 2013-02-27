@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Popis Kupaca'|trans }}{% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Izbor | %relation%'|title|trans({'%relation%': relation.description}) }}
+| <a href="{{ path('edit_client', {'id': owner.id, 'back': app.request.uri}) }}">{{ owner.descriptionFormated }}</a>
+{% endblock %}
 
 {% block body %}
     <div class="grid_12">
@@ -25,20 +27,8 @@
 		    <div>{{ client.email }}</div>
 		    <div>{{ client.phones|join(', ') }}</div>
 		</td>
-		<td class="pro3x_tools" style="width: 290px;">
-		    <a href="{{ path('add_invoice', {'customer': client.id, 'back': app.request.uri}) }}">{{ '+račun'|trans }}</a>
-		    {% if is_granted('ROLE_RELATIONS') %}
-		    <a href="{{ path('customer_relations', {'id': client.id, 'back': app.request.uri}) }}">{{ 'relacije'|trans }}</a>
-		    {% endif %}
-		    {% if is_granted('ROLE_NOTES') %}
-		    <a href="{{ path('customer_notes', {'id': client.id, 'back': app.request.uri}) }}">{{ 'bilješke'|trans }}</a>
-		    {% endif %}
-		    <a href="{{ path('customer_history', {'customer': client.id, 'back': app.request.uri }) }}">{{ "kartica"|trans }}</a>
-		    <a href="{{ path('edit_client', {'id': client.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
-		    <a class="pro3x_confirm" 
-		       data-icon="pro3x_icon_client_delete" 
-		       data-msg="{{ 'Jeste li sigurni da želite izbrisati kupca <b>%name%</b>?'|trans({ '%name%': client.name }) }}" 
-		       href="{{ path('delete_client', {'id': client.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+		<td class="pro3x_tools" style="width: 200px;">
+		    <a href="{{ path('add_customer_relation', {'owner': owner.id, 'related': client.id, 'relation': app.request.get('relation'), 'back': app.request.get('back')}) }}">odaberi</a>
 		</td>
 	    </tr>
 	{% else %}
@@ -51,12 +41,12 @@
 
     <div class="grid_8">
 	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
-	    <form class="pro3x pro3x_separate_right" method="POST">
+	    <form action="{{ path('select_by_customer', {'owner': owner.id, 'relation': relation.id, 'back': app.request.get('back')}) }}" class="pro3x pro3x_separate_right" method="POST">
 		<input class="pro3x" type="text" name="search" value="{{ search }}" />
 		<input class="button" type="submit" name="action" value="Traži" />
 	    </form>
 	    <input type="button" data-href="{{ path('add_client', {'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />
-	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
+	    <input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="{{ 'Odustani'|trans }}" />
 	</div>
     </div>
 

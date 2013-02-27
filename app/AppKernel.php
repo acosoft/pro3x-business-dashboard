@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Pro3x\InvoiceBundle\Pro3xInvoiceBundle(),
 			new Acme\DemoBundle\AcmeDemoBundle(),
             new Pro3x\RegistrationKeysBundle\Pro3xRegistrationKeysBundle(),
+            new Pro3x\WarehouseBundle\Pro3xWarehouseBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

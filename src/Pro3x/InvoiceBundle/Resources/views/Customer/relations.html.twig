@@ -1,0 +1,63 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Relacije'|trans }} | <a href="{{ path('edit_client', { 'id': customer.id, 'back': app.request.uri }) }}">{{ customer.descriptionFormated }}</a> {% endblock %}
+
+{% block body %}
+    <div class="grid_12">
+	
+	{% include '::message.html.twig' %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Informacije o kupcu'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 300px;">{{ 'Kontakt informacije'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">{{ 'Alati'|trans }}</th>
+		</tr>
+	    </thead>
+	{% for relation in customer.relations %}
+	{% set client = relation.related %}
+	    <tr>
+		<td>
+		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		    <div>{{ client.description|join(', ') }}</div>
+		</td>
+		<td>
+		    <div>{{ client.email }}</div>
+		    <div>{{ client.phones|join(', ') }}</div>
+		</td>
+		<td class="pro3x_tools">
+		    <a class="pro3x_confirm" 
+		       data-icon="pro3x_icon_client_delete" 
+		       data-msg="{{ 'Jeste li sigurni da želite izbrisati relaciju <b>%owner%</b> sa <b>%name%</b>?'|trans({ '%name%': client.name, '%owner%': customer.name }) }}" 
+		       href="{{ path('delete_relation', {'id': relation.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">{{ 'Nema rezultata'|trans }}</td>
+	    </tr>
+	{% endfor %}
+	</table>
+    </div>
+
+    <div class="grid_8">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <form class="pro3x pro3x_separate_right" action="{{ path('select_customer', {'owner': app.request.get('id')}) }}" method="GET">
+		<input type="hidden" name="back" value="{{ app.request.uri }}" />
+		<select name="relation" class="pro3x">
+		    {% for relation in relations %}
+			<option value="{{ relation.id }}">{{ relation.description }}</option>
+		    {% endfor %}
+		</select>
+		<input type="submit" class="button" value="{{ 'Dodaj'|trans }}" />
+	    </form>
+	    <input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="{{ 'Odustani'|trans }}" />
+	</div>
+    </div>
+
+    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

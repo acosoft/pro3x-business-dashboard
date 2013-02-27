@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Bilješke'|trans }} | <a href="{{ path('edit_client', { 'id': customer.id, 'back': app.request.uri }) }}">{{ customer.descriptionFormated }}</a> {% endblock %}
+
+{% block body %}
+    <div class="grid_12">
+	
+	{% include '::message.html.twig' %}
+	
+	<table class="ui-widget-content ui-corner-all pro3x">
+	    <thead>
+		<tr>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Bilješka'|trans }}</th>
+		</tr>
+	    </thead>
+	{% for note in customer.notes %}
+	    <tr>
+		<td class="pro3x_tools">
+		    <div>{{ note.created|date('d.m.Y') }} | 
+			<a href="{{ path('edit_customer_note', {'id': note.id, 'back': app.request.uri }) }}">izmjeni</a>
+			<a class="pro3x_confirm" 
+			    data-icon="pro3x_icon_client_delete" 
+			    data-msg="{{ 'Jeste li sigurni da želite izbrisati bilješku?'|trans }}" 
+			    href="{{ path('delete_customer_note', {'id': note.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+		    </div>
+		    <div>{{ note.content }}</div>
+		</td>
+	    </tr>
+	{% else %}
+	    <tr>
+		<td class="pro3x_no_data" colspan="100">{{ 'Nema rezultata'|trans }}</td>
+	    </tr>
+	{% endfor %}
+	</table>
+    </div>
+
+    <div class="grid_8">
+	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+	    <input type="button" data-href="{{ path('add_customer_note', { 'id': customer.id, 'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />
+	    <input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="{{ 'Odustani'|trans }}" />
+	</div>
+    </div>
+
+    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

@@ -1,3 +1,8 @@
+pro3x_warehouse:
+    resource: "@Pro3xWarehouseBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 pro3x_registration_keys:
     resource: "@Pro3xRegistrationKeysBundle/Controller/"
     type:     annotation

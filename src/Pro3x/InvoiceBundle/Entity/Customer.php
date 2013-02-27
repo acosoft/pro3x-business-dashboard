@@ -4,12 +4,19 @@ namespace Pro3x\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
+use Pro3x\WarehouseBundle\Entity\Receipt;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
  * Client
  *
  * @ORM\Table(name="pro3x_clients")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\CustomerRepository")
+ * @InheritanceType("SINGLE_TABLE")
+ * @DiscriminatorColumn(name="discr", type="string")
+ * @DiscriminatorMap({"customer" = "Customer", "supplier" = "\Pro3x\WarehouseBundle\Entity\Supplier"})
  */
 class Customer
 {
@@ -67,6 +74,31 @@ class Customer
 	  */
 	private $registrationKeys;
 	
+	/**
+	 * @OneToMany(targetEntity="\Pro3x\WarehouseBundle\Entity\Receipt", mappedBy="customer")
+	  */
+	private $receipts;
+	
+	/**
+	 * @OneToMany(targetEntity="CustomerRelation", mappedBy="owner")
+	  */
+	private $relations;
+	
+	/**
+	 * @OneToMany(targetEntity="Note", mappedBy="customer")
+	  */
+	private $notes;
+	
+	public function getNotes()
+	{
+		return $this->notes;
+	}
+
+	public function getRelations()
+	{
+		return $this->relations;
+	}
+
 	public function getInvoices()
 	{
 		return $this->invoices;

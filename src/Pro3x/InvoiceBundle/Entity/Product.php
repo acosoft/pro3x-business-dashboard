@@ -5,6 +5,7 @@ namespace Pro3x\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * Product
@@ -47,6 +48,21 @@ class Product
 	 * @ORM\Column(type="string")
 	 */
 	private $unit;
+	
+	/**
+	 * @ORM\Column(type="decimal", precision=14, scale=6)
+	 */
+	private $inputPrice;
+	
+	/**
+	 * @ORM\Column(type="decimal", precision=14, scale=2)
+	 */
+	private $taxedInputPrice;
+	
+	/**
+	 * @OneToMany(targetEntity="\Pro3x\WarehouseBundle\Entity\ReceiptItem", mappedBy="product")
+	  */
+	private $receiptItems;
 
 	/**
 	 * @OneToMany(targetEntity="\Pro3x\RegistrationKeysBundle\Entity\RegistrationKey", mappedBy="product")
@@ -55,6 +71,26 @@ class Product
 	
 	private $numeric;
 	
+	public function getInputPrice()
+	{
+		return $this->inputPrice;
+	}
+
+	public function setInputPrice($inputPrice)
+	{
+		$this->inputPrice = $inputPrice;
+	}
+
+	public function getTaxedInputPrice()
+	{
+		return $this->taxedInputPrice;
+	}
+
+	public function setTaxedInputPrice($taxedInputPrice)
+	{
+		$this->taxedInputPrice = $taxedInputPrice;
+	}
+
 	/**
 	 * 
 	 * @return \Pro3x\Online\Numeric
@@ -76,12 +112,35 @@ class Product
 	 * @ORM\JoinTable(name="pro3x_product_tax_rates")
 	 */
 	private $taxRates;
+	
+	/**
+	 * @ManyToOne(targetEntity="TaxRate", inversedBy="inputProducts")
+	  */
+	private $inputTaxRate;
+	
+	/**
+	 * 
+	 * @return TaxRate
+	 */
+	public function getInputTaxRate()
+	{
+		return $this->inputTaxRate;
+	}
+
+	public function setInputTaxRate($inputTaxRate)
+	{
+		$this->inputTaxRate = $inputTaxRate;
+	}
 
 	function __construct()
 	{
 		$this->unitPrice = 0;
 		$this->taxRates = new ArrayCollection();
 		$this->unit = "kom";
+		
+		$this->inputPrice = 0;
+		$this->taxedInputPrice = 0;
+		$this->inputTaxRate = null;
 	}
 
     /**
