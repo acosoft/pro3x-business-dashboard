@@ -18,6 +18,8 @@ class CustomerType extends AbstractType
             ->add('phone', 'text', array('label' => 'Telefon', 'required' => false))
             ->add('cellPhone', 'text', array('label' => 'Mobitel', 'required' => false))
             ->add('email', 'text', array('label' => 'Email', 'required' => false))
+            ->add('message', 'textarea', array('label' => 'Poruka', 'required' => false))
+            ->add('warning', 'textarea', array('label' => 'Upozorenje', 'required' => false))
         ;
     }
 

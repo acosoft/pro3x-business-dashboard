@@ -38,7 +38,7 @@ class Note
 	private $customer;
 	
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="text")
 	 */
 	private $content;
 

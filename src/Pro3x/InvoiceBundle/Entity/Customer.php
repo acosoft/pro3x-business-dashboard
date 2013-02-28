@@ -75,7 +75,7 @@ class Customer
 	private $registrationKeys;
 	
 	/**
-	 * @OneToMany(targetEntity="\Pro3x\WarehouseBundle\Entity\Receipt", mappedBy="customer")
+	 * @OneToMany(targetEntity="\Pro3x\WarehouseBundle\Entity\Receipt", mappedBy="supplier")
 	  */
 	private $receipts;
 	
@@ -89,6 +89,76 @@ class Customer
 	  */
 	private $notes;
 	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $accomodation;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $ownership;
+	
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $message;
+	
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $warning;
+	
+	public function getMessage()
+	{
+		return $this->message;
+	}
+
+	public function setMessage($message)
+	{
+		$this->message = $message;
+	}
+
+	public function getWarning()
+	{
+		return $this->warning;
+	}
+
+	public function setWarning($warning)
+	{
+		$this->warning = $warning;
+	}
+
+	public function getAccomodation()
+	{
+		return $this->accomodation;
+	}
+
+	public function setAccomodation($accomodation)
+	{
+		$this->accomodation = $accomodation;
+	}
+
+	public function getOwnership()
+	{
+		return $this->ownership;
+	}
+
+	public function setOwnership($ownership)
+	{
+		$this->ownership = $ownership;
+	}
+
+	public function getRegistrationKeys()
+	{
+		return $this->registrationKeys;
+	}
+
+	public function getReceipts()
+	{
+		return $this->receipts;
+	}
+
 	public function getNotes()
 	{
 		return $this->notes;

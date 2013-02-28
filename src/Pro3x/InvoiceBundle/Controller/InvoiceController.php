@@ -395,13 +395,15 @@ class InvoiceController extends AdminController
 			$page = $this->getRequest()->get('page', 1);
 
 			$repository = $this->getInvoiceRepository(); 
-			$count = $repository->countByUser($id);
+			
 			
 			//$params->addColumn('sequenceFormated', 'ID');
 			$params->addTemplateColumn('Id', 'Pro3xInvoiceBundle:Invoice:idColumn.html.twig');
 			
 			if($this->isInRole('edit_all_invoices'))
 			{
+				$count = $this->getInvoiceRepository()->count();
+				
 				if($this->getUser()->getId() == $id)
 				{
 					$queryParams = array();
@@ -420,6 +422,8 @@ class InvoiceController extends AdminController
 			}
 			else
 			{
+				$count = $repository->countByUser($id);
+				
 				$params
 					->addColumn('dateTimeFormated', 'Datum', 125, 'center')
 					->addColumn('customer.name', 'Kupac')

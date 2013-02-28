@@ -155,6 +155,24 @@ class Invoice
 		$this->isFiscalTransaction = false;
 	}
 	
+	public function hasCustomerMessage()
+	{
+		if($this->getCustomer() != null && $this->getCustomer()->getMessage() != '')
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public function hasCustomerWarning()
+	{
+		if($this->getCustomer() != null && $this->getCustomer()->getWarning() != '')
+			return true;
+		else
+			return false;
+	}
+	
 	public function getTenderDate()
 	{
 		return $this->tenderDate;

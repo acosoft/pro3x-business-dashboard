@@ -27,7 +27,7 @@ class CustomerController extends AdminController
 	
 	/**
 	 * @Route("/edit/{id}", name="edit_client")
-	 * @Template("::edit.html.twig")
+	 * @Template("Pro3xInvoiceBundle:Customer:edit.html.twig")
 	 */
 	public function editAction($id)
 	{
