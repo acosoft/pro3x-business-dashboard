@@ -43,7 +43,7 @@
 		</a><a class="button" href="{{ path('daily_total', {'id': app.user.id}) }}">
 		    <span class="pro3x_icon pro3x_icon_report"></span>
 		    {{ 'Dnevni promet'|trans }}
-		</a>{% if is_granted('ROLE_TOTAL_SALES_REPORT') %}<a class="button" href="{{ path('daily_total', {'id': app.user.id}) }}">
+		</a>{% if is_granted('ROLE_TOTAL_SALES_REPORT') %}<a class="button" href="{{ path('select_total_sales_range', {'id': app.user.id}) }}">
 		    <span class="pro3x_icon pro3x_icon_total_sales"></span>
 		    {{ 'Ukupni promet'|trans }}
 		</a>{% endif %}

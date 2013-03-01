@@ -51,18 +51,19 @@
 	</style>
     </head>
     <body>
-	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print();">Ispis računa</a>
-		<a href="{{ app.request.get('back') }}">Zatvori</a></div></div>
+	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print();">Ispis izvještaja</a>
+		<a href="{{ path('select_total_sales_range') }}">Zatvori</a></div></div>
 	
-	<div style="width: 210mm; height: 305mm; margin: 0mm auto; cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
+	<div style="width: 210mm; height: 305mm; margin: 0mm auto; cursor: pointer;" title="Klikni bilo gdje za ispis izvještaja" onclick="window.print();">
 	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
 		{{ logo|raw }}
 		{{ company|raw }}
 		<div style="clear: both"></div>
 	    </div>
 
-	    <h1 style="margin-bottom: 0mm;">Dnevni promet po proizvodima i uslugama</h1>
-	    <div>{{ operator.displayName }}, {{ created|date('d.m.Y, H:i\\h') }}</div>
+	    <h1 style="margin-bottom: 0mm;">Ukupni promet po proizvodima i uslugama</h1>
+	    <div>{{ location.name }}: od {{ start|date('d.m.Y') }} do {{ end|date('d.m.Y') }} 
+		| {{ operator.displayName }}, {{ created|date('d.m.Y, H:i\\h') }}</div>
 	   
 	    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px; margin-bottom: 10mm;">
 		<thead>

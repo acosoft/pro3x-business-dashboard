@@ -60,3 +60,5 @@ ALTER TABLE pro3x_customer_notes ADD CONSTRAINT FK_DF405AC09395C3F3 FOREIGN KEY 
 ALTER TABLE pro3x_customer_notes CHANGE content content LONGTEXT NOT NULL;
 
 ALTER TABLE pro3x_clients ADD accomodation VARCHAR(255) DEFAULT NULL, ADD ownership VARCHAR(255) DEFAULT NULL, ADD message LONGTEXT DEFAULT NULL, ADD warning LONGTEXT DEFAULT NULL;
+
+INSERT INTO pro3x_relation_type(description) values('Otac'),('Sin'),('Majka'),('Kćer');

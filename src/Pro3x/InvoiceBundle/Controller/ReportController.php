@@ -85,6 +85,57 @@ class ReportController extends AdminController
 		return array('customer' => $customerInfo, 'data' => $data, 'operator' => $this->getUser(), 'created' => date('now'));
 	}
 	
+	private function getTotalSalesRangeForm()
+	{
+		return $this->createFormBuilder()
+				->add('location', 'entity', array(
+					'label' => 'Naziv Lokacije', 
+					'expanded' => false, 'property' => 'name', 
+					'multiple' => false, 
+					'class' => 'Pro3xInvoiceBundle:Location'))
+				->add('start_date', 'date', array('empty_value' => 'blank', 'widget' => 'single_text', 'format' => 'dd.MM.yyyy', 'label' => 'Početni datum', 'required' => true, 'attr' => array('class' => 'pro3x_date')))
+				->add('end_date', 'date', array('empty_value' => 'blank', 'widget' => 'single_text', 'format' => 'dd.MM.yyyy', 'label' => 'Završni datum', 'required' => true, 'attr' => array('class' => 'pro3x_date')))
+				->getForm();
+	}
+	
+	/**
+	 * @Route("/total-sales", name="select_total_sales_range")
+	 * @Template()
+	 */
+	public function selectTotalSalesRangeAction()
+	{
+		$form = $this->getTotalSalesRangeForm();
+		return array('form' => $form->createView());
+	}
+	
+	/**
+	 * @Route("/print-total-sales", name="print_total_sales_report")
+	 * @Template()
+	 */
+	public function printTotalSalesReportAction(\Symfony\Component\HttpFoundation\Request $request)
+	{
+		$operater = $this->getUser();
+		
+		$form = $this->getTotalSalesRangeForm();
+		$form->bind($request);
+		
+		$range = $form->getData();
+		
+		$start = $range['start_date'];
+		$end = $range['end_date'];
+		$location = $range['location'];
+		
+		$data = $this->getProductReportQuery()
+				->join('i.position', 'p')
+				->where('p.location = :location AND i.created BETWEEN :start AND :end')
+				->setParameter('location', $location)
+				->setParameter('start', $start)
+				->setParameter('end', $end)->getQuery()->getResult();
+		
+		return array('location' => $location, 'operator' => $operater, 
+			'start' => $start, 'end' => $end, 'data' => $data, 'created' => new \DateTime('now'));
+	}
+	
 	/**
 	 * @Route("/lock-position/{id}", name="lock_position")
 	 */
@@ -184,14 +235,18 @@ class ReportController extends AdminController
 		return $params;
 	}
 	
-	public function buildProductReport($user, $report)
+	private function getProductReportQuery()
 	{
-		$query = $this->getInvoiceRepository()->createQueryBuilder('i')
+		return $this->getInvoiceRepository()->createQueryBuilder('i')
 				->join('i.items', 'ii')
-				->select('ii.description AS description, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
+				->select('ii.description AS description, ii.unit, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
 						. 'sum(ii.totalTaxedPrice) AS totalPrice, sum(ii.discountAmount) AS discount, sum(ii.dicountPrice) AS total')
-				->groupBy('ii.description, ii.unitPrice');
-		
+				->groupBy('ii.description, ii.unit, ii.unitPrice');
+	}
+	
+	private function buildProductReport($user, $report)
+	{
+		$query = $this->getProductReportQuery();
 		$selectedDate = $this->appendWhere($query, $user, $report);
 		
 		return array('data' => $query->getQuery()->getResult(), 'created' => $selectedDate);

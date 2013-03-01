@@ -18,7 +18,7 @@
 	{% for client in clients %}
 	    <tr>
 		<td>
-		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}{% if client.birthday %} | {{ client.birthday|date('d.m.Y') }}{% endif %}</div>{% endif %}
 		    <div>{{ client.description|join(', ') }}</div>
 		</td>
 		<td>

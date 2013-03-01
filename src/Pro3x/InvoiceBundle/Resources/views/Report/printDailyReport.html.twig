@@ -51,16 +51,13 @@
 	</style>
     </head>
     <body>
-	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print(); return false;">Ispis računa</a>
+	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;"><a style="float: left;" href="javascript: window.print();">Ispis računa</a>
 		<a href="{{ app.request.get('back') }}">Zatvori</a></div></div>
 	
-	<div style="width: 210mm; height: 305mm; margin: 0mm auto;" style="cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
+	<div style="width: 210mm; height: 305mm; margin: 0mm auto; cursor: pointer;" title="Klikni bilo gdje za ispis računa" onclick="window.print();">
 	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
-		<img src="{{ asset('customer/logo.jpg') }}" style="width: 25mm" />
-		<div style="float: right; text-align: right;">
-		    <div>Socijalna Samoposluga</div>
-		    <div>Brajda 7, 51000 Rijeka</div>
-		</div>
+		{{ logo|raw }}
+		{{ company|raw }}
 		<div style="clear: both"></div>
 	    </div>
 
@@ -78,13 +75,13 @@
 		{% for  item in items %}
 			<tr>
 			    <td style="padding-left: 0;">{{ item.transactionType }}</td>
-			    <td style="text-align: right;">{{ item.total }}</td>
+			    <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>
 	    </table>
 	    <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 3mm;">
-		<h2>Ukupni promet: {{ total }} kn</h2>
+		<h2>Ukupni promet: {{ total|number_format(2, ',', '.') }} kn</h2>
 	    </div>
 
 	</div>

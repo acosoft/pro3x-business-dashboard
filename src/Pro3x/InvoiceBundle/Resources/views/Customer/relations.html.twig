@@ -11,6 +11,7 @@
 	    <thead>
 		<tr>
 		    <th class="ui-widget-header ui-corner-all">{{ 'Informacije o kupcu'|trans }}</th>
+		    <th class="ui-widget-header ui-corner-all">{{ 'Relacija'|trans }}</th>
 		    <th class="ui-widget-header ui-corner-all" style="width: 300px;">{{ 'Kontakt informacije'|trans }}</th>
 		    <th class="ui-widget-header ui-corner-all" style="width: 200px;">{{ 'Alati'|trans }}</th>
 		</tr>
@@ -19,9 +20,10 @@
 	{% set client = relation.related %}
 	    <tr>
 		<td>
-		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}</div>{% endif %}
+		    {% if client.taxNumber %}<div>OIB: {{ client.taxNumber }}{% if client.birthday %} | {{ client.birthday|date('d.m.Y') }}{% endif %}</div>{% endif %}
 		    <div>{{ client.description|join(', ') }}</div>
 		</td>
+		<td>{{ relation.relationType.description }}</td>
 		<td>
 		    <div>{{ client.email }}</div>
 		    <div>{{ client.phones|join(', ') }}</div>

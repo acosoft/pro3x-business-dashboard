@@ -8,6 +8,7 @@
 	    <div class="pro3x_tabs">
 		<ul>
 		    <li><a href="#info">{{ 'Informacije'|trans }}</a></li>
+		    <li><a href="#accomodation">{{ 'Smještaj'|trans }}</a></li>
 		    <li><a href="#messages">{{ 'Poruke'|trans }}</a></li>
 		</ul>
 		<div id="info">
@@ -20,15 +21,26 @@
 			{{ form_row(form.phone) }}
 			{{ form_row(form.cellPhone) }}
 			{{ form_row(form.email) }}
+			{{ form_row(form.birthday) }}
 			
-			
-			    
-			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
 			<div class="pro3x_buttons">
 			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
 			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
 			</div>
 
+		    </div>
+		</div>
+		<div id="accomodation">
+		    <div class="pro3x_form_content">
+			{{ form_row(form.accomodation) }}
+			{{ form_row(form.otherAccomodation) }}
+			{{ form_row(form.ownership) }}
+			{{ form_row(form.otherOwnership) }}
+			    
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+			</div>
 		    </div>
 		</div>
 		<div id="messages">
@@ -44,5 +56,31 @@
 	    </div>
 	</form>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    $('#pro3x_invoicebundle_customertype_accomodation, #pro3x_invoicebundle_customertype_ownership').change(function() {
+	updateOther();
+    });
+
+    function updateOther() {
+	if($('#pro3x_invoicebundle_customertype_accomodation').val() == 'ostalo') {
+	    $('#pro3x_invoicebundle_customertype_otherAccomodation').prop('disabled', false);
+	}
+	else {
+	    $('#pro3x_invoicebundle_customertype_otherAccomodation').val('').prop('disabled', true);
+	}
+	
+	if($('#pro3x_invoicebundle_customertype_ownership').val() == 'ostalo') {
+	    $('#pro3x_invoicebundle_customertype_otherOwnership').prop('disabled', false);
+	}
+	else {
+	    $('#pro3x_invoicebundle_customertype_otherOwnership').val('').prop('disabled', true);
+	}
+    }
+    
+    updateOther();
+    
 {% endblock %}
     

@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  */
 class Customer
 {
-    /**
+	/**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -97,7 +97,17 @@ class Customer
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
+	private $otherAccomodation;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
 	private $ownership;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $otherOwnership;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true)
@@ -109,6 +119,41 @@ class Customer
 	 */
 	private $warning;
 	
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	private $birthday = null;
+	
+	public function getBirthday()
+	{
+		return $this->birthday;
+	}
+
+	public function setBirthday($birthday)
+	{
+		$this->birthday = $birthday;
+	}
+
+	public function getOtherAccomodation()
+	{
+		return $this->otherAccomodation;
+	}
+
+	public function setOtherAccomodation($otherAccomodation)
+	{
+		$this->otherAccomodation = $otherAccomodation;
+	}
+
+	public function getOtherOwnership()
+	{
+		return $this->otherOwnership;
+	}
+
+	public function setOtherOwnership($otherOwnership)
+	{
+		$this->otherOwnership = $otherOwnership;
+	}
+
 	public function getMessage()
 	{
 		return $this->message;

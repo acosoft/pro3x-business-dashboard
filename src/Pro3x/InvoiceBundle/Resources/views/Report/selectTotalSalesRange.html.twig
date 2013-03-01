@@ -1,0 +1,35 @@
+{% extends '::form.html.twig' %}
+
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_total_sales"></span>Pregled prometa{% endblock %}
+
+{% block body %}
+    <div class="grid_8 push_2">
+	<form action="{{ path('print_total_sales_report') }}" method="post">
+	    <div class="pro3x_tabs">
+		<ul>
+		    <li><a href="#info">{{ 'Izbor perioda'|trans }}</a></li>
+		</ul>
+		<div id="info">
+		    <div class="pro3x_form_content">
+
+			{{ form_row(form.location) }}
+			{{ form_row(form.start_date) }}
+			{{ form_row(form.end_date) }}
+			
+			{{ form_rest(form) }}
+			<div class="pro3x_buttons">
+			    <input type="submit" class="button" value="{{ 'Prikaži'|trans }}" />
+			    <input type="button" class="button link" data-href="{{ path('dashboard') }}" value="{{ 'Odustani'|trans }}" />
+			</div>
+
+		    </div>
+		</div>
+	    </div>
+	</form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+{% endblock %}
+    

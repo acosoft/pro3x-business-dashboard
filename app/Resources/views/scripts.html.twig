@@ -74,4 +74,6 @@ $('body').on('click', '.pro3x_message', function() { $(this).slideUp(); });
 $('body').on('mouseover', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.removeClass(icon.data('icon')).addClass('ui-icon-closethick'); });
 $('body').on('mouseout', '.pro3x_message', function() { var icon = $(this).find('span.ui-icon'); icon.addClass(icon.data('icon')).removeClass('ui-icon-closethick'); });
 
-$('input[type="text"], textarea').first().focus();
+$('.pro3x_date').datepicker({'dateFormat': 'dd.mm.yy', monthNames: ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac']});
+
+$('input[type="text"], textarea, select').first().focus();

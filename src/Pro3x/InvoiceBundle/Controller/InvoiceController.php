@@ -437,7 +437,7 @@ class InvoiceController extends AdminController
 				$showPosition = true;
 			}
 			
-			$items = $repository->findBy($queryParams, array('sequence' => 'DESC'), $this->getPageSize(), $this->getPageOffset($page));
+			$items = $repository->findBy($queryParams, array('id' => 'DESC'), $this->getPageSize(), $this->getPageOffset($page));
 
 			$viewParams = $params->setTitle('Popis računa')
 					->setIcon('invoice')
