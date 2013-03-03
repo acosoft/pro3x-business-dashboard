@@ -54,6 +54,7 @@
 	    <form class="pro3x pro3x_separate_right" method="POST">
 		<input class="pro3x" type="text" name="search" value="{{ search }}" />
 		<input class="button" type="submit" name="action" value="Traži" />
+		<a href="{{ path('print_customers', {'search': search, 'back': app.request.uri}) }}" class="button">Ispis</a>
 	    </form>
 	    <input type="button" data-href="{{ path('add_client', {'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />
 	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />

@@ -17,7 +17,7 @@ class CustomerRepository extends EntityRepository
 		return $this->createQueryBuilder('c')->select('count(c)')->getQuery()->getSingleScalarResult();
 	}
 	
-	public function findBySearchQuery($search, $offset, $pageSize)
+	public function findBySearchQuery($search, $offset = null, $pageSize=null)
 	{
 		$parsers = array();
 		
@@ -61,9 +61,15 @@ class CustomerRepository extends EntityRepository
 
 		$itemCount = $builder->select('COUNT(c)')->getQuery()->getSingleScalarResult();
 
-		$clients = $builder->select('c')
-				->setFirstResult($offset)->setMaxResults($pageSize)
-				->orderBy('c.name', 'ASC')
+		$builder->select('c');
+		
+		if($offset != null)
+			$builder->setFirstResult($offset);
+		
+		if($pageSize != null)
+			$builder->setMaxResults($pageSize);
+		
+		$clients = $builder->orderBy('c.name', 'ASC')
 				->getQuery()->execute();
 		
 		return array('items' => $clients, 'count' => $itemCount);

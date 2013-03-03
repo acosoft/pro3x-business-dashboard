@@ -137,6 +137,17 @@ class ReportController extends AdminController
 	}
 	
 	/**
+	 * @Route("/print-customers", name="print_customers")
+	 * @Template()
+	 */
+	public function printCustomersAction()
+	{
+		$search = $this->getParam('search');
+		$result = $this->getCustomerRepository()->findBySearchQuery($search);
+		return array('data' => $result['items'], 'operator' => $this->getUser());
+	}
+	
+	/**
 	 * @Route("/lock-position/{id}", name="lock_position")
 	 */
 	public function lockInvoicesAction($id)
