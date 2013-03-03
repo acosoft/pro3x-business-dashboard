@@ -24,7 +24,9 @@
 			    href="{{ path('delete_customer_note', {'id': note.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
 		    </div>
 		    <div>{{ note.content }}</div>
+		    {% if note.createdBy %}
 		    <div class="pro3x_note_writer">Napisao: {{ note.createdBy.displayName }}</div>
+		    {% endif %}
 		</td>
 	    </tr>
 	{% else %}
