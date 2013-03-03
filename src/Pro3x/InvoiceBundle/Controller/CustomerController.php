@@ -64,7 +64,7 @@ class CustomerController extends AdminController
 				{
 					$mNote = new \Pro3x\InvoiceBundle\Entity\Note();
 					$mNote->setCustomer($client);
-					$mNote->setContent($message);
+					$mNote->setContent($client->getMessage());
 					$mNote->setCreatedBy($this->getUser());
 					$mNote->setNoteType('message');
 
@@ -75,7 +75,7 @@ class CustomerController extends AdminController
 				{
 					$wNote = new \Pro3x\InvoiceBundle\Entity\Note();
 					$wNote->setCustomer($client);
-					$wNote->setContent($warning);
+					$wNote->setContent($client->getWarning());
 					$wNote->setCreatedBy($this->getUser());
 					$wNote->setNoteType('warning');
 
