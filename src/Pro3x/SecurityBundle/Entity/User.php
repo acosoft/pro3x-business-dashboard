@@ -57,6 +57,11 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	  */
 	protected $invoices;
 	
+	/**
+	 * @OneToMany(targetEntity="Pro3x\InvoiceBundle\Entity\Note", mappedBy="createdBy")
+	  */
+	private $notes;
+	
 	public function getPosition()
 	{
 		return $this->position;

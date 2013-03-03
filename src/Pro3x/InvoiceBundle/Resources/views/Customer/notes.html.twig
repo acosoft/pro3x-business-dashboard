@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_client"></span>{{ 'Bilješke'|trans }} | <a href="{{ path('edit_client', { 'id': customer.id, 'back': app.request.uri }) }}">{{ customer.descriptionFormated }}</a> {% endblock %}
+{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_note"></span>{{ 'Bilješke'|trans }} | <a href="{{ path('edit_client', { 'id': customer.id, 'back': app.request.uri }) }}">{{ customer.descriptionFormated }}</a> {% endblock %}
 
 {% block body %}
     <div class="grid_12">
@@ -15,7 +15,7 @@
 	    </thead>
 	{% for note in customer.notes %}
 	    <tr>
-		<td class="pro3x_tools">
+		<td class="pro3x_tools{% if note.noteType %} pro3x_note_{{ note.noteType }}{% endif %}">
 		    <div>{{ note.created|date('d.m.Y - H:i') }}h | 
 			<a href="{{ path('edit_customer_note', {'id': note.id, 'back': app.request.uri }) }}">izmjeni</a>
 			<a class="pro3x_confirm" 
@@ -24,6 +24,7 @@
 			    href="{{ path('delete_customer_note', {'id': note.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
 		    </div>
 		    <div>{{ note.content }}</div>
+		    <div class="pro3x_note_writer">Napisao: {{ note.createdBy.displayName }}</div>
 		</td>
 	    </tr>
 	{% else %}

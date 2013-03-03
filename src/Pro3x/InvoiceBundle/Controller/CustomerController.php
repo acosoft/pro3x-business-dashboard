@@ -20,10 +20,77 @@ class CustomerController extends AdminController
 	 */
 	public function addAction()
 	{
-		$form = $this->createForm(new CustomerType());
-		if($result = $this->saveForm($form, 'Novi kupac je uspješno kreiran')) return $result;
+		return $this->saveCustomer(new Customer(), 'Unos novog kupca', 'Novi kupac je uspješno kreiran', 'client_add');
+//		$form = $this->createForm(new CustomerType());
+//		if($result = $this->saveForm($form, 'Novi kupac je uspješno kreiran')) return $result;
+//
+//		return array('form' => $form->createView(), 'title' => 'Unos novog kupca', 'cssClass' => 'pro3x_small_icon_client_add');
+	}
+	
+	/**
+	 * 
+	 * @param Customer $client
+	 * @param type $title
+	 * @param type $msg
+	 * @param type $icon
+	 * @return type
+	 */
+	private function saveCustomer($client, $title, $msg, $icon)
+	{
+		$message = $client->getMessage();
+		$warning = $client->getWarning();
+		
+		$form = $this->createForm(new CustomerType(), $client);
+		
+		if($this->getRequest()->isMethod('post'))
+		{
+			$form->bind($this->getRequest());
+			
+			if($form->isValid())
+			{
+				if($client->getFile())
+				{
+					$filename = uniqid('avatar-', true) . '.jpg';
+					$client->setImage($filename);
+					
+					$fileUploadConfig = $this->getFileUploadConfig();
+					$client->getFile()->move($fileUploadConfig->getDir(), $filename);
+				}
+				
+				$manager = $this->getDoctrine()->getEntityManager();
+				$manager->persist($form->getData());
+				
+				if($client->getMessage() != $message)
+				{
+					$mNote = new \Pro3x\InvoiceBundle\Entity\Note();
+					$mNote->setCustomer($client);
+					$mNote->setContent($message);
+					$mNote->setCreatedBy($this->getUser());
+					$mNote->setNoteType('message');
 
-		return array('form' => $form->createView(), 'title' => 'Unos novog kupca', 'cssClass' => 'pro3x_small_icon_client_add');
+					$manager->persist($mNote);
+				}
+				
+				if($client->getWarning() != $warning)
+				{
+					$wNote = new \Pro3x\InvoiceBundle\Entity\Note();
+					$wNote->setCustomer($client);
+					$wNote->setContent($warning);
+					$wNote->setCreatedBy($this->getUser());
+					$wNote->setNoteType('warning');
+
+					$manager->persist($wNote);
+				}
+				
+				$manager->flush();
+				
+				$this->get('session')->setFlash('message', $msg);
+				return $this->redirect($this->getBackUrl());
+			}
+		}
+		
+		$avatar = $this->getFileUploadConfig()->getUrl($client->getImage());
+		return array_merge($this->editParams($form, $title, $icon), array('avatar' => $avatar));
 	}
 	
 	/**
@@ -32,13 +99,10 @@ class CustomerController extends AdminController
 	 */
 	public function editAction($id)
 	{
-		$client = $this->getCustomerRepository()->findOneById($id);
+		$client = $this->getCustomerRepository()->findOneById($id); /* @var $client Customer */
 		$this->redirect404($client);
 		
-		$form = $this->createForm(new CustomerType(), $client);
-		if($result = $this->saveForm($form, 'Informacije o kupcu su uspješno izmijenjene')) return $result;
-		
-		return $this->editParams($form, 'Izmjena kupca', 'client_edit');
+		return $this->saveCustomer($client, 'Izmjena kupca', 'Informacije o kupcu su uspješno izmijenjene', 'client_edit');
 	}
 	
 	/**
@@ -159,6 +223,8 @@ class CustomerController extends AdminController
 	public function addCustomerNoteAction($id)
 	{
 		$note = new \Pro3x\InvoiceBundle\Entity\Note();
+		$note->setCreatedBy($this->getUser());
+		
 		$note->setCustomer($this->getCustomerRepository()->find($id));
 		
 		$handler = new \Pro3x\Online\AddHandler($this, $note);

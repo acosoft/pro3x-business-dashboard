@@ -8,6 +8,7 @@ use Pro3x\WarehouseBundle\Entity\Receipt;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Client
@@ -124,6 +125,41 @@ class Customer
 	 */
 	private $birthday = null;
 	
+	/**
+	 * @Assert\File(maxSize="6000000")
+	 * @var type 
+	 */
+	private $file;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $image;
+	
+	/**
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+	 */
+	public function getFile()
+	{
+		return $this->file;
+	}
+
+	public function setFile($file)
+	{
+		$this->file = $file;
+	}
+
+	public function getImage()
+	{
+		return $this->image;
+	}
+
+	public function setImage($image)
+	{
+		$this->image = $image;
+	}
+
 	public function getBirthday()
 	{
 		return $this->birthday;

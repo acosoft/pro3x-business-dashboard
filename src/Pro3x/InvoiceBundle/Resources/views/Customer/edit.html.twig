@@ -4,16 +4,17 @@
 
 {% block body %}
     <div class="grid_8 push_2">
-	<form method="post">
+	<form method="post" {{ form_enctype(form) }}>
 	    <div class="pro3x_tabs">
 		<ul>
 		    <li><a href="#info">{{ 'Informacije'|trans }}</a></li>
+		    <li><a href="#avatar">{{ 'Avatar'|trans }}</a></li>
 		    <li><a href="#accomodation">{{ 'Smještaj'|trans }}</a></li>
 		    <li><a href="#messages">{{ 'Poruke'|trans }}</a></li>
 		</ul>
 		<div id="info">
 		    <div class="pro3x_form_content">
-
+			
 			{{ form_row(form.name) }}
 			{{ form_row(form.address) }}
 			{{ form_row(form.location) }}
@@ -30,6 +31,26 @@
 
 		    </div>
 		</div>
+
+		<div id="avatar">
+		    <div class="pro3x_form_content">
+			
+			{% if avatar %}
+			    <img class="pro3x_avatar" src="{{ avatar }}" />
+			{% else %}
+			    <img class="pro3x_avatar" src="{{ asset('no-avatar.png') }}" />
+			{% endif %}
+			<div class="pro3x_upload_form">
+			    {{ form_row(form.file) }}
+
+			    <div class="pro3x_buttons">
+				<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
+				<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
+			    </div>
+			</div>
+		    </div>
+		</div>
+		    
 		<div id="accomodation">
 		    <div class="pro3x_form_content">
 			{{ form_row(form.accomodation) }}

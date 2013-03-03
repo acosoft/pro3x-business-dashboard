@@ -8,12 +8,17 @@
     <parameters>
         <parameter key="fina.wdsl">http://localhost/pro3x/fina/wsdl/FiskalizacijaService.wsdl</parameter>
 	<parameter key="daily.report">Pro3xInvoiceBundle:Report:printDailyReport.html.twig</parameter>
+	<parameter key="file_upload_dir"></parameter>
     </parameters>
     
     
     <services>
         <service id="fina.client.factory" class="Pro3x\Online\FinaClientFactory">
             <argument>%fina.wsdl%</argument>
+        </service>
+	<service id="file.upload.config" class="Pro3x\Online\FileUploadConfig">
+            <argument>%file_upload_dir%</argument>
+	    <argument>%file_upload_dir_url%</argument>
         </service>
 	<service id="invoice.reporting.services" class="Pro3x\InvoiceBundle\ReportingServices">
 	    <argument>%daily.report%</argument>

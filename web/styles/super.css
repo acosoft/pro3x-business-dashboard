@@ -34,6 +34,21 @@ form label + ul + input
 input[type=text], input[type=password], input[type=email], textarea
     { padding: 0.5em; width: 30.2em; border: 2px inset; }
     
+input[type=file]
+    { margin-top: 0.5em; }
+    
+.pro3x_avatar
+    { padding: 1px; border: solid 5px #449ADC; margin-top: 0.4em; }
+    
+.pro3x_upload_form
+    { float: right; margin-top: 10px; }
+    
+.pro3x_upload_form .pro3x_buttons
+    { margin-top: 15px; }
+    
+.pro3x_upload_form label
+    { display: none; }
+    
 textarea
     { height: 10em; }
 
@@ -91,7 +106,7 @@ td.pro3x_tools a, .pro3x_delete_invoice_item
 tr:hover .pro3x_delete_invoice_item
     { display: inline-block; }
     
-table.pro3x tr:hover
+table.pro3x tr:hover td
     { background-color: #e0effc; }
     
 #actionCode.ajax
@@ -252,7 +267,11 @@ table.pro3x td.pro3x_no_data
     { background-image: url("../bundles/pro3xapp/small/notes_add.png"); }  
     
 .pro3x_small_icon_edit_note
-    { background-image: url("../bundles/pro3xapp/small/notes_edit.png"); }     
+    { background-image: url("../bundles/pro3xapp/small/notes_edit.png"); }    
+    
+.pro3x_small_icon_note
+    { background-image: url("../bundles/pro3xapp/small/notes.png"); }    
+    
     
 /* * * reports * * */
 
@@ -442,3 +461,12 @@ form.pro3x select.pro3x
     
 textarea.extra-height	
     { height: 350px; }
+    
+.pro3x_note_writer
+    { font-weight: bold; margin-top: 10px; }
+    
+.pro3x_note_message
+    { background-color: #fbf5d1; }
+    
+.pro3x_note_warning
+    { background-color: #fef2ee;  }

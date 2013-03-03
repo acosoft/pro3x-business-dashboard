@@ -28,6 +28,16 @@ class Note
 	}
 	
 	/**
+	 * @ManyToOne(targetEntity="Pro3x\SecurityBundle\Entity\User", inversedBy="notes")
+	  */
+	private $createdBy;
+	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $noteType;
+	
+	/**
 	 * @ORM\Column(type="datetime")
 	 */
 	private $created;
@@ -41,6 +51,26 @@ class Note
 	 * @ORM\Column(type="text")
 	 */
 	private $content;
+	
+	public function getNoteType()
+	{
+		return $this->noteType;
+	}
+
+	public function setNoteType($noteType)
+	{
+		$this->noteType = $noteType;
+	}
+
+	public function getCreatedBy()
+	{
+		return $this->createdBy;
+	}
+
+	public function setCreatedBy($createdBy)
+	{
+		$this->createdBy = $createdBy;
+	}
 
 	public function getCreated()
 	{

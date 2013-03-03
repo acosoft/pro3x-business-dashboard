@@ -19,9 +19,45 @@ class CustomerRepository extends EntityRepository
 	
 	public function findBySearchQuery($search, $offset, $pageSize)
 	{
-		$builder = $this->createQueryBuilder('c')
-				->where('c.name LIKE :search OR c.address LIKE :search OR c.location LIKE :search OR c.taxNumber LIKE :search')
+		$parsers = array();
+		
+		$parsers['rođen:'] = function($search, $queryBuilder)
+		{
+			$parts = explode('-', $search);
+			
+			$start = \DateTime::createFromFormat('d.m.Y', trim($parts[0]));
+			$end = \DateTime::createFromFormat('d.m.Y', trim($parts[1]));
+			
+			$queryBuilder->where('c.birthday BETWEEN :start AND :end')
+					->setParameter('start', $start)
+					->setParameter('end', $end);
+		};
+		
+		$parsers['smještaj:'] = function($search, $queryBuilder)
+		{
+			$queryBuilder->where('c.ownership = :smjestaj')
+					->setParameter('smjestaj', trim(strtolower($search)));
+		};
+		
+		$parsers[''] = function($search, $queryBuilder)
+		{
+			$queryBuilder->where('c.name LIKE :search OR c.address LIKE :search OR c.location LIKE :search OR c.taxNumber LIKE :search')
 				->setParameter('search', '%' . $search . '%');
+		};
+		
+		$builder = $this->createQueryBuilder('c');
+		
+		foreach ($parsers as $type => $parser)
+		{	
+			$matches = array();
+			
+			if(preg_match("#$type(.*)#", $search, $matches) == 1)
+			{
+				$searchQuery = $matches[1];
+				$parser($searchQuery, $builder);
+				break;
+			}
+		}
 
 		$itemCount = $builder->select('COUNT(c)')->getQuery()->getSingleScalarResult();
 

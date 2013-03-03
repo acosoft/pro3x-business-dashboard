@@ -19,12 +19,13 @@ class CustomerType extends AbstractType
             ->add('phone', 'text', array('label' => 'Telefon', 'required' => false))
             ->add('cellPhone', 'text', array('label' => 'Mobitel', 'required' => false))
             ->add('email', 'text', array('label' => 'Email', 'required' => false))
-			->add('accomodation', 'choice', array('required' => false, 'choices' => array('kuca' => 'Kuća', 'stan' => 'Stan', 'baraka' => 'Baraka', 'beskucnik' => 'Beskućnik', 'ostalo' => 'Ostalo')))
+			->add('accomodation', 'choice', array('label' => 'Smještaj', 'required' => false, 'choices' => array('kuca' => 'Kuća', 'stan' => 'Stan', 'baraka' => 'Baraka', 'beskucnik' => 'Beskućnik', 'ostalo' => 'Ostalo')))
             ->add('otherAccomodation', 'text', array('label' => 'Ostali smještaj', 'required' => false))
-			->add('ownership', 'choice', array('required' => false, 'choices' => array('vlasnik' => 'Vlasnik', 'najam' => 'Najam', 'najam-grad' => 'Najam / Grad', 'kod-roditelja' => 'Kod roditelja', 'ostalo' => 'Ostalo')))				
+			->add('ownership', 'choice', array('label' => 'Vlasništvo', 'required' => false, 'choices' => array('vlasnik' => 'Vlasnik', 'najam' => 'Najam', 'najam-grad' => 'Najam / Grad', 'kod-roditelja' => 'Kod roditelja', 'ostalo' => 'Ostalo')))				
             ->add('otherOwnership', 'text', array('label' => 'Ostalo vlasništvo', 'required' => false))
             ->add('message', 'textarea', array('label' => 'Poruka', 'required' => false))
             ->add('warning', 'textarea', array('label' => 'Upozorenje', 'required' => false))
+			->add('file', 'file', array('required' => false, 'label' => 'Izbor novog avatara'))
         ;
     }
 

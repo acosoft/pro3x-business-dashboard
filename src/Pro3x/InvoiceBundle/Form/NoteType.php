@@ -11,6 +11,7 @@ class NoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+			->add('noteType', 'choice', array('label' => 'Vrsta bilješke', 'required' => false, 'choices' => array('message' => 'Poruka', 'warning' => 'Upozorenje')))
             ->add('content', 'textarea', array('label' => 'Sadržaj', 'attr' => array('class' => 'extra-height')))
         ;
     }
