@@ -285,7 +285,15 @@ class InvoiceController extends AdminController
 
 					$invoice->setSequence($position->getSequence());
 					$position->setSequence($position->getSequence() + 1);
-					$invoice->setStatus($template->getName());
+					
+					$status = '';
+					
+					if($invoice->getTenderTemplate() != null)
+						$status = $invoice->getTenderTemplate ()->getName() . ' / ';
+					
+					$status .= $template->getName();
+					
+					$invoice->setStatus($status);
 					$invoice->setTemplate($template);
 					$invoice->setCreated(new \DateTime('now'));
 
