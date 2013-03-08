@@ -43,6 +43,11 @@ class AdminController extends Controller
 		return $this->redirect($this->getBackUrl());
 	}
 	
+	public function goHome()
+	{
+		return $this->redirect($this->generateUrl('dashboard'));
+	}
+	
 	public function redirect404($test)
 	{
 		if(!$test)

@@ -6,11 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pro3x\SecurityBundle\Entity\User;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 class PermissionsController extends Controller
 {
 	/**
 	 * @Route("/admin/user/permisions/{id}", name="edit_permissions")
+	 * @Secure(roles="ROLE_PERMISSION_ADMIN")
 	 * @Template()
 	 */
 	public function editAction()

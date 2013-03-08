@@ -17,6 +17,7 @@ class UserController extends AdminController
 {
 	/**
 	 * @Route("/delete/{id}", name="delete_user")
+	 * @Secure(roles="ROLE_SECURITY_ADMIN")
 	 */
 	public function deleteAction()
 	{
@@ -59,59 +60,68 @@ class UserController extends AdminController
 		
 		if(!$user) $this->createNotFoundException ('Korisnik ne postoji');
 		
-		$positions = array();
-		foreach($this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult() as $position)
+		if($this->isInRole('security_admin') || $this->getUser()->getId() == $id)
 		{
-			$positions[$position->getId()] = $position->getDescription();
-		}
-
-		$user->extra = $this->getPositions();
-		
-		if($this->getRequest()->isMethod('get'))
-		{
-			$form = $this->createForm(new UserType(), $user);
-		}
-		else if($this->getRequest()->isMethod('post'))
-		{
-			//TODO: extra field is a hack to pass extra information for form fields, problem with relation to positions during login
-			$temp = new User();
-			$temp->extra = $this->getPositions();
-			
-			$form = $this->createForm(new UserType(), $temp);
-			$form->bind($this->getRequest());
-
-			$data = $form->getData(); /* @var $data User */
-			
-			if($form->isValid())
+			$positions = array();
+			foreach($this->getPositionRepository()->createQueryBuilder('c')->select()->orderBy('c.location')->addOrderBy('c.name')->getQuery()->getResult() as $position)
 			{
-				if($data->getPassword())
-				{
-					$encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-					$encodedPassword = $encoder->encodePassword($data->getPassword(), $user->getSalt());
-					$user->setPassword($encodedPassword);
-				}
-				
-				$user->setDisplayName($data->getDisplayName());
-				$user->setActive($data->isActive());
-				$user->setEmail($data->getEmail());
-				$user->setOib($data->getOib());
-				$user->setUsername($data->getUsername());
-				$user->setPosition($data->getPosition());
-				
-				$manager->persist($user);
-				$manager->flush();
-				
-				$this->get('session')->setFlash('message', 'Informacije o korisniku su uspješno izmjenjene');
-				
-				return $this->redirect($this->getRequest()->get('back'));
+				$positions[$position->getId()] = $position->getDescription();
 			}
+
+			$user->extra = $this->getPositions();
+
+			if($this->getRequest()->isMethod('get'))
+			{
+				$form = $this->createForm(new UserType(), $user);
+			}
+			else if($this->getRequest()->isMethod('post'))
+			{
+				//TODO: extra field is a hack to pass extra information for form fields, problem with relation to positions during login
+				$temp = new User();
+				$temp->extra = $this->getPositions();
+
+				$form = $this->createForm(new UserType(), $temp);
+				$form->bind($this->getRequest());
+
+				$data = $form->getData(); /* @var $data User */
+
+				if($form->isValid())
+				{
+					if($data->getPassword())
+					{
+						$encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+						$encodedPassword = $encoder->encodePassword($data->getPassword(), $user->getSalt());
+						$user->setPassword($encodedPassword);
+					}
+
+					$user->setDisplayName($data->getDisplayName());
+					$user->setActive($data->isActive());
+					$user->setEmail($data->getEmail());
+					$user->setOib($data->getOib());
+					$user->setUsername($data->getUsername());
+					$user->setPosition($data->getPosition());
+
+					$manager->persist($user);
+					$manager->flush();
+
+					$this->get('session')->setFlash('message', 'Informacije o korisniku su uspješno izmjenjene');
+
+					return $this->redirect($this->getRequest()->get('back'));
+				}
+			}
+
+			return array('form' => $form->createView(), 'mode' => 'edit');
 		}
-		
-		return array('form' => $form->createView(), 'mode' => 'edit');
+		else
+		{
+			$this->setWarning("Nemate potrebne dozvole za uređivanje detalja korisnika");
+			return $this->goHome();
+		}
 	}
 	
 	/**
 	 * @Route("/add", name="add_user")
+	 * @Secure(roles="ROLE_SECURITY_ADMIN")
 	 * @Template("Pro3xSecurityBundle:User:edit.html.twig")
 	 */
 	public function addAction()
@@ -147,6 +157,7 @@ class UserController extends AdminController
 	
 	/**
 	 * @Route("/{page}", name="users_list", defaults={"page" = 1})
+	 * @Secure(roles="ROLE_SECURITY_ADMIN")
 	 * @Template()
 	 */
 	public function listAction()
