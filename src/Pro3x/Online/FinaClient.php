@@ -90,8 +90,8 @@ class FinaClient extends \SoapClient
 		/* @var $data Fina\RacunOdgovor */
 		if($data instanceof Fina\RacunOdgovor && $data->getGreska())
 		{
-			$greska = $data->getGreska(); /* @var $greska Fina\Greska */
-			throw new \Exception($data->Greske->Greska->PorukaGreske);
+			$greska = $data->getGreska()->Greska; /* @var $greska Fina\Greska */
+			throw new \Exception($greska->getPorukaGreske());
 		}
 		else if($data instanceof Fina\RacunOdgovor)
 		{

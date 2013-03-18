@@ -60,8 +60,18 @@
 		    <div>PETAR RADOSAVLJEVIĆ, stalni sudski tumač za njemački, španjolski
 		    i rumunjski jezik, imenovan rješenjem predsjednika Županijskog suda u
 		    Varaždinu broj 4 Su-352/12-2 od 02.07.2012.</div>
-		    <div style="margin-top: 3mm;">S. Vraza 11, 42000 Varaždin</div>
-		    <div>OIB: 83776521847</div>
+			
+		    <div style="float: right; text-align: right;">
+			<div style="margin-top: 3mm;">telefon: +385 98 529 390</div>
+			<div>e-mail: pradosav@gmail.com</div>
+		    </div>
+			
+		    <div style="float: left;">
+			<div style="margin-top: 3mm;">S. Vraza 11, 42000 Varaždin</div>
+			<div>OIB: 83776521847</div>
+		    </div>
+		    
+		    <div style="clear: both;"></div>
 		</div>
 		<div style="clear: both"></div>
 	    </div>
@@ -78,7 +88,10 @@
 	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R2: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
 		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
-		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
+		{% if invoice.isFiscalTransaction %}
+		    <div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>
+		    <div>ZKI: {{ invoice.companySecureCode }}</div>
+		{% endif %}
 	    </div>
 
 	    <div style="clear: both"></div>
@@ -135,21 +148,18 @@
 	    </table>
 	    {% endif %}
 	    
-	    <div style="margin-top: 10mm;">Račun je naplaćen u gotovini.</div>
-	    
 	    <div style="float: left;">
 		<div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
 		<div>Operater:  {{ invoice.user.displayName }}</div>
 	    </div>
 	    <div style="float: right; text-align: right; margin-top: 10mm;">
-		<div>U Varaždinu, {{ "now"|date("d.m.Y") }}</div>
-		dr.sc. Petar Radosavljević
+		<div>U Varaždinu, {{ invoice.created|date("d.m.Y | H:i") }}</div>
+		dr. sc. Petar Radosavljević
 	    </div>
 	    
 	</div>
 	<div style="text-align: center; border-top: solid 0.5mm black; font-size: 7pt;">
-	    Ovaj računje izdan elektronički, te je važeći bez žiga i potpisa. Nije u sustavu PDV-a u skladu sa
-	    Pravilnikom o stalnim sudskim tumačima NN 88/08.
+	    Nije u sustavu PDV-a. U skladu sa Pravilnikom o stalnim sudskim tumačima NN 88/08. Račun je izdan u elektroničkom obliku i važeći je bez pečata i potpisa.  
 	</div>
     </body>
 </html>

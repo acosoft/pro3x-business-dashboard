@@ -1,0 +1,1 @@
+ALTER TABLE pro3x_invoices ADD companySecureCode VARCHAR(255) DEFAULT NULL;

@@ -262,76 +262,85 @@ class AdminController extends Controller
 		{
 			$location = $invoice->getPosition()->getLocation();
 			
-			if ($location->getTaxPayer() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()) && $invoice->getUniqueInvoiceNumber() == null)
+			if ($location->getCompanyTaxNumber() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()))
 			{
-				$location = $invoice->getPosition()->getLocation();
-				$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
-
-				if (!$invoice->getUuid())
+				if($invoice->getUniqueInvoiceNumber() == null)
 				{
-					$invoice->setUuid($soap->randomGuid());
+					$location = $invoice->getPosition()->getLocation();
+					$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
 
-					$manager = $this->getDoctrine()->getEntityManager();
-					$manager->persist($invoice);
-					$manager->flush();
-
-					$repeatedMessage = false;
-				}
-				else
-				{
-					$repeatedMessage = true;
-				}
-
-				$zahtjev = new \Pro3x\Online\Fina\RacunZahtjev($invoice->getUuid());
-
-				$racun = $zahtjev->getRacun();
-				$racun->setOib($invoice->getPosition()->getLocation()->getCompanyTaxNumber());
-				$racun->setUSustPdv($invoice->getPosition()->getLocation()->getTaxPayer());
-				$racun->setDatVrijeme($invoice->getCreated()->format('d.m.Y\TH:i:s'));
-				$racun->setOznSlijed('N');
-
-				$oznaka = $racun->getBrRac();
-				$oznaka->setBrOznRac($invoice->getSequence());
-				$oznaka->setOznPosPr($invoice->getPosition()->getLocationName());
-				$oznaka->setOznNapUr($invoice->getPosition()->getName());
-
-				if ($invoice->getPosition()->getLocation()->getTaxPayer())
-				{
-					$map = array('Pdv' => array(), 'Pnp' => array());
-
-					$invoice->setNumeric($this->getNumeric());
-					foreach ($invoice->getTaxItems() as $item) /* @var $item \Pro3x\InvoiceBundle\Entity\InvoiceItemTax */
+					if (!$invoice->getUuid())
 					{
-						$porez = new \Pro3x\Online\Fina\Porez();
+						$invoice->setUuid($soap->randomGuid());
 
-						$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
-						$porez->setStopa(number_format($item['rateNumeric'], 2));
-						$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+						$manager = $this->getDoctrine()->getEntityManager();
+						$manager->persist($invoice);
+						$manager->flush();
 
-						$map[$item['group']][] = $porez;
+						$repeatedMessage = false;
+					}
+					else
+					{
+						$repeatedMessage = true;
 					}
 
-					if (count($map['Pdv']) > 0)
-						$racun->setPdv($map['Pdv']);
+					$zahtjev = new \Pro3x\Online\Fina\RacunZahtjev($invoice->getUuid());
 
-					if (count($map['Pnp']) > 0)
-						$racun->setPnp($map['Pnp']);
-				}
+					$racun = $zahtjev->getRacun();
+					$racun->setOib($invoice->getPosition()->getLocation()->getCompanyTaxNumber());
+					$racun->setUSustPdv($invoice->getPosition()->getLocation()->getTaxPayer());
+					$racun->setDatVrijeme($invoice->getCreated()->format('d.m.Y\TH:i:s'));
+					$racun->setOznSlijed('N');
 
-				$racun->setIznosUkupno($invoice->getTotal());
-				$racun->setNacinPlac($invoice->getTemplate()->getTransactionType());
-				$racun->setOibOper($invoice->getUser()->getOib());
-				$racun->setNakDost($repeatedMessage);
+					$oznaka = $racun->getBrRac();
+					$oznaka->setBrOznRac($invoice->getSequence());
+					$oznaka->setOznPosPr($invoice->getPosition()->getLocationName());
+					$oznaka->setOznNapUr($invoice->getPosition()->getName());
 
-				$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+					if ($invoice->getPosition()->getLocation()->getTaxPayer())
+					{
+						$map = array('Pdv' => array(), 'Pnp' => array());
 
-				if ($data instanceof \Pro3x\Online\Fina\RacunOdgovor && !$invoice->getUniqueInvoiceNumber())
-				{
-					$invoice->setUniqueInvoiceNumber($data->getJir());
+						$invoice->setNumeric($this->getNumeric());
+						foreach ($invoice->getTaxItems() as $item) /* @var $item \Pro3x\InvoiceBundle\Entity\InvoiceItemTax */
+						{
+							$porez = new \Pro3x\Online\Fina\Porez();
 
-					$manager = $this->getDoctrine()->getEntityManager();
-					$manager->persist($invoice);
-					$manager->flush();
+							$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+							$porez->setStopa(number_format($item['rateNumeric'], 2));
+							$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+
+							$map[$item['group']][] = $porez;
+						}
+
+						if (count($map['Pdv']) > 0)
+							$racun->setPdv($map['Pdv']);
+
+						if (count($map['Pnp']) > 0)
+							$racun->setPnp($map['Pnp']);
+					}
+					else
+					{
+						$racun->setPdv(null);
+						$racun->setPnp(null);
+					}
+
+					$racun->setIznosUkupno($invoice->getTotal());
+					$racun->setNacinPlac($invoice->getTemplate()->getTransactionType());
+					$racun->setOibOper($invoice->getUser()->getOib());
+					$racun->setNakDost($repeatedMessage);
+
+					$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+
+					if ($data instanceof \Pro3x\Online\Fina\RacunOdgovor && !$invoice->getUniqueInvoiceNumber())
+					{
+						$invoice->setUniqueInvoiceNumber($data->getJir());
+						$invoice->setCompanySecureCode($zahtjev->getRacun()->getZastKod());
+
+						$manager = $this->getDoctrine()->getEntityManager();
+						$manager->persist($invoice);
+						$manager->flush();
+					}
 				}
 			}
 			else

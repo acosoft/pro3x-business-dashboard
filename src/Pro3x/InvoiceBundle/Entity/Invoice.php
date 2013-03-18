@@ -106,6 +106,21 @@ class Invoice
 	  */
 	private $dailyReport;
 	
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $companySecureCode;
+	
+	public function getCompanySecureCode()
+	{
+		return $this->companySecureCode;
+	}
+
+	public function setCompanySecureCode($companySecureCode)
+	{
+		$this->companySecureCode = $companySecureCode;
+	}
+
 	public function getTenderTemplate()
 	{
 		return $this->tenderTemplate;
