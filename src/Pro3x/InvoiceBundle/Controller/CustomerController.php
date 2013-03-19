@@ -40,14 +40,18 @@ class CustomerController extends AdminController
 		$message = $client->getMessage();
 		$warning = $client->getWarning();
 		
-		$form = $this->createForm(new CustomerType(), $client);
+		$customerType = new CustomerType();
+		$details = $this->isInRole("user_details");
+		$customerType->setShowUserDetails($details);
+		
+		$form = $this->createForm($customerType, $client);
 		
 		if($this->getRequest()->isMethod('post'))
 		{
 			$form->bind($this->getRequest());
 			
-			if($form->isValid())
-			{
+//			if($form->isValid())
+//			{
 				if($client->getFile())
 				{
 					$filename = uniqid('avatar-', true) . '.jpg';
@@ -86,7 +90,7 @@ class CustomerController extends AdminController
 				
 				$this->get('session')->setFlash('message', $msg);
 				return $this->redirect($this->getBackUrl());
-			}
+//			}
 		}
 		
 		$avatar = $this->getFileUploadConfig()->getUrl($client->getImage());
