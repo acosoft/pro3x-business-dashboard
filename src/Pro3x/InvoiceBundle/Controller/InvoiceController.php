@@ -304,7 +304,7 @@ class InvoiceController extends AdminController
 			}
 		}
 		
-		$this->finaInvoice($invoice);
+		if($type != 'tender') $this->finaInvoice($invoice);
 		
 		foreach($invoice->getItems() as $item) /* @var $item InvoiceItem */
 		{
