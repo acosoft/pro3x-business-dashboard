@@ -60,7 +60,7 @@
 		    <div>PETAR RADOSAVLJEVIĆ, stalni sudski tumač za njemački, španjolski
 		    i rumunjski jezik, imenovan rješenjem predsjednika Županijskog suda u
 		    Varaždinu broj 4 Su-352/12-2 od 02.07.2012.</div>
-		    
+			
 		    <div style="float: right; text-align: right;">
 			<div style="margin-top: 3mm;">telefon: +385 98 529 390</div>
 			<div>e-mail: pradosav@gmail.com</div>
@@ -85,11 +85,9 @@
 		</div>
 	    {% endif %}    
 
-	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R2: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
+	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Ponuda: {{ invoice.tenderSequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
-		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
-		<div>Rok plaćanja: {{ invoice.dateCreated|date_modify('+7 days')|date('d.m.Y') }}</div>
-		{% if invoice.isFiscalTransaction %}<div>JIR: {{ invoice.uniqueInvoiceNumberFormated }}</div>{% endif %}
+		<div style="margin-top: 3.75mm;">Datum: {{ invoice.tenderDate|date('d.m.Y') }} | {{ invoice.tenderDate|date('H:i') }}h</div>
 	    </div>
 
 	    <div style="clear: both"></div>
@@ -146,10 +144,8 @@
 	    </table>
 	    {% endif %}
 	    
-	    <div style="margin-top: 10mm;">Uplata na žiro račun pri Privrednoj banci Zagreb, broj računa 234009-3101142865</div>
-	    
 	    <div style="float: left;">
-		<div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
+		<div style="margin-top: 10mm;">Način plaćanja: Ponuda</div>
 		<div>Operater:  {{ invoice.user.displayName }}</div>
 	    </div>
 	    <div style="float: right; text-align: right; margin-top: 10mm;">

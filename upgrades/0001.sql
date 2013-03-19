@@ -5,14 +5,14 @@ ALTER TABLE pro3x_invoices ADD CONSTRAINT FK_4D4A661E941B5291 FOREIGN KEY (tende
 CREATE INDEX IDX_4D4A661E941B5291 ON pro3x_invoices (tenderTemplate_id);
 
 update pro3x_invoices
-set tenderTemplate_id = 7,
+set tenderTemplate_id = 8,
     template_id = null,
     tenderDate = created
 where tenderSequence is not null
     and sequence is null;
 
 update pro3x_invoices
-set tenderTemplate_id = 7,
+set tenderTemplate_id = 8,
     tenderDate = created
 where tenderSequence is not null
     and sequence is not null;
