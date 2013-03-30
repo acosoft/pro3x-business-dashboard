@@ -87,6 +87,11 @@ class Invoice
 	private $uniqueInvoiceNumber;
 	
 	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $originalInvoiceNumber;
+	
+	/**
 	 * @ManyToOne(targetEntity="Template", inversedBy="invoices")
 	  */
 	private $template;
@@ -114,6 +119,16 @@ class Invoice
 	public function getCompanySecureCode()
 	{
 		return $this->companySecureCode;
+	}
+	
+	public function getOriginalInvoiceNumber()
+	{
+		return $this->originalInvoiceNumber;
+	}
+
+	public function setOriginalInvoiceNumber($originalInvoiceNumber)
+	{
+		$this->originalInvoiceNumber = $originalInvoiceNumber;
 	}
 
 	public function setCompanySecureCode($companySecureCode)

@@ -13,6 +13,7 @@ use Pro3x\InvoiceBundle\Entity\Product;
 use Pro3x\InvoiceBundle\Parsers\CodeParser;
 use Pro3x\InvoiceBundle\Parsers\AmountCodeParser;
 use Pro3x\InvoiceBundle\Parsers\AmountCodePercentParser;
+use Pro3x\InvoiceBundle\Parsers\CodePercentParser;
 use Pro3x\InvoiceBundle\Entity\Invoice;
 use Pro3x\Online\TableParams;
 use Pro3x\InvoiceBundle\Form\CustomerType;
@@ -173,7 +174,24 @@ class InvoiceController extends AdminController
 			
 		$data = $this->getRequest()->get('code');
 		
-		foreach(array(new AmountCodePercentParser(), new AmountCodeParser(), new CodeParser()) as $parser) /* @var $parser \Pro3x\InvoiceBundle\Parsers\BaseParser */
+		$brMatches = array();
+		if(preg_match('#br:(.*)#', $data, $brMatches))
+		{
+			$invoiceNumber = trim($brMatches[1]);
+			if(strlen($invoiceNumber) == 0) $invoiceNumber = null;
+			
+			$invoice->setOriginalInvoiceNumber($invoiceNumber);
+			
+			$man = $this->getDoctrine()->getEntityManager();
+			$man->persist($invoice);
+			$man->flush();
+			
+			$msgView = $this->renderView('Pro3xInvoiceBundle:Invoice:paperInvoiceNumber.html.twig', array('invoiceNumber' => $invoiceNumber));
+			$brResult = array('msg' => $msgView);
+			return new \Symfony\Component\HttpFoundation\JsonResponse($brResult);
+		}
+		
+		foreach(array(new AmountCodePercentParser($this), new AmountCodeParser($this), new CodePercentParser($this), new CodeParser($this)) as $parser) /* @var $parser \Pro3x\InvoiceBundle\Parsers\BaseParser */
 		{
 			if($parser->parse($data))
 			{
@@ -241,6 +259,12 @@ class InvoiceController extends AdminController
 		$invoice = $repository->findOneById($id); /* @var $invoice Invoice */
 		$this->redirect404($invoice);
 		
+		if($invoice->getItems()->count() == 0)
+		{
+			$this->setWarning('Morate upisati barem jednu stavku prije ispisa računa');
+			return $this->redirect($this->generateUrl('edit_invoice', array('id' => $invoice->getId(), 'back' => $this->getParam('back'))));
+		}
+
 		$type = $this->getParam("type", "auto");
 		
 		$invoice->setNumeric($this->getNumeric());
@@ -363,12 +387,12 @@ class InvoiceController extends AdminController
 	{
 		$invoice = $this->getInvoiceRepository()->find($id);
 		
-		if($invoice->getItems()->count() == 0)
-		{
-			$manager = $this->getDoctrine()->getEntityManager();
-			$manager->remove($invoice);
-			$manager->flush();
-		}
+//		if($invoice->getItems()->count() == 0)
+//		{
+//			$manager = $this->getDoctrine()->getEntityManager();
+//			$manager->remove($invoice);
+//			$manager->flush();
+//		}
 		
 		return $this->goBack();
 	}
@@ -406,7 +430,7 @@ class InvoiceController extends AdminController
 			
 			
 			//$params->addColumn('sequenceFormated', 'ID');
-			$params->addTemplateColumn('Id', 'Pro3xInvoiceBundle:Invoice:idColumn.html.twig');
+			$params->addTemplateColumn('Broj', 'Pro3xInvoiceBundle:Invoice:idColumn.html.twig');
 			
 			if($this->isInRole('edit_all_invoices'))
 			{

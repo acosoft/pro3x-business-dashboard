@@ -91,7 +91,7 @@
 		{% set week = -1 %}
 			
 		{% for  item in data %}
-			<tr{% if week != item.purchased|date('W') %} {% if week != -1 %} class="week_separator"{% endif %}{% set week = item.purchased|date('W') %}{% endif %}>
+			<tr>
 			    <td style="padding-left: 0;">{{ item.purchased|date('d.m.Y') }}</td>
 			    <td style="padding-left: 0;">{{ item.description }}</td>
 			    <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>

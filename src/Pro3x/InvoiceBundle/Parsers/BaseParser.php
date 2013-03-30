@@ -7,7 +7,24 @@ class BaseParser
 	private $amount = 1;
 	private $code;
 	private $discount = 0;
-
+	
+	/**
+	 *
+	 * @var \Pro3x\AppBundle\Controller\AdminController
+	 */
+	private $controller; 
+	
+	function __construct($controller)
+	{
+		
+		$this->controller = $controller;
+	}
+	
+	public function parseNumber($number)
+	{
+		return $this->controller->parseNumber($number);
+	}
+	
 	public function parse($value)
 	{
 		return true;

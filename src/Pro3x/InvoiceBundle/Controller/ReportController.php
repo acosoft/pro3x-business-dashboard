@@ -137,6 +137,44 @@ class ReportController extends AdminController
 	}
 	
 	/**
+	 * @Route("/csv/total-sales-report", name="download_csv_total_sales_report")
+	 * @Template()
+	 */
+	public function downloadTotalSalesReportAction(\Symfony\Component\HttpFoundation\Request $request)
+	{
+		$operater = $this->getUser();
+
+		$start = \DateTime::createFromFormat('d.m.Y', $this->getParam('start_date'));
+		$end = \DateTime::createFromFormat('d.m.Y', $this->getParam('end_date'));
+		$location = $this->getParam('location');
+		
+		$data = $this->getProductReportQuery()
+				->join('i.position', 'p')
+				->where('p.location = :location AND i.created BETWEEN :start AND :end')
+				->setParameter('location', $location)
+				->setParameter('start', $start)
+				->setParameter('end', $end)->getQuery()->getResult();
+		
+		$xf = fopen('php://memory', 'rw');
+		
+		//->select('ii.description AS description, ii.unit, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
+		//'sum(ii.totalTaxedPrice) AS totalPrice, sum(ii.discountAmount) AS discount, sum(ii.dicountPrice) AS total')
+		
+		fputcsv($xf, array('Naziv', 'Jedinica', 'Jedinična cijena', 'Količina', 'Osnovica', 'Popust', 'Ukupno'));
+		
+		foreach($data as $row)
+		{
+			fputcsv($xf, array($row['description'], $row['unitPrice'], $row['unit'], $row['totalAmount'], $row['totalPrice'], $row['discount'], $row['total']));
+		}
+		
+		rewind($xf);
+		$csv = stream_get_contents($xf);
+		
+		return new Response($csv,  200, array('Content-type' => "text/csv",
+					'Content-Disposition' => 'attachment; filename=report.csv'));
+	}
+	
+	/**
 	 * @Route("/print-customers", name="print_customers")
 	 * @Template()
 	 */

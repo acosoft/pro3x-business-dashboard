@@ -470,3 +470,6 @@ textarea.extra-height
     
 .pro3x_note_warning
     { background-color: #fef2ee;  }
+	
+.pro3x_subtitle	
+	{ font-size: 12px; margin-left: 58px; font-weight: normal; float: right; margin-top: 17px; margin-right: 10px; }

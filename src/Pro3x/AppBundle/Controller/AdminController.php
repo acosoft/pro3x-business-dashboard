@@ -329,13 +329,30 @@ class AdminController extends Controller
 					$racun->setNacinPlac($invoice->getTemplate()->getTransactionType());
 					$racun->setOibOper($invoice->getUser()->getOib());
 					$racun->setNakDost($repeatedMessage);
+					
+					if($invoice->getOriginalInvoiceNumber())
+					{
+						$racun->setParagonBrRac($invoice->getOriginalInvoiceNumber());
+					}
 
-					$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
-
+					try
+					{
+						$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+					}
+					catch(\Exception $exc)
+					{
+						$data = null;
+						$this->setWarning('Iznimka u komunikacija sa servisima: ' . $exc->getMessage());
+					}
+					
+					if(!$invoice->getCompanySecureCode())
+					{
+						$invoice->setCompanySecureCode($zahtjev->getRacun()->getZastKod());
+					}
+					
 					if ($data instanceof \Pro3x\Online\Fina\RacunOdgovor && !$invoice->getUniqueInvoiceNumber())
 					{
 						$invoice->setUniqueInvoiceNumber($data->getJir());
-						$invoice->setCompanySecureCode($zahtjev->getRacun()->getZastKod());
 
 						$manager = $this->getDoctrine()->getEntityManager();
 						$manager->persist($invoice);
