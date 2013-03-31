@@ -31,7 +31,7 @@ class FinaClientFactory
 	public function isFiscalTransaction($transactionType)
 	{
 		//TODO: only cash invoices are sent to fina at the moment
-		if($transactionType == 'G')
+		if($transactionType == 'G' || $transactionType == 'K')
 			return true;
 		else
 			return false;
