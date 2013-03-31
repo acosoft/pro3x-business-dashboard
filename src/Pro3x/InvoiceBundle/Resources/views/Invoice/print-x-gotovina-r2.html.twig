@@ -69,7 +69,7 @@
 		</div>
 	    {% endif %}    
 
-	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
+	    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun R2: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
 	    <div style="">
 		<div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
 	    </div>
@@ -131,10 +131,6 @@
 	    <div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
 	    <div>Operater:  {{ invoice.user.displayName }}</div>
 	    
-	</div>
-	<div style="text-align: center; border-top: solid 0.5mm black; font-size: 7pt;">
-	    Socijalna Samoposluga, Žabica 4, 51000 Rijeka | Siromaštvo nije izbor, pomaganje jest! | 
-	    https://www.facebook.com/socijalna.samoposluga
 	</div>
     </body>
 </html>
