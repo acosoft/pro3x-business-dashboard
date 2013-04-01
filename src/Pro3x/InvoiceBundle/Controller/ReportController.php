@@ -127,7 +127,7 @@ class ReportController extends AdminController
 		
 		$data = $this->getProductReportQuery()
 				->join('i.position', 'p')
-				->where('p.location = :location AND i.created BETWEEN :start AND :end')
+				->where('p.location = :location AND i.created BETWEEN :start AND :end AND i.sequence is not null')
 				->setParameter('location', $location)
 				->setParameter('start', $start)
 				->setParameter('end', $end)->getQuery()->getResult();
@@ -150,7 +150,7 @@ class ReportController extends AdminController
 		
 		$data = $this->getProductReportQuery()
 				->join('i.position', 'p')
-				->where('p.location = :location AND i.created BETWEEN :start AND :end')
+				->where('p.location = :location AND i.created BETWEEN :start AND :end AND i.sequence is not null')
 				->setParameter('location', $location)
 				->setParameter('start', $start)
 				->setParameter('end', $end)->getQuery()->getResult();
