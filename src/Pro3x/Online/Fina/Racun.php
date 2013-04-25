@@ -105,7 +105,7 @@ class Racun
 
 	public function setIznosUkupno($IznosUkupno)
 	{
-		$this->IznosUkupno = number_format($IznosUkupno, 2);
+		$this->IznosUkupno = number_format($IznosUkupno, 2, '.', '');
 	}
 
 	public function getNacinPlac()

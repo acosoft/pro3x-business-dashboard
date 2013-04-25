@@ -306,9 +306,9 @@ class AdminController extends Controller
 						{
 							$porez = new \Pro3x\Online\Fina\Porez();
 
-							$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+							$porez->setOsnovica(number_format(round($item['baseNumeric'], 2, PHP_ROUND_HALF_DOWN), 2, '.', ''));
 							$porez->setStopa(number_format($item['rateNumeric'], 2));
-							$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2));
+							$porez->setIznos(number_format(round($item['amountNumeric'], 2, PHP_ROUND_HALF_DOWN), 2, '.', ''));
 
 							$map[$item['group']][] = $porez;
 						}
