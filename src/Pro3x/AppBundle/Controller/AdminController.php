@@ -260,6 +260,8 @@ class AdminController extends Controller
 	{
 		try
 		{
+			if(!$invoice->isFiscalTransaction()) return;
+			
 			$location = $invoice->getPosition()->getLocation();
 			
 			if ($location->getCompanyTaxNumber() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()))
