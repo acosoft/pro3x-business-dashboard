@@ -146,7 +146,18 @@ class Location
 	{
 		$templates = $this->getTemplates()->toArray();
 		
-		usort($templates, function($a, $b) { 
+		$activeTemplates = array();
+		
+		foreach($templates as $template)
+		{
+			/* @var $template Template */
+			if($template->getPriority() > 0)
+			{
+				$activeTemplates[] = $template;
+			}
+		}
+		
+		usort($activeTemplates, function($a, $b) { 
 			
 			/* @var $a Template */
 			/* @var $b Template */
@@ -159,7 +170,7 @@ class Location
 			return ($a->getPriority() > $b->getPriority())? -1 : 1;
 		});
 		
-		return $templates;
+		return $activeTemplates;
 	}
 
 	public function getTemplates()
