@@ -317,6 +317,8 @@ class AdminController extends Controller
 
 						if (count($map['Pdv']) > 0)
 							$racun->setPdv($map['Pdv']);
+						else
+							$racun->setPdv (null);
 
 						if (count($map['Pnp']) > 0)
 							$racun->setPnp($map['Pnp']);
