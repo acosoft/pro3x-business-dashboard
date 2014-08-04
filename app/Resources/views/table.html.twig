@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_{{ icon }}"></span>{{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
+{% block page_title %}
+    <img src="{{ asset("icons/small/#{icon}.png") }}" />
+    {{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
 
 {% block body %}
     <div class="grid_12">

@@ -1,12 +1,40 @@
-<div class="pro3x_header">
-    <div class="pro3x_header_content">
-	<a href="{{ path('dashboard') }}">{{ 'Pro3x Online Dashboard'|trans }}</a>
-	<ul>
-	    <li>
-		{% if is_granted('ROLE_USER') %}
-		    <a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ app.user.displayName }}</a> | <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
-		{% endif %}
-	    </li>
-	</ul>
+<nav class="navbar navbar-inverse navbar-static-top pro3x-main-menu" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+        </div>
+
+
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown">
+                    {% if is_granted('ROLE_USER') %}
+                        <a class="dropdown-toogle" data-toggle="dropdown" href="#">{{ app.user.displayName }}</a>
+                    {% else %}
+                        <a class="dropdown-toogle" data-toggle="dropdown" href="#">Info <span class="caret"></span></a>
+                        {% endif %}
+
+                    <ul class="dropdown-menu">
+
+                        {% if is_granted('ROLE_USER') %}
+                            <li><a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ 'Postavke' | trans }}</a></li>
+                            <li><a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a></li>
+                            <li role="presentation" class="divider"></li>
+                            {% endif %}
+
+                        <li><a href="http://www.pro3x.com">Pro3x Community</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+</nav>
