@@ -26,7 +26,9 @@ class Numeric
 		$nf = new \NumberFormatter($this->getLocale(), \NumberFormatter::DECIMAL);
 		
 		if(!$maxDecimals)
+                {
 			$maxDecimals = $minDecimals;
+                }
 		
 		$nf->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $minDecimals);
 		$nf->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $maxDecimals);

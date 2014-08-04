@@ -146,7 +146,13 @@ class User implements UserInterface, EquatableInterface, AdvancedUserInterface
 	
 	public function getRoles()
 	{
-		return $this->groups->toArray();
+            $roles = array();
+            
+            foreach ($this->getGroups() as $group) {
+                $roles[] = $group->getRole();
+            }
+
+            return $roles;
 	}
 
 	/**
