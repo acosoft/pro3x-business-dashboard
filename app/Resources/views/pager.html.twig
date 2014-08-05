@@ -1,24 +1,49 @@
-<div class="grid_4" style="text-align: right;">
-    <div class="pro3x_pager">
-	<span class="ui-icon ui-icon-arrow-1-w pro3x_pager_previous"></span>
-	<div class="pro3x_pager_scroll">
-	    <div class="pro3x_pager_items">
-		{% set min = page - 25 %}
-		{% set max = page + 25 %}
-		   
-		{% if min < 1 %}{% set min = 1 %}{% endif %}
-		{% if max > count %}{% set max = count %}{% endif %}
-		    
-		{% for index in range(min, max) %}
-		    {% if pagerParams is defined %}
-			<a class="{{ (index == page)?'pro3x_current_page':'pro3x_page' }}" href="{{ path(app.request.attributes.get('_route'), pagerParams|merge({'page': index, 'back': app.request.get('back')})) }}">{{ index }}</a>
-		    {% else %}
-			<a class="{{ (index == page)?'pro3x_current_page':'pro3x_page' }}" href="{{ path(app.request.attributes.get('_route'), {'page': index, 'back': app.request.get('back')}) }}">{{ index }}</a>
-		    {% endif %}
-		{% endfor %}
-	    </div>
-	</div>
-	<span class="ui-icon ui-icon-arrow-1-e pro3x_pager_next"></span>
-	<div class="clear"></div>
-    </div>
+<div class="col-md-6" style="text-align: right;">
+    
+    {% if page < 1 %}{% set page = 1 %}{% endif %}
+    
+    {% set min = page -1 - ((page - 1) % 10) %}
+    {% set max = min + 11 %}
+    
+    {% if max > count %}{% set max = count + 1 %}{% endif %}
+
+    <ul class="pagination pro3x-pagination">
+        {% for index in range(min, max) %}
+            {% if index > 0 and index <= count %}
+                {% set disable = false %}
+            {% else %}
+                {% set disable = true %}
+            {% endif %}
+            
+            {% if index == page %}
+                {% set current = true %}
+            {% else %}
+                {% set current = false %}
+            {% endif %}
+            
+            <li class="{{ disable?'disabled':(current?'active':'') }}">
+                {% if index == min %}
+                    {% set desc = '&laquo;' %}
+                {% elseif index == max %}
+                    {% set desc = '&raquo;' %}
+                {% else %}
+                    {% set desc = index %}
+                {% endif %}
+                
+                {% if disable %}
+                    <a href="#">{{ desc|raw }}</a>
+                {% else %}
+                    {% if pagerParams is defined %}
+                        <a href="{{ path(app.request.attributes.get('_route'), pagerParams|merge({'page': index, 'back': app.request.get('back')})) }}">
+                            {{ desc|raw }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path(app.request.attributes.get('_route'), {'page': index, 'back': app.request.get('back')}) }}">
+                            {{ desc|raw }}
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 </div>

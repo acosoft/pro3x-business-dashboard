@@ -5,11 +5,12 @@
     {{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
 
 {% block body %}
-    <div class="grid_12">
+    <div class="col-md-12">
 	
 	{% include '::message.html.twig' %}
 	
-	<table class="ui-widget-content ui-corner-all pro3x">
+        <div class="panel panel-default pro3x-table-panel">
+	<table class="table table-striped">
 	    <thead>
 		<tr>
 		    {% for column in columns %}
@@ -42,16 +43,18 @@
 			    {% endif %}
 			</td>
 			{% endfor %}
-			<td class="pro3x_tools">
+			<td class="pro3x-tools">
 			    {% if toolsTemplate %}
 				{% include toolsTemplate with {'item': item} %}
 			    {% elseif search == true %}
 				<a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a>
 			    {% else %}
 				<a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
-				<a class="pro3x_confirm" data-icon="pro3x_icon_{{ icon }}_delete" 
+				<a class="pro3x-confirm" data-icon="pro3x_icon_{{ icon }}_delete" 
 				   data-msg="{{ 'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?'|trans({'%type%': type|trans, '%description%': attribute(item, deleteColumn) }) }}" 
-				   href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+				   href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">
+                                    {{ 'izbriši'|trans }}
+                                </a>
 			    {% endif %}
 			</td>
 		    </tr>
@@ -64,10 +67,11 @@
 		{% endfor %}
 	    </tbody>
 	</table>
+        </div>
     </div>
 
-    <div class="grid_8">
-	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
+    <div class="col-md-6">
+	<div class="pro3x-table-buttons" style="margin-top: 0.6em;">
 	    {% if search == true %}
 		<form method="post" style="float: left;">
 		    <input type="hidden" name="back" value="{{ app.request.get('back') }}" />
@@ -75,12 +79,35 @@
 		    <input type="submit" class="button" value="{{ 'Traži'|trans }}" />
 		</form>
 	    {% endif %}
-	    <input type="button" data-href="{{ path(route, {'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />{% if app.request.get('back') %}<input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="{{ 'Odustani'|trans }}" />{% else %}<input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />{% endif %}
+            <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
+            {% if app.request.get('back') %}
+                <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
+            {% else %}
+                <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
+            {% endif %}
 	</div>
     </div>
 
     {% if pager %}{% include '::pager.html.twig' %}{% endif %}
     <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+    
+    <div class="modal fade pro3x-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{{ 'Upozorenje!'|trans }}</h4>
+                </div>
+                <div class="modal-body pro3x-dialog">
+                   
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary pro3x-medium-button pro3x-confirm-button">Izbriši</a>
+                    <button type="button" class="btn btn-primary pro3x-medium-button" data-dismiss="modal">Odustani</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 {% endblock %}
 

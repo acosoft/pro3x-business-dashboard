@@ -31,3 +31,18 @@ a:hover
 h1.pro3x-title
     { padding-left: 15px; margin-top: 30px; }
     
+.pro3x-table-panel
+    { margin-bottom: 0px; }
+    
+.pro3x-table-buttons .btn, .pro3x-medium-button
+    { width: 120px; }
+    
+.pro3x-pagination
+    { margin: 0.6em 0; }
+    
+.pro3x-tools a
+    { display: inline-block; margin-right: 10px; }
+    
+.pro3x-dialog img
+    { float: left; margin-right: 10px; }
+    
