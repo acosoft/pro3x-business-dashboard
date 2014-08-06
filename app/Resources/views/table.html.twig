@@ -1,8 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block page_title %}
-    <img src="{{ asset("icons/small/#{icon}.png") }}" />
-    {{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
+    <img src="{{ asset("icons/small/#{icon}.png") }}" />{{ title|trans|title }}{% if titleExtraTemplate %}{% include titleExtraTemplate with titleExtraParams %}{% endif %}{% endblock %}
 
 {% block body %}
     <div class="col-md-12">

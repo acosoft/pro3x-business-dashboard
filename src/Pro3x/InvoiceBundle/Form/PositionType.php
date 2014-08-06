@@ -10,15 +10,14 @@ class PositionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-			->add('location', 'entity', array(
-				'label' => 'Naziv Lokacije', 
-				'expanded' => false, 'property' => 'name', 
-				'multiple' => false, 
-				'class' => 'Pro3xInvoiceBundle:Location'))
-			->add('name', 'text', array('label' => 'Naziv blagajne', 'required' => false))
-            ->add('sequence', 'text', array('label' => 'Sljedeći račun'))
-			->add('tenderSequence', 'text', array('label' => 'Sljedeća ponuda'))
+        $builder->add('location', 'entity', array(
+                    'label' => 'Naziv Lokacije',
+                    'expanded' => false, 'property' => 'name',
+                    'multiple' => false,
+                    'class' => 'Pro3xInvoiceBundle:Location'))
+                ->add('name', 'text', array('label' => 'Naziv blagajne', 'required' => false))
+                ->add('sequence', 'text', array('label' => 'Sljedeći račun'))
+                ->add('tenderSequence', 'text', array('label' => 'Sljedeća ponuda'))
         ;
     }
 

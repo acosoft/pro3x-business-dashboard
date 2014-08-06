@@ -130,7 +130,7 @@ class AdminController extends Controller
 	
 	public function editParams($form, $title, $icon)
 	{
-		return array('form' => $form->createView(), 'title' => $title, 'cssClass' => 'pro3x_small_icon_' . $icon);
+		return array('form' => $form->createView(), 'title' => $title, 'icon' => $icon, 'cssClass' => 'pro3x_small_icon_' . $icon);
 	}
 	
 	public function tableParams($items, $page, $count)
