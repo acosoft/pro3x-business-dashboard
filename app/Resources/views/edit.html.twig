@@ -1,26 +1,36 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon {{ cssClass }}"></span>{{ title|trans|title }}{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}" />{{ title|trans|title }}{% endblock %}
 
 {% block body %}
-    <div class="grid_8 push_2">
-	<div class="pro3x_tabs">
-	    <ul>
-		<li><a href="#info">{{ 'Informacije'|trans }}</a></li>
-	    </ul>
-	    <div id="info">
-		<div class="pro3x_form_content">
-		    <form method="post">
-			{{ form_widget(form) }}
-			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
-			<div class="pro3x_buttons">
-			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
-			</div>
-		    </form>
-		</div>
-	    </div>
-	</div>
+    <div class="col-md-6 col-md-offset-3">
+        <form method="post" class="from-horizontal" role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ 'Svojstva'|trans }}</div>
+                <div class="pro3x-panel-form">
+
+                    {% for child in form.children %}
+                        {% if child.vars.label %}
+                            <div class="form-group">
+                                {{ form_label(child, child.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(child, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+
+            <div class="pro3x-buttons">
+                <input type="submit" class="btn btn-primary" value="{{ 'Spremi'|trans }}" />
+                <a class="btn btn-primary" href="{{ app.request.get('back') }}">{{ 'Odustani'|trans }}</a>
+            </div>
+        </form>
     </div>
 {% endblock %}
 

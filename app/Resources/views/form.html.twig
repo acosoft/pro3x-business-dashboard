@@ -2,23 +2,29 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Pro3x Online{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>{% block title %}{{ 'Pro3x Online'|trans }}{% endblock %}</title>
+        {% block header %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/pro3xjqueryui/css/redmond/jquery-ui-1.9.1.custom.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('styles/super.css') }}" />
-	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-1.8.2.js') }}"></script>
-	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-ui-1.9.1.custom.js') }}"></script>
+        
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{{ asset('style.css') }}">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </head>
     <body>
 	{% block head %}
 	    {% include '::header.html.twig' %}
 	{% endblock %}
 	    
-	<div class="container_12 pro3x_content">
-	    <div class="grid_8 push_2"><h1>{% block page_title %}{% endblock %}</h1></div>
+	<div class="container">
+	    <div class="col-md-6 col-md-offset-3"><h1 class="pro3x-title">{% block page_title %}{% endblock %}</h1></div>
 	    {% block body %}{% endblock %}
-	    <div class="clear"></div>
+	    <div class="clearfix"></div>
 	</div>
 
 	<script>

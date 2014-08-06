@@ -46,3 +46,8 @@ h1.pro3x-title
 .pro3x-dialog img
     { float: left; margin-right: 10px; }
     
+.pro3x-panel-form
+    { padding: 15px 0px 15px 0px; }
+    
+.pro3x-buttons
+    { margin-top: -10px; }
