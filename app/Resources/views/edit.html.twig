@@ -1,13 +1,13 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}" />{{ title|trans|title }}{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}" />{{ title|trans|capitalize }}{% endblock %}
 
 {% block body %}
     <div class="col-md-6 col-md-offset-3">
-        <form method="post" class="from-horizontal" role="form">
+        <form method="post" class="form-horizontal" role="form">
             <div class="panel panel-default">
                 <div class="panel-heading">{{ 'Osnovna svojstva'|trans }}</div>
-                <div class="pro3x-panel-form">
+                <div class="panel-body pro3x-panel-form">
 
                     {% for child in form.children %}
                         {% if child.vars.label %}

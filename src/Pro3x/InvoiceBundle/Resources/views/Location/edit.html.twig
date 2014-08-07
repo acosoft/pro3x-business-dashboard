@@ -1,49 +1,211 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon {{ cssClass }}"></span>{{ title|trans|title }}{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}" />{{ title|trans|capitalize }}{% endblock %}
 
 {% block body %}
-    <div class="grid_8 push_2">
-	<form method="post">
-	<div class="pro3x_tabs">
-	    <ul>
-		<li><a href="#info">{{ 'Informacije'|trans }}</a></li>
-		<li><a href="#security">{{ 'Fiskalizacija'|trans }}</a></li>
-	    </ul>
-	    <div id="info">
-		<div class="pro3x_form_content">
+    <div class="col-md-6 col-md-offset-3">
+        
+        {{ form_errors(form) }}
+        
+        {% include '::message.html.twig' %}
+        
+	<form method="post" class="form-horizontal">
+	
+	    <div id="info" class="panel panel-default">
+                <div class="panel-heading">{{ 'Osnovna svojstva'|trans|capitalize }}</div>
+		<div class="panel-body pro3x-panel-form">
 		    
-		    {{ form_row(form.name) }}
-		    {{ form_row(form.street) }}
-		    {{ form_row(form.houseNumber) }}
-		    {{ form_row(form.houseNumberExtension) }}
-		    {{ form_row(form.postalCode) }}
-		    {{ form_row(form.city) }}
-		    {{ form_row(form.settlement) }}
-		    {{ form_row(form.workingHours) }}
-
-		    {% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
-		    <div class="pro3x_buttons" style="margin-bottom: 0em;">
-			<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-			<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
-		    </div>
+                    <div class="form-group">
+                        {{ form_label(form.name, form.name.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.code, form.code.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.display, form.display.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.display, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        	
 		</div>
 	    </div>
-	    <div id="security">
-		<div class="pro3x_form_content">
-		    
-		    {{ form_row(form.taxPayer) }}
-		    {{ form_row(form.companyTaxNumber) }}
-		    {{ form_row(form.securityKey) }}
-		    {{ form_row(form.securityCertificate) }}
-		    {{ form_rest(form) }}
-		    <div class="pro3x_buttons" style="margin-bottom: 0em;">
-			<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-			<input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
-		    </div>
-		</div>
-	    </div>
-	</div>
+                        
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ 'Zaglavlje računa'|trans|capitalize }}</div>
+                <div class="panel-body pro3x-panel-form">
+                    
+                    <div class="form-group">
+                        {{ form_label(form.companyName, form.companyName.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.companyName, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.companyTaxNumber, form.companyTaxNumber.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.companyTaxNumber, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.iban, form.iban.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.iban, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.address, form.address.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.other, form.other.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.other, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.logo, form.logo.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.logo, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+            </div>
+                        
+            <div id="info" class="panel panel-default">
+                <div class="panel-heading">{{ 'Radno vrijeme'|trans|capitalize }}</div>
+		<div class="panel-body pro3x-panel-form">
+                    <div class="form-group">
+                        {{ form_label(form.workingHours, form.workingHours.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.workingHours, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+                        
+             <div id="info" class="panel panel-default">
+                <div class="panel-heading">{{ 'Adresa'|trans|capitalize }}</div>
+		<div class="panel-body pro3x-panel-form">
+                    
+                    <div class="form-group">
+                        {{ form_label(form.street, form.street.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.street, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.houseNumber, form.houseNumber.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.houseNumber, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.houseNumberExtension, 'Ekstenzija broja', {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.houseNumberExtension, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                </div>
+            </div>
+                        
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ 'Mjesto'|trans|capitalize }}</div>
+                <div class="panel-body pro3x-panel-form">
+                    <div class="form-group">
+                        {{ form_label(form.postalCode, form.postalCode.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.postalCode, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.city, form.city.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.settlement, form.settlement.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.settlement, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+                        
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ 'Certifikati'|trans|capitalize }}</div>
+                <div class="panel-body pro3x-panel-form">
+                    
+                    <div class="form-group">
+                        {{ form_label(form.taxPayer, form.taxPayer.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.taxPayer, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.securityKey, form.securityKey.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.securityKey, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        
+                    <div class="form-group">
+                        {{ form_label(form.securityCertificate, form.securityCertificate.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                        <div class="col-md-8">
+                            {{ form_widget(form.securityCertificate, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+                    
+            <div class="pro3x-buttons">
+                <input type="submit" class="btn btn-primary" value="{{ 'Spremi'|trans }}" />
+                <a class="btn btn-primary" href="{{ app.request.get('back') }}">{{ 'Odustani'|trans }}</a>
+            </div>
+            
+            {{ form_rest(form) }}
 	</form>
     </div>
 {% endblock %}

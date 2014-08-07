@@ -264,7 +264,7 @@ class AdminController extends Controller
 			
 			$location = $invoice->getPosition()->getLocation();
 			
-			if ($location->getCompanyTaxNumber() && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()))
+			if ($location->getTaxPayer() !== null && $this->getFinaClientFactory()->isFiscalTransaction($invoice->getTemplate()->getTransactionType()))
 			{
 				if($invoice->getUniqueInvoiceNumber() == null)
 				{

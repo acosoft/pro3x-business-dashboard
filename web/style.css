@@ -34,8 +34,8 @@ h1.pro3x-title
 .pro3x-table-panel
     { margin-bottom: 0px; }
     
-.pro3x-table-buttons .btn, .pro3x-medium-button
-    { width: 120px; }
+.pro3x-table-buttons .btn, .pro3x-medium-button, .pro3x-buttons .btn
+    { width: 100px; }
     
 .pro3x-pagination
     { margin: 0.6em 0; }
@@ -47,7 +47,10 @@ h1.pro3x-title
     { float: left; margin-right: 10px; }
     
 .pro3x-panel-form
-    { padding: 15px 0px 15px 0px; }
+    { padding-bottom: 0px; }
+    
+.pro3x-panel-form label.control-label
+    { text-align: left; }
     
 .pro3x-buttons
-    { margin-top: -10px; }
+    { margin-top: -10px; margin-bottom: 30px; }

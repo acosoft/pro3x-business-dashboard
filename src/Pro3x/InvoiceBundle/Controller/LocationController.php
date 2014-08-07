@@ -24,7 +24,7 @@ class LocationController extends AdminController
 	{
 		$handler = new \Pro3x\Online\AddHandler($this);
 		
-		$handler->setTitle('Izmjena lokacije')
+		$handler->setTitle('Nova lokacija')
 				->setIcon('location_add')
 				->setSuccessMessage('Lokacija je uspješno spremljena')
 				->setFormType(new LocationType());
@@ -48,7 +48,7 @@ class LocationController extends AdminController
 			{
 				$location = $this->getLocationRepository()->find($id); /* @var $location \Pro3x\InvoiceBundle\Entity\Location */
 				
-				if($location->getSecurityKey() && $location->getSecurityCertificate() && $location->getCompanyTaxNumber())
+				if($location->getSecurityKey() && $location->getSecurityCertificate() && $location->getCompanyTaxNumber() && $location->getTaxPayer() !== null)
 				{
 					$soap = $this->getFinaClientFactory()->createInstance($location->getSecurityKey(), $location->getSecurityCertificate(), array('trace' => true));
 					$zahtjev = new \Pro3x\Online\Fina\PoslovniProstorZahtjev($soap->randomGuid());
@@ -132,6 +132,7 @@ class LocationController extends AdminController
 
 		$params->setTitle('Pregled lokacija')
 				->setIcon('location')
+                                ->addColumn('companyName', 'Poslovni subjekt')
 				->addColumn('name', 'Naziv Lokacije')
 				->addColumn('description', 'Adresa')
 				->addColumn('workingHours', 'Radno vrijeme')

@@ -11,18 +11,31 @@ class LocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('taxPayer', 'choice', array('choices' => array(true => 'U sustavu PDV-a', false => 'Nije u sustavu PDV-a'), 'label' => 'Obračun poreza'))
-			->add('companyTaxNumber', 'text', array('label' => 'OIB Tvrtke', 'required' => false))
-            ->add('name', 'text', array('label' => 'Naziv lokacije'))
-			->add('street', 'text', array('label' => 'Ulica', 'required' => false))
-			->add('houseNumber', 'text', array('label' => 'Kućni broj', 'required' => false))
-			->add('houseNumberExtension', 'text', array('label' => 'Dodatak kućnom broju', 'required' => false))
-			->add('postalCode', 'text', array('label' => 'Poštanski broj', 'required' => false))
-			->add('city', 'text', array('label' => 'Grad', 'required' => false))
-			->add('settlement', 'text', array('label' => 'Naselje', 'required' => false))
-			->add('workingHours', 'text', array('label' => 'Radno vrijeme', 'required' => false))
-			->add('securityKey', 'textarea', array('label' => 'Sigurnosni ključ', 'required' => false))
-			->add('securityCertificate', 'textarea', array('label' => 'Sigurnosni certifikat', 'required' => false))
+                ->add('taxPayer', 'choice', array('choices' => array(
+                        null => '',
+                        true => 'U sustavu PDV-a',
+                        false => 'Nije u sustavu PDV-a'
+                    ), 'label' => 'Fiskalni model',
+                    'required' => false)
+                )
+                ->add('companyName', 'text', array('label' => 'Naziv', 'required' => false))
+                ->add('companyTaxNumber', 'text', array('label' => 'OIB', 'required' => false))
+                ->add('iban', 'text', array('label' => 'IBAN', 'required' => false))
+                ->add('address', 'text', array('label' => 'Adresa', 'required' => false))
+                ->add('other', 'text', array('label' => 'Lokacija', 'required' => false))
+                ->add('code', 'text', array('label' => 'Numerička oznaka', 'required' => false))
+                ->add('display', 'text', array('label' => 'Interni naziv', 'required' => false))
+                ->add('name', 'text', array('label' => 'Naziv lokacije'))
+                ->add('logo', 'text', array('label' => 'Logo', 'required' => false))
+                ->add('street', 'text', array('label' => 'Ulica', 'required' => false))
+                ->add('houseNumber', 'text', array('label' => 'Kućni broj', 'required' => false))
+                ->add('houseNumberExtension', 'text', array('label' => 'Dodatak kućnom broju', 'required' => false))
+                ->add('postalCode', 'text', array('label' => 'Poštanski broj', 'required' => false))
+                ->add('city', 'text', array('label' => 'Grad', 'required' => false))
+                ->add('settlement', 'text', array('label' => 'Naselje', 'required' => false))
+                ->add('workingHours', 'textarea', array('label' => 'Opis', 'required' => false))
+                ->add('securityKey', 'textarea', array('label' => 'Sigurnosni ključ', 'required' => false))
+                ->add('securityCertificate', 'textarea', array('label' => 'Sigurnosni certifikat', 'required' => false))
         ;
     }
 

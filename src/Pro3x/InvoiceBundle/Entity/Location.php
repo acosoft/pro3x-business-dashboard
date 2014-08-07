@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping\OneToMany;
  * @ORM\Table(name="pro3x_locations")
  * @ORM\Entity(repositoryClass="Pro3x\InvoiceBundle\Entity\LocationRepository")
  */
-class Location
-{
+class Location {
+
     /**
      * @var integer
      *
@@ -21,285 +21,349 @@ class Location
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
-	/**
-	 * @OneToMany(targetEntity="Position", mappedBy="location")
-	  */
-	private $positions;
-	
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	private $name;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $companyTaxNumber;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $postalCode;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $houseNumber;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $houseNumberExtension;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $settlement;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $city;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $street;
-	
-	/**
-	 * @ORM\Column(type="string", length=500, nullable=true)
-	 */
-	private $workingHours;
-	
-	/**
-	 * @OneToMany(targetEntity="Template", mappedBy="location")
-	  */
-	private $templates;
-	
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $securityKey;
-	
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $securityCertificate;
-	
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 */
-	private $taxPayer;
-	
-	/**
-	 * @ORM\Column(type="boolean")
-	 */
-	private $submited;
-	
-	function __construct()
-	{
-		$this->submited = false;
-	}
-	
-	public function getSubmited()
-	{
-		return $this->submited;
-	}
 
-	public function setSubmited($submited)
-	{
-		$this->submited = $submited;
-	}
+    /**
+     * @OneToMany(targetEntity="Position", mappedBy="location")
+     */
+    private $positions;
 
-	public function getTaxPayer()
-	{
-		return $this->taxPayer;
-	}
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
 
-	public function setTaxPayer($taxPayer)
-	{
-		$this->taxPayer = $taxPayer;
-	}
-	
-	public function getSecurityKey()
-	{
-		return $this->securityKey;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $companyTaxNumber;
 
-	public function setSecurityKey($securityKey)
-	{
-		$this->securityKey = $securityKey;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $postalCode;
 
-	public function getSecurityCertificate()
-	{
-		return $this->securityCertificate;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $houseNumber;
 
-	public function setSecurityCertificate($securityCertificate)
-	{
-		$this->securityCertificate = $securityCertificate;
-	}
-	
-	public function getTemplatesSorted()
-	{
-		$templates = $this->getTemplates()->toArray();
-		
-		$activeTemplates = array();
-		
-		foreach($templates as $template)
-		{
-			/* @var $template Template */
-			if($template->getPriority() > 0)
-			{
-				$activeTemplates[] = $template;
-			}
-		}
-		
-		usort($activeTemplates, function($a, $b) { 
-			
-			/* @var $a Template */
-			/* @var $b Template */
-			
-			if($a->getPriority() == $b->getPriority())
-			{
-				return 0;
-			}
-			
-			return ($a->getPriority() > $b->getPriority())? -1 : 1;
-		});
-		
-		return $activeTemplates;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $houseNumberExtension;
 
-	public function getTemplates()
-	{
-		return $this->templates;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $settlement;
 
-	public function setTemplates($templates)
-	{
-		$this->templates = $templates;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $city;
 
-	public function getWorkingHours()
-	{
-		return $this->workingHours;
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $street;
 
-	public function setWorkingHours($workingHours)
-	{
-		$this->workingHours = $workingHours;
-	}
-	
-	public function getCompanyTaxNumber()
-	{
-		return $this->companyTaxNumber;
-	}
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $workingHours;
 
-	public function setCompanyTaxNumber($companyTaxNumber)
-	{
-		$this->companyTaxNumber = $companyTaxNumber;
-	}
+    /**
+     * @OneToMany(targetEntity="Template", mappedBy="location")
+     */
+    private $templates;
 
-	public function getPostalCode()
-	{
-		return $this->postalCode;
-	}
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $securityKey;
 
-	public function setPostalCode($postalCode)
-	{
-		$this->postalCode = $postalCode;
-	}
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $securityCertificate;
 
-	public function getHouseNumber()
-	{
-		return $this->houseNumber;
-	}
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $taxPayer;
 
-	public function setHouseNumber($houseNumber)
-	{
-		$this->houseNumber = $houseNumber;
-	}
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $submited;
+    
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     */
+    private $companyName;
+    
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     */
+    private $iban;
+    
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $address;
+    
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $other;
+    
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $display;
+    
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $code;
+    
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $logo;
+    
+    public function getLogo() {
+        return $this->logo;
+    }
 
-	public function getHouseNumberExtension()
-	{
-		return $this->houseNumberExtension;
-	}
+    public function setLogo($logo) {
+        $this->logo = $logo;
+        return $this;
+    }
+    
+    public function getDisplay() {
+        return $this->display;
+    }
 
-	public function setHouseNumberExtension($houseNumberExtension)
-	{
-		$this->houseNumberExtension = $houseNumberExtension;
-	}
+    public function getCode() {
+        return $this->code;
+    }
 
-	public function getSettlement()
-	{
-		return $this->settlement;
-	}
+    public function setDisplay($display) {
+        $this->display = $display;
+        return $this;
+    }
 
-	public function setSettlement($settlement)
-	{
-		$this->settlement = $settlement;
-	}
+    public function setCode($code) {
+        $this->code = $code;
+        return $this;
+    }
 
-	public function getCity()
-	{
-		return $this->city;
-	}
+    public function getAddress() {
+        return $this->address;
+    }
 
-	public function setCity($city)
-	{
-		$this->city = $city;
-	}
+    public function getOther() {
+        return $this->other;
+    }
 
-	public function getStreet()
-	{
-		return $this->street;
-	}
+    public function setAddress($address) {
+        $this->address = $address;
+        return $this;
+    }
 
-	public function setStreet($street)
-	{
-		$this->street = $street;
-	}
+    public function setOther($other) {
+        $this->other = $other;
+        return $this;
+    }
+    
+    public function getIban() {
+        return $this->iban;
+    }
 
-	public function getPositions()
-	{
-		return $this->positions;
-	}
+    public function setIban($iban) {
+        $this->iban = $iban;
+        return $this;
+    }
+    
+    public function getCompanyName() {
+        return $this->companyName;
+    }
 
-	public function setPositions($positions)
-	{
-		$this->positions = $positions;
-	}
+    public function setCompanyName($companyName) {
+        $this->companyName = $companyName;
+        return $this;
+    }
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    function __construct() {
+        $this->submited = false;
+    }
 
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
+    public function getSubmited() {
+        return $this->submited;
+    }
+
+    public function setSubmited($submited) {
+        $this->submited = $submited;
+    }
+
+    public function getTaxPayer() {
+        return $this->taxPayer;
+    }
+
+    public function setTaxPayer($taxPayer) {
+        $this->taxPayer = $taxPayer;
+    }
+
+    public function getSecurityKey() {
+        return $this->securityKey;
+    }
+
+    public function setSecurityKey($securityKey) {
+        $this->securityKey = $securityKey;
+    }
+
+    public function getSecurityCertificate() {
+        return $this->securityCertificate;
+    }
+
+    public function setSecurityCertificate($securityCertificate) {
+        $this->securityCertificate = $securityCertificate;
+    }
+
+    public function getTemplatesSorted() {
+        $templates = $this->getTemplates()->toArray();
+
+        $activeTemplates = array();
+
+        foreach ($templates as $template) {
+            /* @var $template Template */
+            if ($template->getPriority() > 0) {
+                $activeTemplates[] = $template;
+            }
+        }
+
+        usort($activeTemplates, function($a, $b) {
+
+            /* @var $a Template */
+            /* @var $b Template */
+
+            if ($a->getPriority() == $b->getPriority()) {
+                return 0;
+            }
+
+            return ($a->getPriority() > $b->getPriority()) ? -1 : 1;
+        });
+
+        return $activeTemplates;
+    }
+
+    public function getTemplates() {
+        return $this->templates;
+    }
+
+    public function setTemplates($templates) {
+        $this->templates = $templates;
+    }
+
+    public function getWorkingHours() {
+        return $this->workingHours;
+    }
+
+    public function setWorkingHours($workingHours) {
+        $this->workingHours = $workingHours;
+    }
+
+    public function getCompanyTaxNumber() {
+        return $this->companyTaxNumber;
+    }
+
+    public function setCompanyTaxNumber($companyTaxNumber) {
+        $this->companyTaxNumber = $companyTaxNumber;
+    }
+
+    public function getPostalCode() {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode($postalCode) {
+        $this->postalCode = $postalCode;
+    }
+
+    public function getHouseNumber() {
+        return $this->houseNumber;
+    }
+
+    public function setHouseNumber($houseNumber) {
+        $this->houseNumber = $houseNumber;
+    }
+
+    public function getHouseNumberExtension() {
+        return $this->houseNumberExtension;
+    }
+
+    public function setHouseNumberExtension($houseNumberExtension) {
+        $this->houseNumberExtension = $houseNumberExtension;
+    }
+
+    public function getSettlement() {
+        return $this->settlement;
+    }
+
+    public function setSettlement($settlement) {
+        $this->settlement = $settlement;
+    }
+
+    public function getCity() {
+        return $this->city;
+    }
+
+    public function setCity($city) {
+        $this->city = $city;
+    }
+
+    public function getStreet() {
+        return $this->street;
+    }
+
+    public function setStreet($street) {
+        $this->street = $street;
+    }
+
+    public function getPositions() {
+        return $this->positions;
+    }
+
+    public function setPositions($positions) {
+        $this->positions = $positions;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
-	
-	public function getDescription()
-	{
-		$data = array();
-		
-		if($this->getStreet()) $data[] = $this->getStreet() . ' ' . $this->getHouseNumber() . $this->getHouseNumberExtension();
-		if($this->getCity()) $data[] = $this->getPostalCode () . ' ' . $this->getCity();
-		
-		return implode(', ', $data);
-	}
+
+    public function getDescription() {
+        $data = array();
+
+        if ($this->getStreet())
+            $data[] = $this->getStreet() . ' ' . $this->getHouseNumber() . $this->getHouseNumberExtension();
+        if ($this->getCity())
+            $data[] = $this->getPostalCode() . ' ' . $this->getCity();
+
+        return implode(', ', $data);
+    }
+
 }

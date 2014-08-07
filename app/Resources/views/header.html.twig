@@ -26,12 +26,16 @@
                     <ul class="dropdown-menu">
 
                         {% if is_granted('ROLE_USER') %}
-                            <li><a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ 'Postavke' | trans }}</a></li>
-                            <li><a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a></li>
-                            <li role="presentation" class="divider"></li>
-                            {% endif %}
-
+                            
+                        {% endif %}
+                        
                         <li><a href="http://www.pro3x.com">Pro3x Community</a></li>
+                        
+                        {% if is_granted('ROLE_USER') %}
+                            <li><a href="{{ path('edit_user', {'id': app.user.id, 'back': app.request.uri }) }}">{{ 'Korisničke postavke' | trans }}</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li><a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a></li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

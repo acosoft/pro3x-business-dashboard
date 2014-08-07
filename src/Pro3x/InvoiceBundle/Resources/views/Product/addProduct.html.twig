@@ -1,48 +1,134 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon {{ cssClass }}"></span>{{ title|trans|title }}{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}">{{ title|trans|capitalize }}{% endblock %}
 
 {% block body %}
-    <div class="grid_8 push_2">
-	<form method="post">
+    <div class="col-md-6 col-md-offset-3">
+	<form method="post" class="form-horizontal">
 	    <div class="pro3x_tabs">
-		<ul>
-		    <li><a href="#info">{{ 'Nabava'|trans }}</a></li>
-		    <li><a href="#sales">{{ 'Prodaja'|trans }}</a></li>
-		</ul>
-		<div id="info">
-		    <div class="pro3x_form_content">
-
-			{{ form_row(form.name) }}
-			{{ form_row(form.barcode) }}
-			{{ form_row(form.code) }}
-			{{ form_row(form.inputPrice) }}
-			{{ form_row(form.inputTaxRate) }}
-			{{ form_row(form.taxedInputPrice) }}
-			
-			
-			    
-			{% if extensionTemplate is defined %}{% include extensionTemplate with params %}{% endif %}
-			<div class="pro3x_buttons">
-			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
-			</div>
-
+                
+                <div id="info" class="panel panel-default">
+                    <div class="panel-heading">{{ 'Osnovna svojstva'|trans }}</div>
+		    <div class="panel-body pro3x-panel-form">
+                        
+                        <div class="form-group">
+                            {{ form_label(form.name, form.name.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.barcode, form.barcode.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.barcode, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.code, form.code.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.unit, form.unit.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.unit, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                    </div>
+		</div>
+                        
+		<div id="info" class="panel panel-default">
+                    <div class="panel-heading">{{ 'Kalkulacija nabavne cijene'|trans }}</div>
+		    <div class="panel-body pro3x-panel-form">
+                        
+                        <div class="form-group">
+                            {{ form_label(form.inputTaxRate, form.inputTaxRate.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.inputTaxRate, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.inputPrice, form.inputPrice.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.inputPrice, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.taxedInputPrice, form.taxedInputPrice.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.taxedInputPrice, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                           
 		    </div>
 		</div>
-		<div id="sales">
-		    <div class="pro3x_form_content">
-			{{ form_row(form.unitPrice) }}
-			{{ form_row(form.taxRates) }}
-			{{ form_row(form.taxAmount) }}
-			{{ form_row(form.taxedPrice) }}
-			{{ form_rest(form) }}
-			<div class="pro3x_buttons">
-			    <input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-			    <input type="button" class="button link" data-href="{{ app.request.get('back') }}" value="{{ 'Odustani'|trans }}" />
-			</div>
+                        
+		<div id="sales" class="panel panel-default">
+                    <div class="panel-heading">{{ 'Kalkulacija prodajne cijene'|trans }}</div>
+		    <div class="panel-body pro3x-panel-form">
+                        
+                        <div class="form-group">
+                            {{ form_label(form.unitPrice, form.unitPrice.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.unitPrice, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.taxRates, form.taxRates.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                
+                                {% for item in form.taxRates.children %}
+                                    <div class="checkbox">
+                                        <label> {{ form_widget(item) }} {{ item.vars.label }} </label>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.taxAmount, form.taxAmount.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.taxAmount, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+                        <div class="form-group">
+                            {{ form_label(form.taxedPrice, form.taxedPrice.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
+                            <div class="col-md-8">
+                                {{ form_widget(form.taxedPrice, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                            
+			
 		    </div>
 		</div>
+                
+                {{ form_rest(form) }}
+                
+                <div class="pro3x-buttons">
+                    <input type="submit" class="btn btn-primary" value="{{ 'Spremi'|trans }}" />
+                    <a class="btn btn-primary" href="{{ app.request.get('back') }}">{{ 'Odustani'|trans }}</a>
+                </div>
 	    </div>
 	</form>
     </div>
