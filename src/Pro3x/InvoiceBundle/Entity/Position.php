@@ -114,13 +114,25 @@ class Position
 	{
 		return $this->getLocation()->getName();
 	}
+        
+        private function getLocationDisplayName()
+        {
+            if($this->getLocation()->getDisplay())
+            {
+                return $this->getLocation()->getDisplay();
+            }
+            else
+            {
+                return $this->getLocation()->getName();
+            }
+        }
 	
 	public function getDescription()
 	{
 		if($this->getName())
-			return $this->getLocationName() . ' : ' . $this->getName();
+			return $this->getLocationDisplayName() . ' : ' . $this->getName();
 		else
-			return $this->getLocationName();
+			return $this->getLocationDisplayName();
 	}
 
     /**

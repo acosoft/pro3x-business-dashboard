@@ -88,25 +88,8 @@
     </div>
 
     {% if pager %}{% include '::pager.html.twig' %}{% endif %}
-    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
     
-    <div class="modal fade pro3x-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">{{ 'Upozorenje'|trans }}</h4>
-                </div>
-                <div class="modal-body pro3x-dialog">
-                   
-                </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-primary pro3x-medium-button pro3x-confirm-button">Izbriši</a>
-                    <button type="button" class="btn btn-primary pro3x-medium-button" data-dismiss="modal">Odustani</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    {% include '::dialog.html.twig' %}
 
 {% endblock %}
 

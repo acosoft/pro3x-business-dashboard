@@ -91,7 +91,7 @@
                             
                         <div class="form-group">
                             {{ form_label(form.taxRates, form.taxRates.vars.label, {'label_attr': {'class': 'control-label col-md-4'}}) }}
-                            <div class="col-md-8">
+                            <div class="col-md-8 pro3x-checkbox-list">
                                 
                                 {% for item in form.taxRates.children %}
                                     <div class="checkbox">
@@ -152,8 +152,8 @@
     function getTaxes() {
 	var taxes = Array();
 	
-	$('.pro3x_checkbox_list input').each(function() {
-	    if($(this).attr('checked') == 'checked') {
+	$('.pro3x-checkbox-list input').each(function() {
+	    if($(this).is(':checked')) {
 		taxes.push($(this).val());
 	    }
 	})
@@ -169,7 +169,7 @@
 	calculateTax(getTaxes(), $(this), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
     });
     
-    $('.pro3x_checkbox_list input').click(function() {
+    $('.pro3x-checkbox-list input').click(function() {
 	calculateTax(getTaxes(), $('#pro3x_invoicebundle_producttype_taxedPrice'), $('#pro3x_invoicebundle_producttype_taxAmount'), '{{ path('calculate_base_price')}}');
     });
     

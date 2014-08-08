@@ -175,7 +175,7 @@ class UserController extends AdminController
 		
 		$count = $this->getPageCount($pager->count());
 		
-		return array('users' => $pager, 'count' => $count, 'page' => $page);
+		return array('users' => $pager, 'icon' => 'user', 'count' => $count, 'page' => $page);
 	}
 }
 

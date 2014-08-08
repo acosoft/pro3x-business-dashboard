@@ -1,61 +1,63 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_users"></span>{{ 'Popis Korisnika'|trans }}{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}" />{{ 'Popis Korisnika'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="grid_12">
+    <div class="col-md-12">
 	
 	{% include '::message.html.twig' %}
 	
-	<table class="ui-widget-content ui-corner-all pro3x">
-	    <thead>
-		<tr>
-		    {% if is_granted('ROLE_OIB') %}
-			<th class="ui-widget-header ui-corner-all">{{ 'OIB'|trans }}</th>
-		    {% endif %}
-			<th class="ui-widget-header ui-corner-all">{{ 'Korisničko ime'|trans }}</th>
-			<th class="ui-widget-header ui-corner-all">{{ 'Naziv korisnika'|trans }}</th>
-			<th class="ui-widget-header ui-corner-all">{{ 'Email'|trans }}</th>
-			<th class="ui-widget-header ui-corner-all">{{ 'Aktiviran'|trans }}</th>
-			<th class="ui-widget-header ui-corner-all" style="width: 200px;">{{ 'Alati'|trans }}</th>
-		</tr>
-	    </thead>
-	{% for user in users %}
-	    <tr>
-		{% if is_granted('ROLE_OIB') %}
-		    <td>{{ user.oib }}</td>
-		{% endif %}
-		<td>{{ user.username }}</td>
-		<td>{{ user.displayName }}</td>
-		<td>{{ user.email }}</td>
-		<td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
-		<td class="pro3x_tools">
-		    <a href="{{ path('edit_permissions', {'id': user.id, 'back': app.request.uri}) }}">{{ 'dozvole'|trans }}</a>
-		    <a href="{{ path('daily_total', {'id': user.id}) }}">{{ 'promet'|trans }}</a>
-		    <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
-		    <a class="pro3x_confirm" data-icon="pro3x_icon_user_delete" 
-		       data-msg="{{ 'Jeste li sigurni da želite izbrisati korisnika <b>%username%</b>?'|trans({ '%username%': user.username }) }}" 
-		       href="{{ path('delete_user', {'id': user.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
-		</td>
-	    </tr>
-	{% else %}
-	    <tr>
-		<td class="pro3x_no_data" colspan="100">Nema rezultata</td>
-	    </tr>
-	{% endfor %}
-	</table>
+	<div class="panel panel-default pro3x-table-panel">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        {% if is_granted('ROLE_OIB') %}
+                            <th>{{ 'OIB'|trans }}</th>
+                        {% endif %}
+                            <th>{{ 'Korisničko ime'|trans }}</th>
+                            <th>{{ 'Naziv korisnika'|trans }}</th>
+                            <th>{{ 'Email'|trans }}</th>
+                            <th>{{ 'Aktiviran'|trans }}</th>
+                            <th style="width: 250px;">{{ 'Alati'|trans }}</th>
+                    </tr>
+                </thead>
+            {% for user in users %}
+                <tr>
+                    {% if is_granted('ROLE_OIB') %}
+                        <td>{{ user.oib }}</td>
+                    {% endif %}
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.displayName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><span class="ui-icon {{ user.active?'ui-icon-check':'ui-icon-closethick' }}"></span></td>
+                    <td class="pro3x-tools">
+                        <a href="{{ path('edit_permissions', {'id': user.id, 'back': app.request.uri}) }}">{{ 'dozvole'|trans }}</a>
+                        <a href="{{ path('daily_total', {'id': user.id}) }}">{{ 'promet'|trans }}</a>
+                        <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
+                        <a class="pro3x-confirm" data-icon="pro3x_icon_user_delete" 
+                           data-msg="{{ 'Jeste li sigurni da želite izbrisati korisnika <b>%username%</b>?'|trans({ '%username%': user.username }) }}" 
+                           href="{{ path('delete_user', {'id': user.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
     </div>
 
-    <div class="grid_6">
-	<div class="pro3x_table_buttons" style="margin-top: 0.6em;">
-	    <input type="button" data-href="{{ path('add_user', {'back': app.request.uri}) }}" class="button link" value="{{ 'Dodaj'|trans }}" />
-	    <input type="button" data-href="{{ path('dashboard') }}" class="button link" value="{{ 'Dashboard'|trans }}" />
+    <div class="col-md-6">
+	<div class="pro3x-table-buttons" style="margin-top: 0.6em;">
+	    <a href="{{ path('add_user', {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
+	    <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
 	</div>
     </div>
 
     {% include '::pager.html.twig' with {'count': count, 'page': page} %}
 
-    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+    {% include '::dialog.html.twig' %}
 
 {% endblock %}
 

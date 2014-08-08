@@ -23,7 +23,7 @@ class GroupController extends Controller
 		$form = $this->createForm(new GroupType());
 		if($result = $this->persist($form, 'Grupa je uspješno kreirana')) return $result;
 		
-		return array('form' => $form->createView(), 'title' => 'Unos nove grupe', 'cssClass' => 'pro3x_small_icon_group_add');
+		return array('form' => $form->createView(), 'title' => 'Unos nove grupe', 'icon' => 'group_add', 'cssClass' => 'pro3x_small_icon_group_add');
 	}
 	
 	private function persist($form, $message)
@@ -61,7 +61,7 @@ class GroupController extends Controller
 		$form = $this->createForm(new GroupType(), $group);
 		if($result = $this->persist($form, 'Grupa je uspješno izmjenjena')) return $result;
 		
-		return array('form' => $form->createView(), 'title' => 'Izmjena grupe', 'cssClass' => 'pro3x_small_icon_group_edit');
+		return array('form' => $form->createView(), 'title' => 'Izmjena grupe', 'icon' => 'group_add', 'cssClass' => 'pro3x_small_icon_group_edit');
 	}
 	
 	/**
@@ -91,7 +91,7 @@ class GroupController extends Controller
 	public function listAction()
 	{
 		$groups = $this->getDoctrine()->getRepository('Pro3xSecurityBundle:Group')->findAll();
-		return array('groups' => $groups);
+		return array('groups' => $groups, 'icon' => 'group');
 	}
 }
 

@@ -54,3 +54,6 @@ h1.pro3x-title
     
 .pro3x-buttons
     { margin-top: -10px; margin-bottom: 30px; }
+    
+.pro3x_delete_invoice_item
+    { float: right; }
