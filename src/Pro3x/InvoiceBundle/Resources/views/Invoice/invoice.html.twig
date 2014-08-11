@@ -70,11 +70,13 @@
                 
     <div class="pro3x-table-buttons">
 	<div class="col-md-9">
-	    <form id="add_invoice_form" class="form-horizontal" action="{{ path('add_invoice_item') }}">
+            <form id="add_invoice_form" autocomplete="off" class="form-horizontal" action="{{ path('add_invoice_item') }}">
 		{% if invoice.sequence == null %}
 		    <input type="hidden" name="invoice" value="{{ invoice.id }}" />
 		    {% if invoice.tenderSequence == null %}
-			<input type="text" class="form-control" id="actionCode" style="width: 225px; display: inline-block;" placeholder="Barkod, šifra ili naziv artikla" name="code" />
+                        <div class="col-md-4" style="padding: 0px 4px 0px 0px;">
+                            <input type="text" class="form-control" id="actionCode" placeholder="Barkod, šifra ili naziv artikla" name="code" />
+                        </div>
 			<input  id="addProduct" class="btn btn-primary" type="button" name="action" value="Dodaj" />
 			<a class="btn btn-primary" href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Kupac'|trans }}</a>
 		    {% endif %}
@@ -218,7 +220,7 @@
     $('#actionCode').keypress(function(e) {
 	var code = (e.keyCode ? e.keyCode : e.which);
 	if(code == 13) { //Enter keycode
-	  addItem($(this).parent());
+	  addItem($(this).parents('form'));
 	  e.preventDefault();
 	  
 	  $(this).val('').focus();
@@ -230,7 +232,7 @@
 	var link = $(this);
 	event.preventDefault();
 	
-	var ajax = $('<span class="pro3x_ajax"></span>');
+	var ajax = $('<span class="pro3x-ajax"></span>');
 	link.replaceWith(ajax);
 	
 	$.post(link.attr('href'), null, function (data) {

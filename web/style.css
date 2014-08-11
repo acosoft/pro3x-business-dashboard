@@ -57,3 +57,14 @@ h1.pro3x-title
     
 .pro3x_delete_invoice_item
     { float: right; }
+    
+.ajax
+    { background-image: url("icons/ajax-loader.gif"); background-position: 250px 11px; background-repeat: no-repeat; padding-right: 35px;  }
+
+.pro3x-ajax
+    { background-image: url("icons/ajax-loader.gif"); display: inline-block; 
+      width: 16px; height: 11px; float: right; margin-top: 0.25em; margin-right: 9px; }
+    
+.pro3x-invoice-index td.active
+    { padding-left: 15px; padding-right: 15px; }
+    

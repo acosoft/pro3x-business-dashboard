@@ -6,6 +6,7 @@
     {% set max = min + 11 %}
     
     {% if max > count %}{% set max = count + 1 %}{% endif %}
+    {% if max < page %}{% set max = page + 1 %}{% endif %}
 
     <ul class="pagination pro3x-pagination">
         {% for index in range(min, max) %}

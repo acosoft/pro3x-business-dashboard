@@ -26,6 +26,15 @@ class TableParams
 	private $titleExtraTemplate;
 	private $titleExtraParams;
 	private $toolsTemplate;
+        private $mobileTemplate;
+        
+        public function getMobileTemplate() {
+            return $this->mobileTemplate;
+        }
+
+        public function setMobileTemplate($mobileTemplate) {
+            $this->mobileTemplate = $mobileTemplate;
+        }
 	
 	public function getToolsTemplate()
 	{
@@ -183,6 +192,7 @@ class TableParams
 		$this->setDeleteColumn('id');
 		$this->setTitleExtraTemplate(null);
 		$this->setToolsTemplate(null);
+                $this->setMobileTemplate(null);
 	}
 
 	public function getToolsWidth()
@@ -337,7 +347,8 @@ class TableParams
 			'placeholder'			=> $this->getPlaceholder(),
 			'titleExtraTemplate'	=> $this->getTitleExtraTemplate(),
 			'titleExtraParams'		=> $this->titleExtraParams,
-			'toolsTemplate'			=> $this->getToolsTemplate()
+			'toolsTemplate'			=> $this->getToolsTemplate(),
+                        'mobile' => $this->getMobileTemplate()
 		);
 	}
 }

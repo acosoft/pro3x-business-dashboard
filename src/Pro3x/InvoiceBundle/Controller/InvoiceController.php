@@ -378,6 +378,8 @@ class InvoiceController extends AdminController {
     public function indexAction($id, $page) {
         if ($this->isInRole('edit_all_invoices') || $id == $this->getUser()->getId()) {
             $params = new TableParams();
+            
+            $params->setMobileTemplate('Pro3xInvoiceBundle:Invoice:invoice-mobile-index.html.twig');
             $page = $this->getRequest()->get('page', 1);
 
             $repository = $this->getInvoiceRepository();

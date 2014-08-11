@@ -8,7 +8,11 @@
 	
 	{% include '::message.html.twig' %}
         
-        <div class="panel panel-default pro3x-table-panel">
+        {% if mobile %}
+            {% include mobile %}
+        {% endif %}
+        
+        <div class="panel panel-default pro3x-table-panel{{ mobile?' hidden-xs':'' }}">
 	<table class="table table-striped table-hover table-bordered">
 	    <thead>
 		<tr>
@@ -69,25 +73,27 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-	<div class="pro3x-table-buttons" style="margin-top: 0.6em;">
-	    {% if search == true %}
-		<form method="post" style="float: left;">
-		    <input type="hidden" name="back" value="{{ app.request.get('back') }}" />
-		    <input type="text" placeholder="{{ placeholder }}" style="width: 218px; padding: 4px;" name="query" value="{{ app.request.get('query') }}" />
-		    <input type="submit" class="button" value="{{ 'Traži'|trans }}" />
-		</form>
-	    {% endif %}
-            <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
-            {% if app.request.get('back') %}
-                <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
-            {% else %}
-                <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
-            {% endif %}
-	</div>
-    </div>
+    <div{{ mobile?' class="hidden-xs"':'' }}>
+        <div class="col-md-6">
+            <div class="pro3x-table-buttons" style="margin-top: 0.6em;">
+                {% if search == true %}
+                    <form method="post" style="float: left;">
+                        <input type="hidden" name="back" value="{{ app.request.get('back') }}" />
+                        <input type="text" placeholder="{{ placeholder }}" style="width: 218px; padding: 4px;" name="query" value="{{ app.request.get('query') }}" />
+                        <input type="submit" class="button" value="{{ 'Traži'|trans }}" />
+                    </form>
+                {% endif %}
+                <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
+                {% if app.request.get('back') %}
+                    <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
+                {% else %}
+                    <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
 
-    {% if pager %}{% include '::pager.html.twig' %}{% endif %}
+        {% if pager %}{% include '::pager.html.twig' %}{% endif %}
+    </div>
     
     {% include '::dialog.html.twig' %}
 

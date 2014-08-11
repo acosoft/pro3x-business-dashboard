@@ -1,0 +1,107 @@
+<div class="visible-xs">
+    {% for item in items %}
+        <div class="panel panel-default pro3x-invoice-index">
+
+
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {%if item.dailyReport is null %} + {% endif %}
+                    <span{% if item.isInvalid %} style="color: red"{% endif %}>
+                        {{ item.sequenceFormated }} / {{ item.position.location.name }} / {{ item.position.name }}
+                    </span>
+                </h3>
+            </div>
+            
+            <table class="table">
+                <tr>
+                    <td class="active" style="width: 40%;">{{ 'Vrijeme'|trans }}</td>
+                    <td>{{ item.dateTimeFormated }}</td>
+                </tr>
+                <tr>
+                    <td class="active">{{ 'Operater'|trans }}</td>
+                    <td>{{ item.user.displayName }}</td>
+                </tr>
+                
+                {% if item.customer %}
+                    <tr>
+                        <td class="active">{{ 'Kupac'|trans }}</td>
+                        <td>{{ item.customer.name }}</td>
+                    </tr>
+                    
+                    {% if item.customer.address %}
+                        <tr>
+                            <td class="active">{{ 'Adresa'|trans }}</td>
+                            <td>{{ item.customer.address }}</td>
+                        </tr>
+                    {% endif %}
+                    
+                    {% if item.customer.location %}
+                        <tr>
+                            <td class="active">{{ 'Lokacija'|trans }}</td>
+                            <td>{{ item.customer.location }}</td>
+                        </tr>
+                    {% endif %}
+
+                {% endif %}
+                
+                {% if item.sequence %}
+                <tr>
+                    <td class="active">{{ 'Način plaćanja'|trans }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+                {% endif %}
+                
+                <tr>
+                    <td class="active">{{ 'Iznos'|trans }}</td>
+                    <td>{{ item.invoiceTotal }}{{ 'kn'|trans }} </td>
+                </tr>
+
+            </table>
+
+            <div class="panel-footer">
+                <a style="width: 85px;" class="btn btn-primary" href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'Izmjeni'|trans }}</a>
+                <a style="width: 85px;" class="pro3x-confirm btn btn-primary" data-icon="pro3x_icon_{{ icon }}_delete" 
+                   data-msg="{{ 'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?'|trans({'%type%': type|trans, '%description%': attribute(item, deleteColumn) }) }}" 
+                   href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">
+                    {{ 'Izbriši'|trans }}
+                </a>
+            </div>
+
+            {#<td class="pro3x-tools">
+                {% if toolsTemplate %}
+                    {% include toolsTemplate with {'item': item} %}
+                {% elseif search == true %}
+                    <a href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'odaberi'|trans }}</a>
+                {% else %}
+                    <a href="{{ path(editRoute, {'id': item.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
+                    <a class="pro3x-confirm" data-icon="pro3x_icon_{{ icon }}_delete" 
+                       data-msg="{{ 'Jeste li sigurni da želite izbrisati %type% <b>%description%</b>?'|trans({'%type%': type|trans, '%description%': attribute(item, deleteColumn) }) }}" 
+                       href="{{ path(deleteRoute, {'id': item.id, 'back': app.request.uri}) }}">
+                        {{ 'izbriši'|trans }}
+                    </a>
+                {% endif %}#}
+        </div>
+    {#{% else %}
+        {% if search == false or noSelection == false %}
+            <tr>
+                <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+            </tr>
+        {% endif %}#}
+    {% endfor %}
+    
+    <div class="_row">
+        <div class="col-xs-4" style="padding: 0px 2px 4px 0px;">
+            <a class="btn btn-primary btn-block" href="{{ path('invoices', {'id': pagerParams.id, 'page': (page > 1)?page-1:1 }) }}">{{ 'Prethodna'|trans }}</a>
+        </div>
+        
+        <div class="col-xs-4" style="padding: 0px 2px 30px 2px;">
+            <a class="btn btn-primary btn-block" href="{{ path('add_invoice', {'back': app.request.uri}) }}">{{ 'Dodaj'|trans }}</a>
+        </div>
+        
+        <div class="col-xs-4" style="padding: 0px 0px 4px 2px;">
+            <a class="btn btn-primary btn-block" href="{{ path('invoices', {'id': pagerParams.id, 'page': page+1 }) }}">{{ 'Sljedeća'|trans }}</a>
+        </div>
+        
+        
+    </div>
+</div>    

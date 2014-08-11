@@ -436,7 +436,8 @@ a.ui-state-active:hover
     { background-image: url("../bundles/pro3xapp/commands/ajax-loader.gif"); background-position: 29.25em 0.75em; background-repeat: no-repeat;  }
 
 .pro3x_ajax
-    { background-image: url("../bundles/pro3xapp/commands/ajax-loader.gif"); display: inline-block; width: 16px; height: 11px; float: right; margin-top: 0.25em; }
+    { background-image: url("../bundles/pro3xapp/commands/ajax-loader.gif"); display: inline-block; 
+      width: 16px; height: 11px; float: right; margin-top: 0.25em; margin-right: 9px; }
     
 input[type="text"].pro3x_query
     { width: 54.6em; }
