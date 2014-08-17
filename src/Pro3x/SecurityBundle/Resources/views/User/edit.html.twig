@@ -5,8 +5,7 @@
         <img src="{{ asset('icons/small/user.png') }}" />
         {{ 'Izmjena korisnika'|trans|capitalize }}
     {% else %}
-        <img src="{{ asset('icons/small/user_add.png') }}" />
-        {{ 'Novi korisnik'|trans|capitalize }}
+        <img src="{{ asset('icons/small/user_add.png') }}" />{{ 'Novi korisnik'|trans|capitalize }}
     {% endif %}
 {% endblock %}
 

@@ -1,0 +1,41 @@
+<div class="panel panel-default item-{{ item.id }}">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ item.description }}</h3>
+    </div>
+    
+    <table class="table">
+        <tr>
+            <td class="active" style="width: 40%;">Cijena</td>
+            <td>{{ item.taxedPriceFormated }}</td>
+        </tr>
+        <tr>
+            <td class="active" style="width: 40%;">Količina</td>
+            <td>{{ item.amountFormated }} <span class="pro3x_unit">{{ item.unit }}</td>
+        </tr>
+        <tr>
+            <td class="active" style="width: 40%;">Osnovica</td>
+            <td>{{ item.totalTaxedPriceFormated }}</td>
+        </tr>
+        <tr>
+            <td class="active" style="width: 40%;">Popust</td>
+            <td>{{ item.discountFormated }} %</td>
+        </tr>
+        <tr>
+            <td class="active" style="width: 40%;">Ukupno</td>
+            <td>{{ item.discountPriceFormated }}</td>
+        </tr>
+    </table>
+        
+    <div class="panel-footer">
+        <a data-target=".item-{{ item.id }}" class="btn btn-primary pro3x_delete_invoice_item" href="{{ path('delete_invoice_item', {'id' : item.id}) }}">{{ 'Izbriši stavku'|trans }}</a>
+    </div>
+</div>
+
+{#<tr data-total="{{ item.taxedPrice }}">
+    <td>{{ item.description }}{% if item.invoice.sequence == null and item.invoice.tenderSequence == null %} <a class="pro3x_delete_invoice_item" href="{{ path('delete_invoice_item', {'id' : item.id}) }}">{{ 'izbriši'|trans }}</a>{% endif %}</td>
+    <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
+    <td style="text-align: right;"></span></td>
+    <td style="text-align: right;"></td>
+    <td style="text-align: right;">%</td>
+    <td style="text-align: right;"></td>
+</tr>#}

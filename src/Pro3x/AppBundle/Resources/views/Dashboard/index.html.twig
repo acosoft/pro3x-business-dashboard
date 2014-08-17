@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<img src="{{ asset('icons/small/dashboard.png') }}" />{{ 'Dashboard'|trans }}{% endblock %}
+{% block page_title %}<img class="visible-xs-inline-block" src="{{ asset('icons/small/dashboard.png') }}" />{{ 'Dashboard'|trans }}{% endblock %}
 
 {% block body %}
     <div class="col-md-12">
@@ -13,85 +13,97 @@
 
                 <div class="col-md-3 nopadding">
                     <a class="button" href="{{ path('add_invoice', {'back': app.request.uri}) }}">
-                        <img src="{{ asset('icons/invoice_add.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/invoice_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/invoice_add.png') }}" />
                         {{ 'Novi Račun'|trans }}
                     </a>
                 </div >
 
                 <div class="col-md-3">
                     <a class="button"  href="{{ path('invoices', { 'id': app.user.id }) }}">
-                        <img src="{{ asset('icons/invoice.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/invoice.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/invoice.png') }}" />
                         {{ 'Popis Računa'|trans }}
                     </a>
                 </div>
 
                 <div class="col-md-3">
                     <a class="button"  href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">
-                        <img src="{{ asset('icons/inventory_add.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/inventory_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory_add.png') }}" />
                         {{ 'Novi Proizvod'|trans }}
                     </a>
                 </div>
 
                 <div class="col-md-3">
                     <a class="button"  href="{{ path('products') }}">
-                        <img src="{{ asset('icons/inventory.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/inventory.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory.png') }}" />
                         {{ 'Proizvodi'|trans }}
                     </a>
                 </div>
 
                 <div class="col-md-3">
                     <a class="button"  href="{{ path('add_client', {'back': app.request.uri}) }}">
-                        <img src="{{ asset('icons/client_add.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/client_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/client_add.png') }}" />
                         {{ 'Novi Kupac'|trans }}
                     </a>
                 </div>
 
                 <div class="col-md-3">
                     <a class="button"  href="{{ path('clients') }}">
-                        <img src="{{ asset('icons/client.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/client.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/client.png') }}" />
                         {{ 'Popis Kupaca'|trans }}
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('locations') }}">
-                        <img src="{{ asset('icons/location.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/location.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/location.png') }}" />
                         {{ 'Lokacije'|trans }}
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('positions') }}">
-                        <img src="{{ asset('icons/position.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/position.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/position.png') }}" />
                         {{ 'Blagajne'|trans }}
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('tax_rates') }}">
-                        <img src="{{ asset('icons/tax.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/tax.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/tax.png') }}" />
                         {{ 'Porezne Stope'|trans }}
                     </a>
                 </div>
                     
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('templates') }}">
-                        <img src="{{ asset('icons/template.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/template.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/template.png') }}" />
                         {{ 'Predlošci'|trans }}
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('daily_total', {'id': app.user.id}) }}">
-                        <img src="{{ asset('icons/calendar.png') }}" />
+                        <img class="hidden-xs" src="{{ asset('icons/calendar.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/calendar.png') }}" />
                         {{ 'Dnevni promet'|trans }}
                     </a>
                 </div>
 
                 {% if is_granted('ROLE_TOTAL_SALES_REPORT') %}
-                    <div class="col-md-3">
+                    <div class="col-md-3 hidden-xs">
                         <a class="button"  href="{{ path('select_total_sales_range', {'id': app.user.id}) }}">
-                            <img src="{{ asset('icons/chart.png') }}" />
+                            <img class="hidden-xs" src="{{ asset('icons/chart.png') }}" />
+                            <img class="visible-xs-inline-block" src="{{ asset('icons/small/chart.png') }}" />
                             {{ 'Ukupni promet'|trans }}
                         </a>
                     </div>
@@ -101,34 +113,38 @@
         </div>
 
         {% if is_granted('ROLE_SECURITY_ADMIN') %}
-            <div class="panel panel-primary pro3x-dashboard-panel">
+            <div class="panel panel-primary pro3x-dashboard-panel hidden-xs">
                 <div class="panel-heading">{{ 'Sigurnosne postavke'|trans }}</div>
                 <div class="panel-body">
 
                     <div class="col-md-3">
                         <a class="button"  href="{{ path('add_user', {'back': app.request.uri}) }}">
-                            <img src="{{ asset('icons/user_add.png') }}" />
+                            <img class="hidden-xs" src="{{ asset('icons/user_add.png') }}" />
+                            <img class="visible-xs-inline-block" src="{{ asset('icons/small/user_add.png') }}" />
                             {{ 'Novi Korisnik'|trans }}
                         </a>
                     </div>
 
                     <div class="col-md-3">
                         <a class="button"  href="{{ path('users_list') }}">
-                            <img src="{{ asset('icons/user.png') }}" />
+                            <img class="hidden-xs" src="{{ asset('icons/user.png') }}" />
+                            <img class="visible-xs-inline-block" src="{{ asset('icons/small/user.png') }}" />
                             {{ 'Popis Korisnika'|trans }}
                         </a>
                     </div>
 
                     <div class="col-md-3">
                         <a class="button"  href="{{ path('add_group', {'back': app.request.uri}) }}">
-                            <img src="{{ asset('icons/group_add.png') }}" />
+                            <img class="hidden-xs" src="{{ asset('icons/group_add.png') }}" />
+                            <img class="visible-xs-inline-block" src="{{ asset('icons/small/group_add.png') }}" />
                             {{ 'Nova Grupa'|trans }}
                         </a>
                     </div>
 
                     <div class="col-md-3">
                         <a class="button"  href="{{ path('list_groups') }}">
-                            <img src="{{ asset('icons/group.png') }}" />
+                            <img class="hidden-xs" src="{{ asset('icons/group.png') }}" />
+                            <img class="visible-xs-inline-block" src="{{ asset('icons/small/group.png') }}" />
                             {{ 'Popis Grupa'|trans }}
                         </a>
                     </div>

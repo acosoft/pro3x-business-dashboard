@@ -1,1 +1,146 @@
-{# empty Twig template #}
+{% extends "Pro3xInvoiceBundle:Invoice:invoice.html.twig" %}
+
+{% block page_title %}
+    
+    <div class="visible-xs">
+        <img src="{{ asset('icons/small/invoice_add.png') }}" />{% if invoice.sequence is null  %}{{ 'Novi račun'|trans }}{% else %}{{ 'Račun'|trans|title }}{% endif %} 
+    </div>
+
+    <div class="hidden-xs">
+        {{ parent() }}
+    </div>
+        
+{% endblock %}   
+
+{% block head %}
+    {{ include('Pro3xInvoiceBundle:Invoice:invoice-mobile-menu.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <div class="col-xs-12 visible-xs pro3x-invoice-index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'Osnovna svojstva'|trans }}</h3>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="active" style="width: 40%;">Oznaka</td>
+                        <td>{% if invoice.sequence is null  %}{{ 'skica'|trans }}{% else %}{{ invoice.sequence }}{% endif %} </td>
+                    </tr>
+
+                    <tr class="paragon-box {{ invoice.originalInvoiceNumber?'':'hidden' }}">
+                        <td class="active" style="width: 40%;">{{ 'Paragon'|trans }}</td>
+                        <td class="paragon">{{ invoice.originalInvoiceNumber }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="active" style="width: 40%;">Lokacija</td>
+                        <td><a href="{{ path('edit_location', {'id': invoice.position.location.id, 'back': app.request.uri }) }}">{{ invoice.position.location.name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td class="active" style="width: 40%;">Blagajna</td>
+                        <td><a href="{{ path('edit_position', {'id': invoice.position.id, 'back': app.request.uri}) }}">{{ invoice.position.name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td class="active" style="width: 40%;">Ukupno</td>
+                        <td><span class="pro3x_invoice_total">0,00</span>kn</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+                    
+        {% if invoice.customer %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'Kupac'|trans }}</h3>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'Naziv'|trans }}</td>
+                            <td><a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a></td>
+                        </tr>
+                        {% if invoice.customer.address %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'Adresa'|trans }}</td>
+                            <td>{{ invoice.customer.address }}</td>
+                        </tr>
+                        {% endif %}
+                        
+                        {% if invoice.customer.location %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'Lokacija'|trans }}</td>
+                            <td>{{ invoice.customer.location }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if invoice.customer.taxNumber %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'OIB'|trans }}</td>
+                            <td>{{ invoice.customer.taxNumber }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+                    
+        {% for item in invoice.items %}
+            {% include 'Pro3xInvoiceBundle:Invoice:add-item-mobile.html.twig' with {'item': item} %}
+        {% endfor %}
+                    
+        {% if invoice.sequence == null %}
+        <form id="mForm" autocomplete="off" action="{{ path('add_invoice_item') }}">
+            <input type="hidden" name="invoice" value="{{ invoice.id }}" />
+            <div class="input-group">
+                <input placeholder="Barkod, šifra ili naziv artikla"  type="text" name="code" class="form-control actionCode" id="mCode" />
+                <span class="input-group-btn">
+                    <input type="submit" id="mAdd" class="btn btn-primary pro3x-medium-button input" name="action" value="{{ 'Dodaj'|capitalize }}" />
+                </span>
+            </div>
+        </form>
+        {% endif %}
+
+        <div style="height: 15px;"></div>
+    </div>
+                
+    <div class="clearfix"></div>
+    
+    <div class="hidden-xs">
+        {{ parent() }}
+    </div>
+        
+    <div class="pro3x_dialog modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Izbor artikla</h4>
+                </div>
+                <div class="modal-body">
+                    <table style="margin-bottom: 0px;" class="table pro3x pro3x-no-borders">
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Zatvori</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+{% block javascripts %}
+    
+    $('#mForm').submit(function(event) {
+        event.preventDefault();
+        
+        var form = $(this);
+        addItem(form);
+        
+        $('.actionCode', form).val('');
+    });
+    
+    {{ parent() }}
+    
+{% endblock %}

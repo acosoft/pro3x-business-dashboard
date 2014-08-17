@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         
         <title>{% block title %}{{ 'Pro3x Online'|trans }}{% endblock %}</title>
         
@@ -24,9 +24,11 @@
 	{% endblock %}
 	    
 	<div class="container">
-	    <div class="col-md-6 col-md-offset-3"><h1 class="pro3x-title">{% block page_title %}{% endblock %}</h1></div>
-	    {% block body %}{% endblock %}
-	    <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3"><h1 class="pro3x-title">{% block page_title %}{% endblock %}</h1></div>
+                {% block body %}{% endblock %}
+                <div class="clearfix"></div>
+            </div>
 	</div>
 
 	<script>

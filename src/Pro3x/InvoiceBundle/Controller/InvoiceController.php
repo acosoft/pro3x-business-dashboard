@@ -139,10 +139,11 @@ class InvoiceController extends AdminController {
         $manager->flush();
 
         $itemView = $this->renderView('Pro3xInvoiceBundle:Invoice:addItem.html.twig', array('item' => $item));
+        $mobileView = $this->renderView('Pro3xInvoiceBundle:Invoice:add-item-mobile.html.twig', array('item' => $item));
 
         return new Response(json_encode(array(
                     'total' => $this->formatNumber($invoice->getTotal(), 2),
-                    'item' => $itemView), JSON_FORCE_OBJECT));
+                    'item' => $itemView, 'mobile' => $mobileView), JSON_FORCE_OBJECT));
     }
 
     /**
@@ -169,7 +170,7 @@ class InvoiceController extends AdminController {
             $man->flush();
 
             $msgView = $this->renderView('Pro3xInvoiceBundle:Invoice:paperInvoiceNumber.html.twig', array('invoiceNumber' => $invoiceNumber));
-            $brResult = array('msg' => $msgView);
+            $brResult = array('msg' => $msgView, 'paragon' => $invoiceNumber);
             return new \Symfony\Component\HttpFoundation\JsonResponse($brResult);
         }
 
@@ -204,7 +205,7 @@ class InvoiceController extends AdminController {
 
     /**
      * @Route("/edit/{id}", name="edit_invoice")
-     * @Template("Pro3xInvoiceBundle:Invoice:invoice.html.twig")
+     * @Template("Pro3xInvoiceBundle:Invoice:invoice-mobile.html.twig")
      */
     public function editAction($id) {
         $invoice = $this->getInvoiceRepository()->findOneById($id); /* @var $invoice Invoice */

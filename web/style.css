@@ -55,11 +55,11 @@ h1.pro3x-title
 .pro3x-buttons
     { margin-top: -10px; margin-bottom: 30px; }
     
-.pro3x_delete_invoice_item
+tbody.pro3x_invoice_items .pro3x_delete_invoice_item
     { float: right; }
     
 .ajax
-    { background-image: url("icons/ajax-loader.gif"); background-position: 250px 11px; background-repeat: no-repeat; padding-right: 35px;  }
+    { background-image: url("icons/ajax-loader.gif"); background-position: right 15px top 11px; background-repeat: no-repeat; padding-right: 35px;  }
 
 .pro3x-ajax
     { background-image: url("icons/ajax-loader.gif"); display: inline-block; 
@@ -67,4 +67,10 @@ h1.pro3x-title
     
 .pro3x-invoice-index td.active
     { padding-left: 15px; padding-right: 15px; }
+    
+.panel-footer span.pro3x-ajax
+    { float: none; }
+    
+table.pro3x-no-borders > tbody > tr > td
+    { border-top: none; }
     

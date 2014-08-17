@@ -1,0 +1,24 @@
+{% extends "::header.html.twig" %}
+
+{% block menu %}
+    <li class="dropdown visible-xs">
+        <a class="dropdown-toogle" data-toggle="dropdown" href="#">Ispis dokumenta</a>
+        <ul class="dropdown-menu">
+            {% if invoice.sequence == null %}
+                {% for item in invoice.position.location.templatesSorted %}
+                    <li><a data-cloud="{{ item.useGoogleCloud }}" data-type="auto" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
+                {% endfor %}
+		    
+            {% else %}
+                {% if(invoice.template) %}
+                    <li><a data-back="false" data-cloud="" data-type="invoice" data-mode="{{ invoice.template.id }}" href="#">Ispis računa</a></li>
+                {% endif %}
+                        
+                {% if(invoice.tenderTemplate) %}
+                    <li><a data-back="false" data-cloud="" data-type="tender" data-mode="{{ invoice.template.id }}" href="#">Ispis ponude</a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </li>
+    <li class="visible-xs"><a href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Izbor kupca'|trans }}</a></li>
+{% endblock %}
