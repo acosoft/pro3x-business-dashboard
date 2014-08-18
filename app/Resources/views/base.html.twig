@@ -20,32 +20,35 @@
 
     </head>
     <body>
-	{% block head %}
-	    {% include '::header.html.twig' %}
-	{% endblock %}
-	    
-        
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12"><h1 class="pro3x-title">{% block page_title %}{% endblock %}</h1></div>
+        <div class="pro3x-ui">
+            {% block head %}
+                {% include '::header.html.twig' %}
+            {% endblock %}
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12"><h1 class="pro3x-title">{% block page_title %}{% endblock %}</h1></div>
+                </div>
+
+                <div class="row">
+                    {% block body %}{% endblock %}
+                </div>
+
+                <div class="hidden-xs" style="height: 200px;"></div>
             </div>
+
+
+            <script>
+                jQuery(document).ready(function($) {
+                    {% block javascripts %}{% endblock %}
+
+                    {% include '::scripts.html.twig' %}
+                });
+            </script>
+	</div>
+        <div class="pro3x-print">
             
-            <div class="row">
-                {% block body %}{% endblock %}
-            </div>
-            
-            <div class="hidden-xs" style="height: 200px;"></div>
         </div>
-            
-        
-	<script>
-	    jQuery(document).ready(function($) {
-		{% block javascripts %}{% endblock %}
-                        
-                        //TEST
-		{% include '::scripts.html.twig' %}
-	    });
-	</script>
-	
     </body>
 </html>

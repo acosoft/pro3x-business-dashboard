@@ -74,3 +74,51 @@ tbody.pro3x_invoice_items .pro3x_delete_invoice_item
 table.pro3x-no-borders > tbody > tr > td
     { border-top: none; }
     
+@media print {
+    .pro3x-ui
+        { display: none; }
+        
+    .pro3x-print
+        { display: block; position: absolute; }    
+        
+    .sf-toolbarreset
+        { display: none; }
+        
+    @page {
+        margin: 10mm 10mm 10mm 10mm;
+        size: A4 portrait;
+    }
+    
+    .pro3x-page
+        { width: 190mm; height: 277mm; background-color: red!important; border: solid .5mm black; page-break-after: always; }
+        
+    .pro3x-last-page
+        { background-color: green !important; page-break-after: avoid; }
+
+    .pro3x-top-left, .pro3x-top-right, .pro3x-bottom-left, .pro3x-bottom-right 
+        { border: solid .5mm green; position: absolute; width: 10mm; height: 10mm; }
+
+    .pro3x-top-left
+        { top: 0mm; left: 0mm; }
+
+    .pro3x-top-right
+        { top: 0mm; right: 0mm; }
+
+    .pro3x-bottom-left
+        { bottom: 0mm; left: 0mm; }
+
+    .pro3x-bottom-right
+        { bottom: 0mm; right: 0mm; }
+}
+
+
+
+@media screen {
+    .pro3x-ui
+        { display: block; }
+        
+    .pro3x-print
+        { display: none; }
+}
+
+    

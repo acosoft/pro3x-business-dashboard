@@ -220,6 +220,14 @@ class InvoiceController extends AdminController {
         $invoice->setNumeric($this->getNumeric());
         return array('total' => $this->formatNumber($invoice->getTotal(), 2), 'invoice' => $invoice);
     }
+    
+    /**
+     * @Route("/print/{id}/{template}/")
+     */
+    public function printDocumentAction()
+    {
+        
+    }
 
     /**
      * @Route("/print/{id}", name="print_invoice")

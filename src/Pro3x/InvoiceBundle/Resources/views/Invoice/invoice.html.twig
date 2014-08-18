@@ -147,10 +147,22 @@
 	    }, 'text');
 	}
 	else if(me.data('back') != false) {
-	window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
+            var path = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
+            
+            $.get(path, function(data) {
+                $('.pro3x-print').empty().html(data);
+                window.print();
+            }, 'html');
+            
+            //window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
 	}
 	else {
-	window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
+            var path = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
+            $.get(path, function(data) {
+                $('.pro3x-print').empty().html(data);
+                window.print();
+            }, 'html');
+            //window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
 	}
 	
     });
