@@ -32,6 +32,12 @@ class Template
 	 * @ORM\Column(type="string")
 	 */
 	private $filename;
+        
+        /**
+	 * @ORM\Column(type="string")
+	 */
+	private $description;
+        
 	
 	/**
 	 * @ManyToOne(targetEntity="Location", inversedBy="templates")
@@ -119,7 +125,16 @@ class Template
 	{
 		$this->invoices = $invoices;
 	}
+        
+    public function getDescription() {
+        return $this->description;
+    }
 
+    public function setDescription($description) {
+        $this->description = $description;
+        return $this;
+    }
+        
     /**
      * Get id
      *

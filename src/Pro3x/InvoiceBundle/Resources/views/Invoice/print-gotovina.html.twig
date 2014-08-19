@@ -1,28 +1,61 @@
 <div class="pro3x-page">
 
-    <div class="col-md-4">
-        <img src="{{ invoice.position.location.logo }}" style="width: 50mm;" />
+    <div style="padding-top: 10mm; padding-left: 10mm;">
+        {% if invoice.position.location.logo %}
+            <img src="{{ invoice.position.location.logo }}" />
+        {% endif %}
     </div>
 
-    {% if invoice.customer %}    
-        <div style="background-color: #efefef; padding: 5mm; border: solid 0.5mm black; float: right; width: 100mm; height: 19mm;">
-            <div>{{ invoice.customer.name }}</div>
-            <div>{{ invoice.customer.address }}</div>
-            <div>{{ invoice.customer.location }}</div>
-            <div style="margin-top: 2mm;">{% if invoice.customer.taxNumber %}OIB: {{ invoice.customer.taxNumber }}{% endif %}</div>
+    <div style="text-align: right; font-size: 12px; font-weight: 300; padding-right: 10mm;">
+        <div>{{ invoice.position.location.companyName }}</div>
+        <div>{{ invoice.position.location.address }}</div>
+        <div>{{ invoice.position.location.other }}</div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <h1 style="padding: 5mm 10mm; margin: 0mm;">{{ invoice.template.description|upper }} </h1>
+    <div class="clearfix"></div>
+    
+    
+    <div style="background-color: #efefef !important; padding: 4.5mm 10mm;">
+        <div style="width: 85mm; float: left;">
+            <div>
+                <span class="pro3x-name">Oznaka</span> 
+                {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}
+            </div>
+
+            <div>
+                <span class="pro3x-name">Datum</span> {{ invoice.dateFormated }}
+            </div>
+
+            <div>
+                <span class="pro3x-name">Vrijeme</span> {{ invoice.timeFormated }}h
+            </div>
+
+            <div>
+                <span class="pro3x-name">Ukupno</span> {{ invoice.totalFormated }}kn
+            </div>
         </div>
-    {% endif %}    
 
-    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
-    <div style="">
-        <div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
+        {% if invoice.customer %}    
+            <div style="float: right; width: 85mm;">
+                <div class="pro3x-value"><span class="pro3x-name">Kupac</span>{{ invoice.customer.name }}</div>
+                <div class="pro3x-value"><span class="pro3x-name">Adresa</span>{{ invoice.customer.address }}</div>
+                <div class="pro3x-value"><span class="pro3x-name">Lokacija</span>{{ invoice.customer.location }}</div>
+                <div class="pro3x-value"><span class="pro3x-name">OIB</span>{% if invoice.customer.taxNumber %}{{ invoice.customer.taxNumber }}{% endif %}</div>
+
+            </div>
+        {% endif %}  
+        
+        <div class="clearfix"></div>
     </div>
-
-    <div style="clear: both"></div>
-    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px;">
+    
+    <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
+    <table class="table" style="">
         <thead>
             <tr>
-                <th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
+                <th>Naziv</th>
                 <th style="text-align: right;">Cijena</th>
                 <th style="text-align: right;">Količina</th>
                 <th style="text-align: right;">Osnovica</th>
@@ -33,7 +66,7 @@
         <tbody>
         {% for  item in invoice.items %}
                 <tr>
-                    <td style="padding-left: 0;"><span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}</td>
+                    <td><span class="pro3x-index">{{ loop.index }}.</span>{{ item.description }}</td>
                     <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
                     <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
                     <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
@@ -43,17 +76,19 @@
         {% endfor %}
         </tbody>
     </table>
-    <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
-        <h2 style="margin: 10mm 0mm 10mm 0mm;">Ukupno za platiti: {{ invoice.totalFormated }} kn</h2>
+    </div>
+        
+    <div style="text-align: right; margin-top: 0mm;">
+        <h3 style="margin: 0mm 10mm 0mm 0mm; font-weight: 300;">Ukupno: {{ invoice.totalFormated }}kn</h3>
     </div>
 
     <div style="clear: both;"></div>
 
     {% if invoice.taxItems %}
-    <table style="margin-top: 10mm; border-spacing: 0px;">
+    <table class="pro3x">
         <thead>
             <tr>
-                <th style="padding-left: 0mm;">Vrsta poreza</th>
+                <th style="padding-left: 0mm;">Porez</th>
                 <th style="text-align: right;">Stopa</th>
                 <th style="text-align: right;">Osnovica</th>
                 <th style="text-align: right;">Iznos</th>
@@ -72,7 +107,13 @@
     </table>
     {% endif %}
 
-    <div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
-    <div>Operater:  {{ invoice.user.displayName }}</div>
+    <div style="margin-top: 10mm; margin-left: 10mm;">
+        <div>Način plaćanja: Gotovina</div>
+        <div>Operater:  {{ invoice.user.displayName }}</div>
+    </div>
+    
+    <div style="position: absolute; bottom: 0px; background-color: #efefef !important; padding: 5mm 10mm; width: 210mm;">
+        Temeljni kapital 20.000,00kn uplaćen u cijelosti. Mali zeleni d.o.o
+    </div>
 </div>
 
