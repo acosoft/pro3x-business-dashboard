@@ -1,32 +1,7 @@
-{% if app.request.get('preview') or true %}
-<html>
-    <head>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="{{ asset('style.css') }}" />
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    </head>
-<body>
-{% endif %}    
+<div class="pro3x-page">
 
-    <div class="pro3x-page-template">
-        <div class="pro3x-page-header">
-            
-        </div>
-        
-        <div class="pro3x-page-footer">
-            
-        </div>
-    </div>
-
-
-    <div class="pro3x-page">
-    
-    <div class="header" style="background-color: #0e0!important;">
-        {{ logo|raw }} {{ company|raw }}
-        <div style="clear: both"></div>
+    <div class="col-md-4">
+        <img src="{{ invoice.position.location.logo }}" style="width: 50mm;" />
     </div>
 
     {% if invoice.customer %}    
@@ -99,95 +74,5 @@
 
     <div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
     <div>Operater:  {{ invoice.user.displayName }}</div>
-    </div>
-    
-    <div class="clearfix"></div>
-    
-    <div class="pro3x-page pro3x-last-page" style="display: block;">
-        
-    {#    <div class="pro3x-top-left"></div>
-        <div class="pro3x-top-right"></div>
-        <div class="pro3x-bottom-left"></div>
-        <div class="pro3x-bottom-right"></div>#}
-    
-    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
-        {{ logo|raw }} {{ company|raw }}
-        <div style="clear: both"></div>
-    </div>
+</div>
 
-    {% if invoice.customer %}    
-        <div style="background-color: #efefef; padding: 5mm; border: solid 0.5mm black; float: right; width: 100mm; height: 19mm;">
-            <div>{{ invoice.customer.name }}</div>
-            <div>{{ invoice.customer.address }}</div>
-            <div>{{ invoice.customer.location }}</div>
-            <div style="margin-top: 2mm;">{% if invoice.customer.taxNumber %}OIB: {{ invoice.customer.taxNumber }}{% endif %}</div>
-        </div>
-    {% endif %}    
-
-    <h1 style="margin-bottom: 0px; padding-top: 4.5mm;">Račun: {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</h1>
-    <div style="">
-        <div style="margin-top: 3.75mm;">Datum: {{ invoice.dateFormated }} | {{ invoice.timeFormated }}h</div>
-    </div>
-
-    <div style="clear: both"></div>
-    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px;">
-        <thead>
-            <tr>
-                <th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
-                <th style="text-align: right;">Cijena</th>
-                <th style="text-align: right;">Količina</th>
-                <th style="text-align: right;">Osnovica</th>
-                <th style="text-align: right;">Popust</th>
-                <th style="text-align: right;">Ukupno</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for  item in invoice.items %}
-                <tr>
-                    <td style="padding-left: 0;"><span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}</td>
-                    <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
-                    <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
-                    <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
-                    <td style="text-align: right;">{{ item.discountFormated }} %</td>
-                    <td style="text-align: right;">{{ item.discountPriceFormated }}</td>
-                </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
-        <h2 style="margin: 10mm 0mm 10mm 0mm;">Ukupno za platiti: {{ invoice.totalFormated }} kn</h2>
-    </div>
-
-    <div style="clear: both;"></div>
-
-    {% if invoice.taxItems %}
-    <table style="margin-top: 10mm; border-spacing: 0px;">
-        <thead>
-            <tr>
-                <th style="padding-left: 0mm;">Vrsta poreza</th>
-                <th style="text-align: right;">Stopa</th>
-                <th style="text-align: right;">Osnovica</th>
-                <th style="text-align: right;">Iznos</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for  item in invoice.taxItems %}
-                <tr>
-                    <td style="padding-left: 0;"><span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}</td>
-                    <td style="text-align: right;">{{ item.rate }} %</td>
-                    <td style="text-align: right;">{{ item.base }}</td>
-                    <td style="text-align: right;">{{ item.amount }}</td>
-                </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-
-    <div style="margin-top: 10mm;">Način plaćanja: Gotovina</div>
-    <div>Operater:  {{ invoice.user.displayName }}</div>
-    </div>
-{% if app.request.get('preview') or true %}
-</body>
-</html>
-{% endif %} 
-   

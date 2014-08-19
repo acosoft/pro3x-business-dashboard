@@ -222,11 +222,23 @@ class InvoiceController extends AdminController {
     }
     
     /**
-     * @Route("/print/{id}/{template}/")
+     * @Route("/preview/{type}/{id}")
      */
-    public function printDocumentAction()
+    public function printDocumentAction($type, $id)
     {
+        $invoice = $this->getInvoiceRepository()->find($id); /* @var $invoice Invoice */
+        $invoice->setNumeric($this->getNumeric());
         
+        if($type == 'invoice')
+        {
+            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig';
+        }
+        else
+        {
+            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '.html.twig';
+        }
+        
+        return $this->render('Pro3xInvoiceBundle:Invoice:print-preview.html.twig', array('template' => $template, 'invoice' => $invoice));
     }
 
     /**
