@@ -256,8 +256,8 @@ class InvoiceController extends AdminController {
         $this->redirect404($invoice);
 
         if ($invoice->getItems()->count() == 0) {
-            $this->setWarning('Morate upisati barem jednu stavku prije ispisa računa');
-            return $this->redirect($this->generateUrl('edit_invoice', array('id' => $invoice->getId(), 'back' => $this->getParam('back'))));
+            $msg = $this->renderView('::message-warning.html.twig', array('msg' => 'Morate upisati barem jednu stavku prije ispisa računa'));
+            return new Response(json_encode(array('msg' => $msg)));
         }
 
         $type = $this->getParam("type", "auto");
@@ -342,9 +342,11 @@ class InvoiceController extends AdminController {
         $direct = $this->getParam('print', 'true');
 
         if ($direct === 'true') {
-            $response = new Response(base64_encode($print));
+            $response = new Response(json_encode(array(
+                    'document' => base64_encode($print),
+                )));
         } else {
-            $response = new Response($print);
+            $response = new Response(json_encode(array('document' => $print)));
         }
 
         return $response;
