@@ -169,7 +169,7 @@
                     $('.pro3x-print').empty().html(data.document);
                     window.print();
                 }
-            }, 'html');
+            }, 'json');
             //window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
 	}
 	

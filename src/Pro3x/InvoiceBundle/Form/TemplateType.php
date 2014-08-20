@@ -13,7 +13,7 @@ class TemplateType extends AbstractType
         $builder
 			->add('location', 'entity', array(
 				'label' => 'Lokacija', 
-				'expanded' => false, 'property' => 'name', 
+				'expanded' => false, 'property' => 'display', 
 				'multiple' => false, 
 				'class' => 'Pro3xInvoiceBundle:Location'))
 			->add('transactionType', 'choice', array('choices' => self::getTransactionTypes(), 'label' => 'Vrsta predloška'))
