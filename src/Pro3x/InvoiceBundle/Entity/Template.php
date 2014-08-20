@@ -23,108 +23,117 @@ class Template
      */
     private $id;
 
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	private $name;
-	
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	private $filename;
-        
-        /**
-	 * @ORM\Column(type="string")
-	 */
-	private $description;
-        
-	
-	/**
-	 * @ManyToOne(targetEntity="Location", inversedBy="templates")
-	  */
-	private $location;
-	
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	private $transactionType;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
 
-	/**
-	 * @OneToMany(targetEntity="Invoice", mappedBy="template")
-	  */
-	private $invoices;
-	
-	/**
-	 * @OneToMany(targetEntity="Invoice", mappedBy="tenderTemplate")
-	  */
-	private $tenders;
-	
-	/**
-	 * @ORM\Column(type="boolean")
-	 */
-	private $useGoogleCloud;
-	
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $priority;
-	
-	function __construct()
-	{
-		$this->setPriority(1);
-	}
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $dueDays;    
 
-	public function getTenders()
-	{
-		return $this->tenders;
-	}
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $filename;
 
-	public function setTenders($tenders)
-	{
-		$this->tenders = $tenders;
-	}
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $description;
 
-	public function getPriority()
-	{
-		return $this->priority;
-	}
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $paymentMethod;
 
-	public function setPriority($priority)
-	{
-		$this->priority = $priority;
-	}
+    /**
+     * @ManyToOne(targetEntity="Location", inversedBy="templates")
+      */
+    private $location;
 
-	public function getUseGoogleCloud()
-	{
-		return $this->useGoogleCloud;
-	}
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $transactionType;
 
-	public function setUseGoogleCloud($useGoogleCloud)
-	{
-		$this->useGoogleCloud = $useGoogleCloud;
-	}
-	
-	public function getUseGoogleCloudFormated()
-	{
-		if($this->useGoogleCloud == true)
-			return "Google Cloud Ispis";
-		else
-			return "Direktni Ispis";
-	}
+    /**
+     * @OneToMany(targetEntity="Invoice", mappedBy="template")
+      */
+    private $invoices;
 
-	/**
-	 * 
-	 * @return Invoice
-	 */
-	public function getInvoices()
-	{
-		return $this->invoices;
-	}
+    /**
+     * @OneToMany(targetEntity="Invoice", mappedBy="tenderTemplate")
+      */
+    private $tenders;
 
-	public function setInvoices($invoices)
-	{
-		$this->invoices = $invoices;
-	}
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $useGoogleCloud;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $priority;
+
+    function __construct()
+    {
+            $this->setPriority(1);
+    }
+
+    public function getTenders()
+    {
+            return $this->tenders;
+    }
+
+    public function setTenders($tenders)
+    {
+            $this->tenders = $tenders;
+    }
+
+    public function getPriority()
+    {
+            return $this->priority;
+    }
+
+    public function setPriority($priority)
+    {
+            $this->priority = $priority;
+    }
+
+    public function getUseGoogleCloud()
+    {
+            return $this->useGoogleCloud;
+    }
+
+    public function setUseGoogleCloud($useGoogleCloud)
+    {
+            $this->useGoogleCloud = $useGoogleCloud;
+    }
+
+    public function getUseGoogleCloudFormated()
+    {
+            if($this->useGoogleCloud == true)
+                    return "Google Cloud Ispis";
+            else
+                    return "Direktni Ispis";
+    }
+
+    /**
+     * 
+     * @return Invoice
+     */
+    public function getInvoices()
+    {
+            return $this->invoices;
+    }
+
+    public function setInvoices($invoices)
+    {
+            $this->invoices = $invoices;
+    }
         
     public function getDescription() {
         return $this->description;
@@ -145,52 +154,70 @@ class Template
         return $this->id;
     }
 	
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+            return $this->name;
+    }
 
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
+    public function setName($name)
+    {
+            $this->name = $name;
+    }
 
-	public function getFilename()
-	{
-		return $this->filename;
-	}
+    public function getFilename()
+    {
+            return $this->filename;
+    }
 
-	public function setFilename($filename)
-	{
-		$this->filename = $filename;
-	}
+    public function setFilename($filename)
+    {
+            $this->filename = $filename;
+    }
 
-	/**
-	 * 
-	 * @return Location
-	 */
-	public function getLocation()
-	{
-		return $this->location;
-	}
+    /**
+     * 
+     * @return Location
+     */
+    public function getLocation()
+    {
+            return $this->location;
+    }
 
-	public function setLocation($location)
-	{
-		$this->location = $location;
-	}
+    public function setLocation($location)
+    {
+            $this->location = $location;
+    }
 
-	public function getTransactionType()
-	{
-		return $this->transactionType;
-	}
+    public function getTransactionType()
+    {
+            return $this->transactionType;
+    }
 
-	public function setTransactionType($transactionType)
-	{
-		$this->transactionType = $transactionType;
-	}
-	
-	public function getLocationName()
-	{
-		return $this->getLocation()->getName();
-	}
+    public function setTransactionType($transactionType)
+    {
+            $this->transactionType = $transactionType;
+    }
+
+    public function getLocationName()
+    {
+            return $this->getLocation()->getName();
+    }
+
+    public function getPaymentMethod() {
+        return $this->paymentMethod;
+    }
+
+    public function setPaymentMethod($paymentMethod) {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    public function getDueDays() {
+        return $this->dueDays;
+    }
+
+    public function setDueDays($dueDays) {
+        $this->dueDays = $dueDays;
+        return $this;
+    }
 }

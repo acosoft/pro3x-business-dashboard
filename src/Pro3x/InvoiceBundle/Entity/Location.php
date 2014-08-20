@@ -128,6 +128,21 @@ class Location {
     private $code;
     
     /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $note1;
+    
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $note2;
+    
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $note3;
+    
+    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $logo;
@@ -364,6 +379,33 @@ class Location {
             $data[] = $this->getPostalCode() . ' ' . $this->getCity();
 
         return implode(', ', $data);
+    }
+    
+    public function getNote1() {
+        return $this->note1;
+    }
+
+    public function getNote2() {
+        return $this->note2;
+    }
+
+    public function getNote3() {
+        return $this->note3;
+    }
+
+    public function setNote1($note1) {
+        $this->note1 = $note1;
+        return $this;
+    }
+
+    public function setNote2($note2) {
+        $this->note2 = $note2;
+        return $this;
+    }
+
+    public function setNote3($note3) {
+        $this->note3 = $note3;
+        return $this;
     }
 
 }

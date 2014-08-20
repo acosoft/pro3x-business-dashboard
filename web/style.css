@@ -76,12 +76,15 @@ tbody.pro3x_invoice_items .pro3x_delete_invoice_item
 table.pro3x-no-borders > tbody > tr > td
     { border-top: none; }
     
+textarea.form-control
+    { height: 125px; }
+    
 @media print {
     .pro3x-ui
         { display: none; }
         
     .pro3x-print
-        { display: block; position: absolute; font-family: 'Open Sans', sans-serif; }    
+        { display: block; position: absolute; font-family: 'Open Sans', sans-serif; font-size: 12px; }    
         
     .sf-toolbarreset
         { display: none; }
@@ -96,7 +99,20 @@ table.pro3x-no-borders > tbody > tr > td
         
     .pro3x-page .pro3x-name
         { display: inline-block; width: 25mm; font-weight: bold; /* background-color: #74ba40 !important; color: white !important; */
-          padding: 0.5mm 0mm; margin-right: 2mm; margin-bottom: 0.5mm; }
+          padding: 0.25mm 0mm; margin-right: 2mm; margin-bottom: 0mm; }
+        
+    .pro3x-due-date
+        { font-size: 14px; text-align: right; }
+        
+    .pro3x-footer
+        { position: absolute; bottom: 5mm; padding: 5mm; width: 200mm; 
+          margin-left: 5mm; text-align: center; font-size: 10px; }
+        
+    h1.pro3x
+        { padding: 5mm 10mm; margin: 0mm; position: relative; }
+        
+    .pro3x-due-date strong
+        { display: inline-block; margin-right: 2mm; }
         
     .pro3x-customer
         { float: left; width: 20mm; height: 116px; padding: 1mm 2mm; /* background-color: #74ba40 !important; font-weight: bold; */
@@ -127,16 +143,14 @@ table.pro3x-no-borders > tbody > tr > td
         { display: inline-block; width: 5mm; text-align: right; margin-right: 2mm; }
         
     .table > tbody > tr > td, .table > thead > tr > th
-        { padding: 2mm 5mm; }
+        { padding: 2mm 5mm; font-size: 12px; }
         
     table.pro3x td, table.pro3x th
-        { padding: 1mm 5mm; border-spacing: 0px; }
+        { padding: 1mm 2mm; border-spacing: 0px; font-size: 12px; }
         
     table.pro3x
-        { margin-left: 10mm; margin-top: 10mm; }
+        { margin-left: 10mm; margin-top: 5mm; }
 }
-
-
 
 @media screen {
     .pro3x-ui

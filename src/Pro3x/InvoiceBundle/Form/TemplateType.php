@@ -19,9 +19,22 @@ class TemplateType extends AbstractType
 			->add('transactionType', 'choice', array('choices' => self::getTransactionTypes(), 'label' => 'Vrsta predloška'))
 			->add('useGoogleCloud', 'choice', array('label' => 'Način ispisa', 'choices' => array(true => 'Google Cloud Ispis', false => 'Direktni ispis')))
             ->add('name', 'text', array('label' => 'Naziv'))
-            ->add('description', 'text', array('label' => 'Opis'))
+            ->add('description', 'text', array('label' => 'Opis dokumenta'))
+            ->add('paymentMethod', 'text', array('label' => 'Način plaćanja'))
+            ->add('dueDays', 'choice', array('required' => false, 'label' => 'Rok plaćanja', 'choices' => array(
+                null => 'Plaćanje u gotovini',
+                '+7 days' => '7 dana',
+                '+15 days' => '15 dana',
+                '+1 month' => '30 dana',
+                '+2 month' => '60 dana',
+                '+3 month' => '90 dana')))
             ->add('priority', 'text', array('label' => 'Prioritet'))
-            ->add('filename', 'text', array('label' => 'Datoteka'))
+            ->add('filename', 'choice', array('label' => 'Izgled dokumenta', 'choices' => array(
+                '#efefef' => 'Siva pozadina',
+                '#dff0d8' => 'Zelena pozadina',
+                '#fcf8e3' => 'Žuta pozadina',
+                '#d9edf7' => 'Plava pozadina',
+                '#f2dede' => 'Crvena pozadina')))
 			
         ;
     }

@@ -231,14 +231,19 @@ class InvoiceController extends AdminController {
         
         if($type == 'invoice')
         {
-            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig';
+            $template = 'Pro3xInvoiceBundle:Invoice:print-invoice-template.html.twig';
+            $color = $invoice->getTemplate()->getFilename();
         }
         else
         {
-            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '.html.twig';
+            $template = 'Pro3xInvoiceBundle:Invoice:print-tender-template.html.twig';
+            $color = $invoice->getTenderTemplate()->getFilename();
         }
         
-        return $this->render('Pro3xInvoiceBundle:Invoice:print-preview.html.twig', array('template' => $template, 'invoice' => $invoice));
+        return $this->render('Pro3xInvoiceBundle:Invoice:print-preview.html.twig', 
+                array('template' => $template, 
+                    'invoice' => $invoice,
+                    'background' => $color));
     }
 
     /**
@@ -323,9 +328,15 @@ class InvoiceController extends AdminController {
         }
 
         if ($type == "invoice" || $invoice->getTenderTemplate() == null)
-            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-invoice-template.html.twig', 
+                    array('hello' => 'Hello Google Cloud Print : )', 
+                        'invoice' => $invoice,
+                        'background' => $invoice->getTemplate()->getFilename()));
         else
-            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '.html.twig', array('hello' => 'Hello Google Cloud Print : )', 'invoice' => $invoice));
+            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-tender-template.html.twig', 
+                    array('hello' => 'Hello Google Cloud Print : )', 
+                        'invoice' => $invoice,
+                        'background' => $invoice->getTenderTemplate()->getFilename()));
 
 
         $direct = $this->getParam('print', 'true');

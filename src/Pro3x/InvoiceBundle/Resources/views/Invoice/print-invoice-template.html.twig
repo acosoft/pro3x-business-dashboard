@@ -14,37 +14,29 @@
     
     <div class="clearfix"></div>
 
-    <h1 style="padding: 5mm 10mm; margin: 0mm;">{{ invoice.template.description|upper }} </h1>
+    <h1 class="pro3x">{{ invoice.template.description|upper }}</h1>
     <div class="clearfix"></div>
     
     
-    <div style="background-color: #efefef !important; padding: 4.5mm 10mm;">
+    <div style="background-color: {{ background }} !important; padding: 4.5mm 5mm; width: 200mm; margin-left: 5mm;">
         <div style="width: 85mm; float: left;">
-            <div>
-                <span class="pro3x-name">Oznaka</span> 
-                {{ invoice.sequence }} / {{ invoice.position.location.name }} / {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}
-            </div>
-
-            <div>
-                <span class="pro3x-name">Datum</span> {{ invoice.dateFormated }}
-            </div>
-
-            <div>
-                <span class="pro3x-name">Vrijeme</span> {{ invoice.timeFormated }}h
-            </div>
-
-            <div>
-                <span class="pro3x-name">Ukupno</span> {{ invoice.totalFormated }}kn
-            </div>
+            <div><span class="pro3x-name">Oznaka</span>{{ invoice.sequence }} - {{ invoice.position.location.name }} - {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}</div>
+            <div><span class="pro3x-name">Datum</span>{{ invoice.dateFormated }}</div>
+            <div><span class="pro3x-name">Vrijeme</span>{{ invoice.timeFormated }}h</div>
+            
+            {% if invoice.template.dueDays %}
+                <div><span class="pro3x-name">Rok plaćanja</span>{{ invoice.created|date_modify(invoice.template.dueDays)|date('d.m.Y') }}</div>
+            {% else %}
+                <div><span class="pro3x-name">Ukupno</span>{{ invoice.totalFormated }}kn</div>
+            {% endif %}
         </div>
 
         {% if invoice.customer %}    
-            <div style="float: right; width: 85mm;">
+            <div style="float: right; width: 100mm;">
                 <div class="pro3x-value"><span class="pro3x-name">Kupac</span>{{ invoice.customer.name }}</div>
                 <div class="pro3x-value"><span class="pro3x-name">Adresa</span>{{ invoice.customer.address }}</div>
                 <div class="pro3x-value"><span class="pro3x-name">Lokacija</span>{{ invoice.customer.location }}</div>
                 <div class="pro3x-value"><span class="pro3x-name">OIB</span>{% if invoice.customer.taxNumber %}{{ invoice.customer.taxNumber }}{% endif %}</div>
-
             </div>
         {% endif %}  
         
@@ -52,7 +44,7 @@
     </div>
     
     <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
-    <table class="table" style="">
+    <table class="table">
         <thead>
             <tr>
                 <th>Naziv</th>
@@ -107,13 +99,25 @@
     </table>
     {% endif %}
 
-    <div style="margin-top: 10mm; margin-left: 10mm;">
-        <div>Način plaćanja: Gotovina</div>
+    <div style="margin-top: 5mm; margin-left: 10mm;">
+        <div>Način plaćanja: {{invoice.template.paymentMethod}}</div>
         <div>Operater:  {{ invoice.user.displayName }}</div>
     </div>
     
-    <div style="position: absolute; bottom: 0px; background-color: #efefef !important; padding: 5mm 10mm; width: 210mm;">
-        Temeljni kapital 20.000,00kn uplaćen u cijelosti. Mali zeleni d.o.o
+    <div style="margin-top: 5mm; margin-left: 10mm;">
+        {% if invoice.companySecureCode %}
+            {% if invoice.originalInvoiceNumber %}
+                <div style="margin-bottom: 5mm;">BR: {{ invoice.originalInvoiceNumber }}</div>
+            {% endif %}
+            
+            <div>JIR: {{ invoice.uniqueInvoiceNumber?invoice.uniqueInvoiceNumber:'Trenutno nedostupan' }}</div>
+            <div>ZKI: {{ invoice.companySecureCode }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="pro3x-footer" style="background-color: {{ background }} !important;">
+        <div>{{ invoice.position.location.note1 }}</div>
+        <div>{{ invoice.position.location.note2 }}</div>
     </div>
 </div>
 
