@@ -34,16 +34,16 @@
     {% endfor %}
     
     <div class="_row">
-        <div class="col-xs-2" style="padding: 0px 2px 4px 0px;">
-            <a class="btn btn-primary btn-block" href="{{ path('change_invoice_customer', {'id': pagerParams.id, 'page': (page > 1)?page-1:1 }) }}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <div class="col-xs-12" style="padding: 0px 0px 20px 0px;">
+            <form method="post" autocomplete="off">
+                <input type="hidden" name="back" value="{{ app.request.get('back') }}" />
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{ placeholder }}" name="query" value="{{ app.request.get('query') }}" />
+                    <span class="input-group-btn"><input type="submit" class="btn btn-primary pro3x-medium-button" value="{{ 'Traži'|trans }}" /></span>
+                </div>
+            </form>
         </div>
         
-        <div class="col-xs-8" style="padding: 0px 2px 30px 2px;">
-            <a class="btn btn-primary btn-block" href="{{ path('add_client', {'back': app.request.uri}) }}">{{ 'Dodaj'|trans }}</a>
-        </div>
         
-        <div class="col-xs-2" style="padding: 0px 0px 4px 2px;">
-            <a class="btn btn-primary btn-block" href="{{ path('change_invoice_customer', {'id': pagerParams.id, 'page': page+1 }) }}"><span class="glyphicon glyphicon-chevron-right"></span></a>
-        </div>
     </div>
 </div>    

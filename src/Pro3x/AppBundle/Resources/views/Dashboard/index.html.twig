@@ -14,20 +14,36 @@
                 <div class="col-md-3 nopadding">
                     <a class="button" href="{{ path('add_invoice', {'back': app.request.uri}) }}">
                         <img class="hidden-xs" src="{{ asset('icons/invoice_add.png') }}" />
-                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/invoice_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/invoice_add.png') }}" />
                         {{ 'Novi Račun'|trans }}
                     </a>
                 </div >
-
-                <div class="col-md-3">
-                    <a class="button"  href="{{ path('invoices', { 'id': app.user.id }) }}">
-                        <img class="hidden-xs" src="{{ asset('icons/invoice.png') }}" />
-                        <img class="visible-xs-inline-block" src="{{ asset('icons/small/invoice.png') }}" />
-                        {{ 'Popis Računa'|trans }}
+                
+                <div class="col-md-3 visible-xs">
+                    <a class="button"  href="{{ path('add_client', {'back': app.request.uri}) }}">
+                        <img class="hidden-xs" src="{{ asset('icons/client_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/client_add.png') }}" />
+                        {{ 'Novi Kupac'|trans }}
+                    </a>
+                </div>
+                    
+                <div class="col-md-3 visible-xs">
+                    <a class="button"  href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">
+                        <img class="hidden-xs" src="{{ asset('icons/inventory_add.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/inventory_add.png') }}" />
+                        {{ 'Novi Proizvod'|trans }}
                     </a>
                 </div>
 
                 <div class="col-md-3">
+                    <a class="button"  href="{{ path('invoices', { 'id': app.user.id }) }}">
+                        <img class="hidden-xs" src="{{ asset('icons/invoice.png') }}" />
+                        <img class="visible-xs-inline-block" src="{{ asset('icons/invoice.png') }}" />
+                        {{ 'Popis Računa'|trans }}
+                    </a>
+                </div>
+
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">
                         <img class="hidden-xs" src="{{ asset('icons/inventory_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory_add.png') }}" />
@@ -35,15 +51,15 @@
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('products') }}">
                         <img class="hidden-xs" src="{{ asset('icons/inventory.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory.png') }}" />
-                        {{ 'Proizvodi'|trans }}
+                        {{ 'Popis proizvoda'|trans }}
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('add_client', {'back': app.request.uri}) }}">
                         <img class="hidden-xs" src="{{ asset('icons/client_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/client_add.png') }}" />
@@ -51,7 +67,7 @@
                     </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden-xs">
                     <a class="button"  href="{{ path('clients') }}">
                         <img class="hidden-xs" src="{{ asset('icons/client.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/client.png') }}" />
