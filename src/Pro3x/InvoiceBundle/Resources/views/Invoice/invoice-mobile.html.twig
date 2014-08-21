@@ -2,8 +2,8 @@
 
 {% block page_title %}
     
-    <div class="visible-xs">
-        <img src="{{ asset('icons/small/invoice_add.png') }}" />{% if invoice.sequence is null  %}{{ 'Novi račun'|trans }}{% else %}{{ 'Račun'|trans|title }}{% endif %} 
+    <div class="visible-xs pro3x-invoice-editor">
+        <img src="{{ asset('icons/small/invoice_add.png') }}" />{{ include('Pro3xInvoiceBundle:Invoice:invoice-title-mobile.html.twig') }}
     </div>
 
     <div class="hidden-xs">
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-xs-12 visible-xs pro3x-invoice-index">
+    <div class="col-xs-12 pro3x-invoice-editor visible-xs {{ (invoice.sequence or invoice.tenderSequence)?'pro3x-readonly-document':'pro3x-editable-document' }}">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ 'Osnovna svojstva'|trans }}</h3>
@@ -26,7 +26,7 @@
                 <tbody>
                     <tr>
                         <td class="active" style="width: 40%;">Oznaka</td>
-                        <td>{% if invoice.sequence is null  %}{{ 'skica'|trans }}{% else %}{{ invoice.sequence }}{% endif %} </td>
+                        <td class="pro3x-invoice-sequence">{{ include('Pro3xInvoiceBundle:Invoice:idColumn.html.twig', {item: invoice}) }} </td>
                     </tr>
 
                     <tr class="paragon-box {{ invoice.originalInvoiceNumber?'':'hidden' }}">
@@ -90,7 +90,7 @@
         {% endfor %}
                     
         {% if invoice.sequence == null %}
-        <form id="mForm" autocomplete="off" action="{{ path('add_invoice_item') }}">
+        <form id="mForm" autocomplete="off" class="pro3x-document-action" action="{{ path('add_invoice_item') }}">
             <input type="hidden" name="invoice" value="{{ invoice.id }}" />
             <div class="input-group">
                 <input placeholder="Barkod, šifra ili naziv artikla"  type="text" name="code" class="form-control actionCode" id="mCode" />

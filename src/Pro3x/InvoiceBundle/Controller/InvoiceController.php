@@ -326,7 +326,7 @@ class InvoiceController extends AdminController {
         foreach ($invoice->getItems() as $item) /* @var $item InvoiceItem */ {
             $item->setNumeric($invoice->getNumeric());
         }
-
+        
         if ($type == "invoice" || $invoice->getTenderTemplate() == null)
             $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-invoice-template.html.twig', 
                     array('hello' => 'Hello Google Cloud Print : )', 
@@ -338,7 +338,6 @@ class InvoiceController extends AdminController {
                         'invoice' => $invoice,
                         'background' => $invoice->getTenderTemplate()->getFilename()));
 
-
         $direct = $this->getParam('print', 'true');
 
         if ($direct === 'true') {
@@ -346,7 +345,18 @@ class InvoiceController extends AdminController {
                     'document' => base64_encode($print),
                 )));
         } else {
-            $response = new Response(json_encode(array('document' => $print)));
+            $actions = $this->renderView('Pro3xInvoiceBundle:Invoice:invoice-actions.html.twig', array('invoice' => $invoice));
+            $mobile = $this->renderView('Pro3xInvoiceBundle:Invoice:invoice-mobile-print-actions.html.twig', array('invoice' => $invoice));
+            $invoiceTitle = $this->renderView('Pro3xInvoiceBundle:Invoice:invoice-title.html.twig', array('invoice' => $invoice));
+            $invoiceTitleMobile = $this->renderView('Pro3xInvoiceBundle:Invoice:invoice-title-mobile.html.twig', array('invoice' => $invoice));
+            $invoiceSequence = $this->renderView('Pro3xInvoiceBundle:Invoice:idColumn.html.twig', array('item' => $invoice));
+            
+            $response = new Response(json_encode(array('document' => $print, 
+                'actions' => $actions,
+                'mobileActions' => $mobile,
+                'invoiceTitle' => $invoiceTitle,
+                'invoiceSequence' => $invoiceSequence,
+                'invoiceTitleMobile' => $invoiceTitleMobile)));
         }
 
         return $response;

@@ -14,7 +14,7 @@
 {% block page_title %}
     
     <span class="col-md-8" style="padding-left: 0px;">
-        <img src="{{ asset('icons/small/invoice_add.png') }}" />{% if invoice.sequence is null  %}{{ 'Novi Račun'|trans|title }}{% else %}{{ 'Račun'|trans|title }} {{ invoice.sequence }}{% endif %} 
+        <img src="{{ asset('icons/small/invoice_add.png') }}" />{% include 'Pro3xInvoiceBundle:Invoice:invoice-title.html.twig' %}
         / <a href="{{ path('edit_location', {'id': invoice.position.location.id, 'back': app.request.uri }) }}">{{ invoice.position.location.name }}</a>
         / <a href="{{ path('edit_position', {'id': invoice.position.id, 'back': app.request.uri}) }}">{{ invoice.position.name }}</a>
     </span>
@@ -72,47 +72,10 @@
 
     <div class="clearfix"></div>
 
-    <div class="pro3x-table-buttons">
+    <div class="pro3x-table-buttons pro3x-document-actions">
         <div class="col-md-9">
             <form id="add_invoice_form" autocomplete="off" class="form-horizontal" action="{{ path('add_invoice_item') }}">
-                {% if invoice.sequence == null %}
-                    <input type="hidden" name="invoice" value="{{ invoice.id }}" />
-                    {% if invoice.tenderSequence == null %}
-                        <div class="col-md-4" style="padding: 0px 4px 0px 0px;">
-                            <input type="text" class="form-control actionCode" placeholder="Barkod, šifra ili naziv artikla" name="code" />
-                        </div>
-                        <input  id="addProduct" class="btn btn-primary" type="button" name="action" value="Dodaj" />
-                        <a class="btn btn-primary" href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Kupac'|trans }}</a>
-                    {% endif %}
-                    <div style="display: inline-block; margin-right: 2px;">
-                        <div class="btn-group">
-                            <input  id="print" style="width: 74px;" data-mode="{{ invoice.position.location.templatesSorted[0].id }}" data-cloud="{{ invoice.position.location.templatesSorted[0].useGoogleCloud }}" class="btn btn-primary" type="button" name="action" value="Ispis" />
-                            <button  id="select" class="btn btn-primary dropdown-toggle" style="width: auto;" data-toggle="dropdown" type="button" name="action" value=""><span class="caret"></span></button>
-                            <ul id="invoice-templates" class="dropdown-menu" role="menu">
-                                {% for item in invoice.position.location.templatesSorted %}
-                                    <li><a data-cloud="{{ item.useGoogleCloud }}" data-type="auto" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                {% else %}
-                    <div class="btn-group">
-                        <input style="width: 74px;"  id="print" data-back="false" data-type="invoice" data-mode="{{ invoice.template.id }}" data-cloud="" class="btn btn-primary" type="button" name="action" value="Ispis" />
-                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width: auto;" type="button" name="action" value=""><span class="caret"></span></button>
-                        <ul id="invoice-templates" class="dropdown-menu" role="menu">
-                            {% if(invoice.template) %}
-                            <li><a data-back="false" data-cloud="" data-type="invoice" data-mode="{{ invoice.template.id }}" href="#">Ispis računa</a></li>
-                            {% endif %}
-                            {% if(invoice.tenderTemplate) %}
-                            <li><a data-back="false" data-cloud="" data-type="tender" data-mode="{{ invoice.template.id }}" href="#">Ispis ponude</a></li>
-                            {% endif %}
-                            <!-- <li><a data-back="false" data-cloud="1" data-mode="{{ invoice.template.id }}" href="#">Google Cloud Print</a></li> -->
-                        </ul>
-                    </div>
-
-                {% endif %}
-                <a class="btn btn-primary" href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}">{{ 'Odustani'|trans }}</a>
+                {% include 'Pro3xInvoiceBundle:Invoice:invoice-actions.html.twig' %}
             </form>
         </div>
         <div class="col-md-3">
@@ -126,9 +89,7 @@
 
 {% block javascripts %}
 
-    
-    		
-    $('#print, ul#invoice-templates a').click(function(event) {
+    $('body').on('click', '.pro3x-print-action, #print, ul#invoice-templates a', function(event) {
 	event.preventDefault();
 	
 	var me = $(this);
@@ -146,27 +107,21 @@
 
 	    }, 'text');
 	}
-	else if(me.data('back') != false) {
-            var path = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
-            
-            $.get(path, function(data) {
-                if(data.msg) {
-                    $('.ajax-message').append($(data.msg));
-                } else {
-                    $('.pro3x-print').empty().html(data.document);
-                    window.print();
-                }
-            }, 'json');
-            
-            //window.location = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
-	}
 	else {
-            var path = '{{ path('print_invoice', {'id': invoice.id, 'back': app.request.uri}) }}' + '&type=' + $(this).data('type') + '&print=false&mode=' + me.data('mode');
-            $.get(path, function(data) {
+            var path = '{{ path('print_invoice', {'id': invoice.id}) }}';
+            $.get(path, {type: $(this).data('type'), print: false, mode: me.data('mode')}, function(data) {
                 if(data.msg) {
                     $('.ajax-message').append($(data.msg));
                 } else {
+                    $('#add_invoice_form').empty().html(data.actions);
+                    $('.pro3x-invoice-mobile-menu').replaceWith(data.mobileActions);
+                    $('.pro3x-customer-action').remove();
+                    $('.pro3x_delete_invoice_item').remove();
+                    $('.pro3x-invoice-editor').removeClass('pro3x-editable-document').addClass('pro3x-readonly-document');
                     $('.pro3x-print').empty().html(data.document);
+                    $('.pro3x-invoice-title').replaceWith(data.invoiceTitle);
+                    $('.pro3x-invoice-sequence').html(data.invoiceSequence);
+                    $('.pro3x-invoice-title-mobile').replaceWith(data.invoiceTitleMobile);
                     window.print();
                 }
             }, 'json');

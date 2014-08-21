@@ -1,0 +1,19 @@
+<li class="pro3x-invoice-mobile-menu dropdown visible-xs">
+    <a class="dropdown-toogle" data-toggle="dropdown" href="#">Ispis dokumenta</a>
+    <ul class="dropdown-menu">
+        {% if invoice.sequence == null %}
+            {% for item in invoice.position.location.templatesSorted %}
+                <li><a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="pro3x-print-action" data-cloud="{{ item.useGoogleCloud }}" data-type="auto" data-mode="{{ item.id }}" href="#">{{ item.name }}</a></li>
+            {% endfor %}
+
+        {% else %}
+            {% if(invoice.template) %}
+                <li><a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="pro3x-print-action" data-back="false" data-cloud="" data-type="invoice" data-mode="{{ invoice.template.id }}" href="#">Ispis računa</a></li>
+            {% endif %}
+
+            {% if(invoice.tenderTemplate) %}
+                <li><a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="pro3x-print-action" data-back="false" data-cloud="" data-type="tender" data-mode="{{ invoice.template.id }}" href="#">Ispis ponude</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</li>

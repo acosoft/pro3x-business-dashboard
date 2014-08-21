@@ -79,6 +79,12 @@ table.pro3x-no-borders > tbody > tr > td
 textarea.form-control
     { height: 125px; }
     
+.pro3x-readonly-document .pro3x-document-action   
+    { display: none; }
+    
+.pro3x-readonly-show
+    { display: none; }
+    
 @media print {
     .pro3x-ui
         { display: none; }
