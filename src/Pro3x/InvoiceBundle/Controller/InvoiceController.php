@@ -71,8 +71,6 @@ class InvoiceController extends AdminController {
         if ($this->getRequest()->isMethod('post')) {
             $query = $this->getParam('query');
 
-            if (strlen($query) < 3)
-                $this->setWarning('Potrebno je minimalno tri znaka za uspješno pretraživanje');
             $queryBuilder->andWhere('c.name LIKE :name OR c.taxNumber LIKE :name')
                     ->setParameters(array(':name' => '%' . $query . '%'));
 
@@ -110,6 +108,7 @@ class InvoiceController extends AdminController {
                         ->addColumn('location')
                         ->setAddRoute('add_client')
                         ->setPagerVisible(true)
+                        ->setMobileTemplate('Pro3xInvoiceBundle:Customer:mobile-customer-search.html.twig')
                         ->setPageCount($this->getPageCount($count))
                         ->setPage($page)
                         ->addPagerParam('id', $id)

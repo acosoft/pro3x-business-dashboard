@@ -1,0 +1,49 @@
+<div class="visible-xs pro3x-invoice-index">
+    {% for item in items %}
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ item.name }}</h3>
+                </div>
+                <table class="table">
+                    <tbody>
+                        {% if item.address %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'Adresa'|trans }}</td>
+                            <td>{{ item.address }}</td>
+                        </tr>
+                        {% endif %}
+                        
+                        {% if item.location %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'Lokacija'|trans }}</td>
+                            <td>{{ item.location }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if item.taxNumber %}
+                        <tr>
+                            <td class="active" style="width: 40%;">{{ 'OIB'|trans }}</td>
+                            <td>{{ item.taxNumber }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="panel-footer">
+                    <a class="btn btn-primary" href="{{ path(app.request.get('_route'), pagerParams|merge({(selectParam): attribute(item, selectColumn), 'back': app.request.get('back')})) }}">{{ 'Izaberi'|trans }}</a>
+                </div>
+            </div>
+    {% endfor %}
+    
+    <div class="_row">
+        <div class="col-xs-2" style="padding: 0px 2px 4px 0px;">
+            <a class="btn btn-primary btn-block" href="{{ path('change_invoice_customer', {'id': pagerParams.id, 'page': (page > 1)?page-1:1 }) }}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        </div>
+        
+        <div class="col-xs-8" style="padding: 0px 2px 30px 2px;">
+            <a class="btn btn-primary btn-block" href="{{ path('add_client', {'back': app.request.uri}) }}">{{ 'Dodaj'|trans }}</a>
+        </div>
+        
+        <div class="col-xs-2" style="padding: 0px 0px 4px 2px;">
+            <a class="btn btn-primary btn-block" href="{{ path('change_invoice_customer', {'id': pagerParams.id, 'page': page+1 }) }}"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+    </div>
+</div>    

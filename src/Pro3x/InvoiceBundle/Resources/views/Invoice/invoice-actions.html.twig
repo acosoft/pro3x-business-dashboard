@@ -7,7 +7,7 @@
         <input  id="addProduct" class="btn btn-primary" type="button" name="action" value="Dodaj" />
         <a class="btn btn-primary" href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Kupac'|trans }}</a>
     {% endif %}
-    <div style="display: inline-block; margin-right: 2px;">
+    <div style="display: inline-block;">
         <div class="btn-group">
             <input  id="print" style="width: 74px;" data-mode="{{ invoice.position.location.templatesSorted[0].id }}" data-cloud="{{ invoice.position.location.templatesSorted[0].useGoogleCloud }}" class="btn btn-primary" type="button" name="action" value="Ispis" />
             <button  id="select" class="btn btn-primary dropdown-toggle" style="width: auto;" data-toggle="dropdown" type="button" name="action" value=""><span class="caret"></span></button>

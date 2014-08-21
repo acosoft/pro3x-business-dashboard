@@ -34,6 +34,7 @@ class TableParams
 
         public function setMobileTemplate($mobileTemplate) {
             $this->mobileTemplate = $mobileTemplate;
+            return $this;
         }
 	
 	public function getToolsTemplate()

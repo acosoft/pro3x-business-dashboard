@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}<img src="{{ asset('icons/small/client.png') }}"></span>{{ 'Popis Kupaca'|trans }}{% endblock %}
+{% block page_title %}<img src="{{ asset('icons/small/client.png') }}"></span>{{ 'Popis kupaca'|trans }}{% endblock %}
 
 {% block body %}
     <div class="col-md-12">
@@ -54,9 +54,9 @@
     <div class="col-md-6" style="padding-right: 0px;">
 	<div class="pro3x-table-buttons" style="margin-top: 0.6em;">
            
-	    <form class="form-horizontal" method="POST">
+            <form class="form-horizontal" autocomplete="off" method="POST">
                 <div class="col-md-4" style="padding: 0px; margin-right: 4px;">
-                    <input class="form-control" type="text" name="search" value="{{ search }}" />
+                    <input class="form-control" type="text" placeholder="{{ 'Naziv ili OIB kupca'|trans }}" name="search" value="{{ search }}" />
                 </div>
                 
                 <div class="btn-group">

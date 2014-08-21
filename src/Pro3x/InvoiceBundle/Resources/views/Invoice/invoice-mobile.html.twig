@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-xs-12 pro3x-invoice-editor visible-xs {{ (invoice.sequence or invoice.tenderSequence)?'pro3x-readonly-document':'pro3x-editable-document' }}">
+    <div class="col-xs-12 pro3x-invoice-editor visible-xs pro3x-invoice-index {{ (invoice.sequence or invoice.tenderSequence)?'pro3x-readonly-document':'pro3x-editable-document' }}">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ 'Osnovna svojstva'|trans }}</h3>
@@ -82,6 +82,9 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div class="pro3x-document-action panel-footer">
+                    <a class="btn btn-primary" href="{{ path('change_invoice_customer', {id: invoice.id, page: 1, customerId: 'empty', 'back': app.request.uri}) }}">{{ 'Izbriši odabir'|trans }}</a>
+                </div>
             </div>
         {% endif %}
                     

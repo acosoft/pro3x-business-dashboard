@@ -8,11 +8,17 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+            {% if app.request.get('back') %}
+                <a class="hidden-xs navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+                <a class="visible-xs navbar-brand" href="{{ app.request.get('back')  }}"><span class="glyphicon glyphicon-chevron-left"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+            {% else %}
+                <a class="navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+            {% endif %}
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li class="visible-xs"><a href="{{ path('dashboard') }}">{{ 'Početna stranica'|trans }}</a></li>
                 
                 {% block menu %}{% endblock %}
 

@@ -77,18 +77,26 @@
         <div class="col-md-6">
             <div class="pro3x-table-buttons" style="margin-top: 0.6em;">
                 {% if search == true %}
-                    <form method="post" style="float: left;">
+                    <form method="post" class="form-horizontal">
                         <input type="hidden" name="back" value="{{ app.request.get('back') }}" />
-                        <input type="text" placeholder="{{ placeholder }}" style="width: 218px; padding: 4px;" name="query" value="{{ app.request.get('query') }}" />
-                        <input type="submit" class="button" value="{{ 'Traži'|trans }}" />
+                        <div class="col-md-4" style="padding: 0px;"><input type="text" class="form-control" placeholder="{{ placeholder }}" name="query" value="{{ app.request.get('query') }}" /></div>
+                        &nbsp;<input type="submit" class="btn btn-primary form-control" value="{{ 'Traži'|trans }}" />
+                        <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
+                        {% if app.request.get('back') %}
+                            <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
+                        {% else %}
+                            <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
+                        {% endif %}
                     </form>
-                {% endif %}
-                <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
-                {% if app.request.get('back') %}
-                    <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
+                    <a href="{{ path(route, {'back': app.request.uri}) }}" class="btn btn-primary">{{ 'Dodaj'|trans }}</a>
+                        {% if app.request.get('back') %}
+                            <a href="{{ app.request.get('back') }}" class="btn btn-primary">{{ 'Odustani'|trans }}</a>
+                        {% else %}
+                            <a href="{{ path('dashboard') }}" class="btn btn-primary">{{ 'Dashboard'|trans }}</a>
+                        {% endif %}
                 {% endif %}
+                
             </div>
         </div>
 

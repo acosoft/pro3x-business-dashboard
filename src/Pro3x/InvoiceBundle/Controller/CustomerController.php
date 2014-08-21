@@ -297,7 +297,7 @@ class CustomerController extends AdminController
 			$clients = $this->getCustomerRepository()->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page));
 			$count = $this->getPageCount($this->getCustomerRepository()->getCount());
 			
-			return array('clients' => $clients, 'search' => $search, 'count' => $count, 'page' => $page);
+			return array('clients' => $clients, 'placeholder' => 'Naziv ili OIB kupca', 'search' => $search, 'count' => $count, 'page' => $page);
 		}        
     }
 }
