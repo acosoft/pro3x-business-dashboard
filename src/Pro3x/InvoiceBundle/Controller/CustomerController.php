@@ -20,7 +20,7 @@ class CustomerController extends AdminController
 	 */
 	public function addAction()
 	{
-		return $this->saveCustomer(new Customer(), 'Unos novog kupca', 'Novi kupac je uspješno kreiran', 'client_add');
+		return $this->saveCustomer(new Customer(), 'Unos kupca', 'Novi kupac je uspješno kreiran', 'client_add');
 //		$form = $this->createForm(new CustomerType());
 //		if($result = $this->saveForm($form, 'Novi kupac je uspješno kreiran')) return $result;
 //

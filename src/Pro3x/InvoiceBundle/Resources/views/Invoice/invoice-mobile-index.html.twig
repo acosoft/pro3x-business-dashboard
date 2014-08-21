@@ -89,15 +89,19 @@
         {% endif %}#}
     {% endfor %}
     
-    <div class="_row">
-        <div class="col-xs-6" style="padding: 0px 2px 4px 0px;">
-            <a class="btn btn-primary btn-block" href="{{ path('invoices', {'id': pagerParams.id, 'page': (page > 1)?page-1:1 }) }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+    <div style="padding-bottom: 20px;">
+        <div class="col-xs-3" style="padding: 0px 2px 4px 0px;">
+            <a class="btn btn-primary btn-block {{ (page == 1)?'disabled':'' }}" href="{{ path('invoices', {'id': pagerParams.id, 'page': (page > 1)?page-1:1 }) }}"><span class="glyphicon glyphicon-chevron-left"></span></a>
         </div>
         
-        <div class="col-xs-6" style="padding: 0px 0px 4px 2px;">
-            <a class="btn btn-primary btn-block" href="{{ path('invoices', {'id': pagerParams.id, 'page': page+1 }) }}"><span class="glyphicon glyphicon-arrow-right"></span></a>
+        <div class="col-xs-6" style="padding: 0px 4px;">
+            <a class="btn btn-block btn-default" href="{{ path('invoices', {'id': pagerParams.id, 'page': 1 }) }}">{{ page }} / {{ count }}</a>
         </div>
         
+        <div class="col-xs-3" style="padding: 0px 0px 4px 2px;">
+            <a class="btn btn-primary btn-block {{ (page == count)?'disabled':'' }}" href="{{ path('invoices', {'id': pagerParams.id, 'page': page+1 }) }}"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
         
+        <div class="clearfix"></div>
     </div>
 </div>    

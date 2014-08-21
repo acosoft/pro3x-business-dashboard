@@ -5,37 +5,41 @@
 {% endblock %}
 
 {% block body %}
-    <div class="grid_8 push_2 pro3x_login_page">
-	
-	{% if error %}
-	    <div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin-bottom: 2em;">
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>{{ error }}</p>
-	    </div>
-	{% endif %}
-	    
-	<div class="pro3x_tabs">
-	    <ul>
-		<li><a href="#login">{{ 'Prijava'|trans }}</a></li>
-	    </ul>
-	    <div id="login">
-		<form class="pro3x_login" action="{{ path("_security_check") }}" method="post" id="login">
-		    <div class="pro3x_form_content">
-			<div>
-			    <label for="username">{{ 'Korisničko ime'|trans }}</label><input type="text" id="username" name="_username" value="{{ last_username }}" />
-			</div>
+    
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="row">
+     
+            <div class="col-md-6 col-md-offset-3">
+                {% if error %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <span class="glyphicon glyphicon-fire"></span> {{ error }}
+                    </div>
+                {% endif %}
+                <form class="pro3x_login form-horizontal" action="{{ path("_security_check") }}" method="post" id="login">
+                
+                    <div id="login" class="panel panel-default">
+                        <div class="panel-heading">Prijava korisnika</div>
+                        <div class="panel-body pro3x-panel-form">
 
-			<div>
-			    <label for="password">{{ 'Zaporka'|trans }}</label><input type="password" id="password" name="_password" />
-			</div>
-		    </div>
-		    <div class="pro3x_buttons">
-			<div class="pro3x_info"><a href="#">{{ 'Izgubili ste zaporku?'|trans }}</a></div>
-			<input type="submit" class="button" value="{{ 'Prijava'|trans }}" />
-		    </div>
-		</form>
-	    </div>
-	</div>
+                            <div class="form-group">
+                                <div class="col-md-4"><label class="control-label" for="username">{{ 'Korisničko ime'|trans }}</label></div>
+                                <div class="col-md-8"><input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" /></div>
+                            </div>
 
+                            <div class="form-group">
+                                <div class="col-md-4"><label class="control-label" for="password">{{ 'Zaporka'|trans }}</label></div>
+                                <div class="col-md-8"><input class="form-control" type="password" id="password" name="_password" /></div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                        
+                    <div class="col-md-12" style="padding: 0px;"><input type="submit" class="btn btn-block btn-primary" value="{{ 'Prijava'|trans }}" /></div>
+                </form>
+            </div>
+        </div>
 	
     </div>
 {% endblock %}

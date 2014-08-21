@@ -18,6 +18,9 @@
 
 {% block body %}
     <div class="col-xs-12 pro3x-invoice-editor visible-xs pro3x-invoice-index {{ (invoice.sequence or invoice.tenderSequence)?'pro3x-readonly-document':'pro3x-editable-document' }}">
+        
+        <div class="ajax-message"></div>
+        
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ 'Osnovna svojstva'|trans }}</h3>
