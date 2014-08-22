@@ -18,6 +18,7 @@
             </ul>
         </div>
     </div>
+    <a class="btn btn-primary" href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}">{{ 'Odustani'|trans }}</a>
 {% else %}
     <div class="btn-group">
         <input style="width: 74px;"  id="print" data-back="false" data-type="invoice" data-mode="{{ invoice.template.id }}" data-cloud="" class="btn btn-primary" type="button" name="action" value="Ispis" />
@@ -32,5 +33,5 @@
             <!-- <li><a data-back="false" data-cloud="1" data-mode="{{ invoice.template.id }}" href="#">Google Cloud Print</a></li> -->
         </ul>
     </div>
+    <a class="btn btn-primary" href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}">{{ 'Zatvori'|trans }}</a>
 {% endif %}
-<a class="btn btn-primary" href="{{ path('cancel_invoice', {'id': invoice.id, 'back': app.request.get('back')}) }}">{{ 'Odustani'|trans }}</a>

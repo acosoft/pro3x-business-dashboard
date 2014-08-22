@@ -82,7 +82,9 @@ class ReportController extends AdminController
 //				->getResult();
 
 		$customerInfo = $this->getCustomerRepository()->find($customer);
-		return array('customer' => $customerInfo, 'data' => $data, 'operator' => $this->getUser(), 'created' => date('now'));
+                $position = $this->getPositionRepository()->find($this->getUser()->getPosition());
+                
+		return array('customer' => $customerInfo, 'position' => $position, 'data' => $data, 'operator' => $this->getUser(), 'created' => date('now'));
 	}
 	
 	private function getTotalSalesRangeForm()
@@ -182,7 +184,10 @@ class ReportController extends AdminController
 	{
 		$search = $this->getParam('search');
 		$result = $this->getCustomerRepository()->findBySearchQuery($search);
-		return array('data' => $result['items'], 'operator' => $this->getUser());
+                
+                $position = $this->getPositionRepository()->find($this->getUser()->getPosition());
+                
+		return array('data' => $result['items'], 'position' => $position, 'operator' => $this->getUser());
 	}
 	
 	/**
@@ -385,7 +390,7 @@ class ReportController extends AdminController
 		
 		$user = $this->getUserRepository()->find($id);
 		
-		return array_merge(array('items' => $items, 'operator' => $user, 'currentTotal' => $currentTotal, 'total' => $total, 'reports' => $reports, 'selectedDate' => $selectedDate), $pagerParams->getParams());
+		return array_merge(array('items' => $items, 'icon' => 'calendar', 'operator' => $user, 'currentTotal' => $currentTotal, 'total' => $total, 'reports' => $reports, 'selectedDate' => $selectedDate), $pagerParams->getParams());
 	}
 }
 

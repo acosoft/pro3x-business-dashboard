@@ -289,7 +289,7 @@ class CustomerController extends AdminController
 			
 			$pageCount = $this->getPageCount($result['count']);
 			
-			return array('clients' => $result['items'], 'search' => $search, 'pagerParams' => array('qsearch' => $search), 'count' => $pageCount, 'page' => $page);
+			return array('clients' => $result['items'], 'icon' => 'client', 'search' => $search, 'pagerParams' => array('qsearch' => $search), 'count' => $pageCount, 'page' => $page);
 		}
 		else
 		{
@@ -297,7 +297,7 @@ class CustomerController extends AdminController
 			$clients = $this->getCustomerRepository()->findBy(array(), array('name' => 'ASC'), $this->getPageSize(), $this->getPageOffset($page));
 			$count = $this->getPageCount($this->getCustomerRepository()->getCount());
 			
-			return array('clients' => $clients, 'placeholder' => 'Naziv ili OIB kupca', 'search' => $search, 'count' => $count, 'page' => $page);
+			return array('clients' => $clients, 'icon' => 'client', 'placeholder' => 'Naziv ili OIB kupca', 'search' => $search, 'count' => $count, 'page' => $page);
 		}        
     }
 }

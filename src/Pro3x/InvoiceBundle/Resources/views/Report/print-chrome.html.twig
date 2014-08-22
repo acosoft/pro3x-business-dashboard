@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        
+        <title>{% block title %}{{ 'Pro3x Online'|trans }}{% endblock %}</title>
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="{{ asset('style.css') }}" />
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        
+    </head>
+    <body class="pro3x-report">
+        <div class="pro3x-ui">
+            <nav class="navbar navbar-inverse navbar-static-top pro3x-main-menu" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        {% if app.request.get('back') %}
+                            <a class="navbar-brand" href="{{ app.request.get('back')  }}"><span class="glyphicon glyphicon-chevron-left"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+                        {% else %}
+                            <a class="navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% block menu %}<li><a class="pro3x-print-document" href="#">{{ 'Ispis dokumenta'|trans }}</a></li>{% endblock %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+                        
+        
+                            
+        <div class="pro3x-print">
+            <div class="pro3x-ui"><div style="height: 50px;"></div></div>
+            
+            {% block content %}{% endblock %}
+            
+            <div class="pro3x-ui"><div style="height: 50px;"></div></div>
+        </div>
+        
+        
+        
+        <script>
+            jQuery(document).ready(function($) {
+                {% block javascript %}
+                    $('.pro3x-print-document').click(function(event) {
+                        event.preventDefault();
+                        window.print();
+                    });
+                {% endblock %}
+            });
+        </script>
+    </body>
+</html>

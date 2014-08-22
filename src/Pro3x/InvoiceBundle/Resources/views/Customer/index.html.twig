@@ -26,7 +26,7 @@
                         <div>{{ client.email }}</div>
                         <div>{{ client.phones|join(', ') }}</div>
                     </td>
-                    <td class="pro3x_tools" style="width: 290px;">
+                    <td class="pro3x-tools" style="width: 250px;">
                         <a href="{{ path('add_invoice', {'customer': client.id, 'back': app.request.uri}) }}">{{ '+račun'|trans }}</a>
                         {% if is_granted('ROLE_RELATIONS') %}
                         <a href="{{ path('customer_relations', {'id': client.id, 'back': app.request.uri}) }}">{{ 'relacije'|trans }}</a>
@@ -36,7 +36,7 @@
                         {% endif %}
                         <a href="{{ path('customer_history', {'customer': client.id, 'back': app.request.uri }) }}">{{ "kartica"|trans }}</a>
                         <a href="{{ path('edit_client', {'id': client.id, 'back': app.request.uri }) }}">{{ 'izmjeni'|trans }}</a>
-                        <a class="pro3x_confirm" 
+                        <a class="pro3x-confirm" 
                            data-icon="pro3x_icon_client_delete" 
                            data-msg="{{ 'Jeste li sigurni da želite izbrisati kupca <b>%name%</b>?'|trans({ '%name%': client.name }) }}" 
                            href="{{ path('delete_client', {'id': client.id, 'back': app.request.uri}) }}">{{ 'izbriši'|trans }}</a>
@@ -76,8 +76,7 @@
 
     {% include '::pager.html.twig' with {'count': count, 'page': page} %}
 
-    <div class="pro3x_dialog" title="{{ 'Upozorenje!'|trans }}"></div>
+    {% include '::dialog.html.twig' %}
 
 {% endblock %}
 
-{% block javascripts %}{% endblock %}

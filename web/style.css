@@ -85,6 +85,22 @@ textarea.form-control
 .pro3x-readonly-show
     { display: none; }
     
+.pro3x-document
+    { margin: 0mm auto 0mm auto; width: 210mm; background-color: white; min-height: 297mm; }
+    
+.pro3x-document h1.pro3x
+    { padding: 5mm 10mm; margin: 0mm; position: relative; }   
+    
+.pro3x-document .pro3x-name
+    { display: inline-block; width: 25mm; font-weight: bold; /* background-color: #74ba40 !important; color: white !important; */
+      padding: 0.25mm 0mm; margin-right: 2mm; margin-bottom: 0mm; }    
+
+.pro3x-document-info
+    { background-color: rgb(249, 249, 249) !important; padding: 4.5mm 5mm; width: 200mm; margin-left: 5mm; }
+    
+.pro3x-document .table > tbody > tr > td, .pro3x-document .table > thead > tr > th
+    { padding: 2mm 5mm; font-size: 12px; }    
+        
 @media print {
     .pro3x-ui
         { display: none; }
@@ -159,11 +175,21 @@ textarea.form-control
 }
 
 @media screen {
+    
+    .pro3x-report .pro3x-print
+        { display: block; overflow-x: auto; }
+    
     .pro3x-ui
         { display: block; }
         
     .pro3x-print
         { display: none; }
+        
+    .pro3x-report
+        { background-color: #efefef; }
+        
+    .pro3x-document
+        { box-shadow: 0px 0px 5px 0px #dedede; margin: 10px auto; }
 }
 
     
