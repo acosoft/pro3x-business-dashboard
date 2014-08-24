@@ -45,7 +45,7 @@
                 <table class="table table-striped">
 		<thead>
 		    <tr>
-			<th>Naziv proizvoda ili usluge</th>
+			<th>Naziv</th>
 			<th style="text-align: right;">Jedinična cijena</th>
 			<th style="text-align: right;">Količina</th>
 			<th style="text-align: left;">Jedinica</th>
@@ -69,7 +69,7 @@
 			{% set total = total + item.total %}
 		{% else %}
 			<tr>
-			    <td colspan="100" style="padding: 5mm 0mm;">Nema rezultata</td>
+			    <td colspan="100">Nema rezultata</td>
 			</tr>
 		{% endfor %}
 		</tbody>

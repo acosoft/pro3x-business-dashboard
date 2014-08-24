@@ -51,10 +51,14 @@
                     </thead>
                     <tbody>
                     {% for  item in items %}
-                            <tr>
-                                <td>{{ item.transactionType }}</td>
-                                <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ item.transactionType }}</td>
+                            <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
+                        </tr>
+                    {% else %}
+			<tr>
+			    <td colspan="100">Nema rezultata</td>
+			</tr>
                     {% endfor %}
                     </tbody>
                 </table>
