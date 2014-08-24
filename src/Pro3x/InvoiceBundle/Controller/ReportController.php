@@ -265,7 +265,9 @@ class ReportController extends AdminController
 		$user = $this->getUserRepository()->find($id);
 		
 		$dailyReportTemplate = $this->getReportingServices()->getDailyReportTemplate();
-		$params = array('items' => $report[0], 'total' => $report[1], 'created' => $report[2], 'operator' => $user);
+                $position = $this->getPositionRepository()->find($this->getUser()->getPosition());
+                
+		$params = array('items' => $report[0], 'position' => $position, 'total' => $report[1], 'created' => $report[2], 'operator' => $user);
 		
 		if($this->getParam('print', true) == 'true')
 		{
@@ -285,6 +287,7 @@ class ReportController extends AdminController
 	{
 		$params = $this->buildProductReport($user, $report);
 		$params['operator'] = $this->getUserRepository()->find($user);
+                $params['position'] = $this->getPositionRepository()->find($this->getUser()->getPosition());
 		
 		return $params;
 	}

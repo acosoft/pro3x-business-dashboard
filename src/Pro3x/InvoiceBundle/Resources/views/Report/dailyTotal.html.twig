@@ -51,7 +51,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{{ path('print_daily_total', {'id': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Način plaćanja</a></li>
-                    <li><a href="{{ path('print_daily_product_report', {'user': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Prema proizvodima</a></li>
+                    <li><a href="{{ path('print_daily_product_report', {'user': app.request.get('id'), 'report': app.request.get('report'), 'back': app.request.uri}) }}">Lista proizvoda</a></li>
                 </ul>
             </div>
             
@@ -94,7 +94,7 @@
                             <td style="text-align: right;">{{ currentTotal }}</td>
                             <td class="pro3x_tools">
                                 {% if app.request.get('report') is null %}
-                                    <span class="glyphicon glyphicon-flag"></span>
+                                    <span class="glyphicon glyphicon-folder-open"></span>
                                 {% else %}
                                 <a href="{{ path('daily_total', {'id': app.request.get('id'), 'position': app.request.get('position'), 'page': page}) }}">{{ 'pregled'|trans }}</a>
                                 {% endif %}
@@ -108,7 +108,7 @@
                             <td style="text-align: right;">{{ item.total|number_format(2, ',', '') }}</td>
                             <td class="pro3x_tools">
                                 {% if item.id == app.request.get('report') %}
-                                    <span class="glyphicon glyphicon-flag"></span>
+                                    <span class="glyphicon glyphicon-folder-open"></span>
                                 {% else %}
                                     <a href="{{ path('daily_total', {'id': item.operator.id, 'position': item.position.id, 'page': page, 'report': item.id}) }}">{{ 'pregled'|trans }}</a>
                                 {% endif %}
