@@ -117,7 +117,7 @@
 
                 {% if is_granted('ROLE_TOTAL_SALES_REPORT') %}
                     <div class="col-md-3 hidden-xs">
-                        <a class="button"  href="{{ path('select_total_sales_range', {'id': app.user.id}) }}">
+                        <a class="button"  href="{{ path('select_total_sales_range') }}">
                             <img class="hidden-xs" src="{{ asset('icons/chart.png') }}" />
                             <img class="visible-xs-inline-block" src="{{ asset('icons/small/chart.png') }}" />
                             {{ 'Ukupni promet'|trans }}

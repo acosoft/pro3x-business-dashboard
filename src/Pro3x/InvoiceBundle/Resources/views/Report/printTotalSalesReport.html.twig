@@ -1,111 +1,91 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{{ 'Pro3x Online'|trans }}</title>
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('styles/print.css') }}" />
-	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-1.8.2.js') }}"></script>
-	<script src="{{ asset('bundles/pro3xjqueryui/js/jquery-ui-1.9.1.custom.js') }}"></script>
-	<style type="text/css">
-		
-	    @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700");
+{% extends "Pro3xInvoiceBundle:Report:print-chrome.html.twig" %}
 
-	    @page 
-		{ margin: 0mm 15mm 0mm 15mm; size: A4; }
-	
-	    @media print
-		{ 
-		    .close,
-		    .sf-toolbarreset 
-			{ display: none; }
-		
-		    body
-			{ padding-top: 0px; }
-		}
-	
-	    .close
-		{ position: fixed; left: 0px; width: 100%; top: 0px; text-align: right; background-color: black; border-bottom: solid 5px #4297d7; }
+{% block content %}
+    
+        <div class="pro3x-document shadow">        
+            
+            <div style="padding-top: 10mm; padding-left: 10mm;">
+                {% if location.logo %}
+                    <img src="{{ location.logo }}" />
+                {% endif %}
+            </div>
+            
+            <div style="text-align: right; font-size: 12px; font-weight: 300; padding-right: 10mm;">
+                <div>{{ location.companyName }}</div>
+                <div>{{ location.address }}</div>
+                <div>{{ location.other }}</div>
+            </div>
+            
+            <div class="clearfix"></div>
 
-	    .close a, .close span
-		{ color: white; text-decoration: none; cursor: pointer; }
-		
-	    .close a:hover, .close span:hover
-		{ color: #99cc00; }
+            <h1 class="pro3x">Ukupni promet</h1>
+            <div class="clearfix"></div>
+            
+            <div class="pro3x-document-info">
+                <div style="width: 85mm; float: left;">
+                    
+                    {% set total = 0 %}
+                    {% for  item in data %}
+                        {% set total = total + item.total %}
+                    {% endfor %}
+                        
+                    <div><span class="pro3x-name">Operater</span>{{ operator.displayName }}</div>
+                    <div><span class="pro3x-name">Datum</span>{{ 'now'|date('d.m.Y') }}</div>
+                    <div><span class="pro3x-name">Vrijeme</span>{{ 'now'|date('H:i\\h') }}</div>
+                    
+                </div>
+                
+                <div style="float: right; width: 100mm;">
+                    <div class="pro3x-value"><span class="pro3x-name">Lokacija</span>{{ location.name }}</div>
+                    <div class="pro3x-value"><span class="pro3x-name">Period</span>{{ start|date('d.m.Y') }} - {{ end|date('d.m.Y') }}</div>
+                    <div class="pro3x-value"><span class="pro3x-name">Ukupno</span>{{ total|number_format(2, ',', '.') }}kn</div>
+                </div>
+                
+                <div class="clearfix"></div>
+            </div>
 
-	    body 
-		{ font-size: 75%; font-family: 'Ubuntu', sans-serif; padding: 0mm; padding-top: 0px; }
-
-	    th
-		{ text-align: left; padding-left: 5mm; }
-
-	    td
-		{ padding-left: 5mm; }
-
-	    @media screen
-		{ 
-		    body 
-			{ padding-top: 30px; } 
-		}
-
-	</style>
-    </head>
-    <body>
-	<div class="close"><div style="padding: 0.75em 1em 0.75em 1em; border-bottom: solid 1px #f2f2f2;">
-			<div style="float: left; color: white;">
-				<span onclick="window.print();">Ispis izvještaja</span> | 
-				<a href="{{ path('download_csv_total_sales_report', {'start_date': start|date('d.m.Y'), 'end_date': end|date('d.m.Y'), 'location': location.id }) }}">Download CSV</a>
-			</div>
-		<a href="{{ path('select_total_sales_range') }}">Zatvori</a></div></div>
-	
-	<div style="width: 210mm; height: 305mm; margin: 0mm auto; cursor: pointer;" title="Klikni bilo gdje za ispis izvještaja" onclick="window.print();">
-	    <div class="header" style="border-bottom: solid 0.5mm black; padding-bottom: 5mm; margin-bottom: 15mm; margin-top: 15mm;">
-		{{ logo|raw }}
-		{{ company|raw }}
-		<div style="clear: both"></div>
+            <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Naziv proizvoda ili usluge</th>
+                            <th style="text-align: right;">Jedinična cijena</th>
+                            <th style="text-align: right;">Količina</th>
+                            <th style="text-align: left;">Jedinica</th>
+                            <th style="text-align: right;">Osnovica</th>
+                            <th style="text-align: right;">Popust</th>
+                            <th style="text-align: right;">Ukupno</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set total = 0 %}
+                    {% for  item in data %}
+                            <tr>
+                                <td>{{ item.description }}</td>
+                                <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>
+                                <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',', '.') }}</td>
+                                <td style="text-align: left;">{{ item.unit }}</td>
+                                <td style="text-align: right;">{{ item.totalPrice|number_format(2, ',', '.') }}</td>
+                                <td style="text-align: right;">{{ item.discount|number_format(2, ',', '.') }}</td>
+                                <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
+                            </tr>
+                            {% set total = total + item.total %}
+                    {% else %}
+                            <tr>
+                                <td colspan="100">Nema rezultata</td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                
 	    </div>
-
-	    <h1 style="margin-bottom: 0mm;">Ukupni promet po proizvodima i uslugama</h1>
-	    <div>{{ location.name }}: od {{ start|date('d.m.Y') }} do {{ end|date('d.m.Y') }} 
-		| {{ operator.displayName }}, {{ created|date('d.m.Y, H:i\\h') }}</div>
-	   
-	    <table style="width: 100%; margin-top: 15mm; border-spacing: 0px; margin-bottom: 10mm;">
-		<thead>
-		    <tr>
-			<th style="padding-left: 0mm;">Naziv proizvoda ili usluge</th>
-			<th style="text-align: right;">Jedinična cijena</th>
-			<th style="text-align: right;">Količina</th>
-			<th style="text-align: left;">Jedinica</th>
-			<th style="text-align: right;">Osnovica</th>
-			<th style="text-align: right;">Popust</th>
-			<th style="text-align: right;">Ukupno</th>
-		    </tr>
-		</thead>
-		<tbody>
-		{% set total = 0 %}
-		{% for  item in data %}
-			<tr>
-			    <td style="padding-left: 0;">{{ item.description }}</td>
-			    <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: left;">{{ item.unit }}</td>
-			    <td style="text-align: right;">{{ item.totalPrice|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.discount|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
-			</tr>
-			{% set total = total + item.total %}
-		{% else %}
-			<tr>
-			    <td colspan="100" style="padding: 5mm 0mm;">Nema rezultata</td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	    </table>
+                    
+            <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
+                    <h3 style="margin: 0mm 10mm 0mm 0mm; font-weight: 300;">Ukupno: {{ total|number_format(2, ',', '.') }}kn</h3>
+                </div>
+                    
+            <div class="clearfix"></div>
+        </div>
+        
+{% endblock %}
 	    
-	     <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
-		<h2 style="margin: 0mm 0mm 10mm 0mm;">Ukupni promet: {{ total|number_format(2, ',', '.') }} kn</h2>
-	    </div>
-
-	</div>
-    </body>
-</html>

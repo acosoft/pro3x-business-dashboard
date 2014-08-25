@@ -124,7 +124,12 @@ class ReportController extends AdminController
 		$range = $form->getData();
 		
 		$start = $range['start_date'];
-		$end = $range['end_date'];
+                $end = $range['end_date']; /* @var $end \DateTime */
+                
+                $endParam = new \DateTime();
+                $endParam->setTimestamp($end->getTimestamp());
+                $endParam->add(new \DateInterval("P1D"));
+                
 		$location = $range['location'];
 		
 		$data = $this->getProductReportQuery()
@@ -132,7 +137,7 @@ class ReportController extends AdminController
 				->where('p.location = :location AND i.created BETWEEN :start AND :end AND i.sequence is not null')
 				->setParameter('location', $location)
 				->setParameter('start', $start)
-				->setParameter('end', $end)->getQuery()->getResult();
+				->setParameter('end', $endParam)->getQuery()->getResult();
 		
 		return array('location' => $location, 'operator' => $operater, 
 			'start' => $start, 'end' => $end, 'data' => $data, 'created' => new \DateTime('now'));
