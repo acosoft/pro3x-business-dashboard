@@ -100,6 +100,12 @@ textarea.form-control
     
 .pro3x-document .table > tbody > tr > td, .pro3x-document .table > thead > tr > th
     { padding: 2mm 5mm; font-size: 12px; }    
+    
+.pro3x-report-title
+    { display: inline-block; width: 160mm; }
+    
+.pro3x-report-subtitle    
+    { display: inline-block; width: 30mm; text-align: right; }
         
 @media print {
     .pro3x-ui
@@ -117,7 +123,7 @@ textarea.form-control
     }
     
     .pro3x-page
-        { width: 210mm; height: 296.99mm; page-break-after: always; }
+        { position: absolute; width: 210mm; height: 297mm; page-break-after: always; top: 0; left: 0; }
         
     .pro3x-page .pro3x-name
         { display: inline-block; width: 25mm; font-weight: bold; /* background-color: #74ba40 !important; color: white !important; */
@@ -195,4 +201,98 @@ textarea.form-control
         { padding: 5mm; width: 200mm; margin-left: 5mm; text-align: center; font-size: 10px; }
 }
 
+/* * * REPORTS * * */
+
+.report-content .report-item
+{
+    background-color:#efefef!important;
+    border-bottom:solid 1px #fff;
+}
+
+.report-template
+{
+    width:210mm;
+    margin:50px auto;
+}
+
+.report .report-page-footer
+{
+    position:absolute;
+    width:200mm;
+}
+
+.report
+{
+    background-color:#efefef;
+}
+
+.report .page
+{
+    background-color:#fff;
+    width:210mm;
+    position: relative;
+    margin:0;
+}
+
+.report-page-footer,.report-page-header
+{
+}
+
+.report-content-footer,.report-content-header
+{
+}
+
+@media print 
+{    
+    @page
+    {
+        size:A4 portrait;
+        margin:0;
+    }
+
+    .report .page
+    {
+        page-break-after: always;
+        page-break-inside: avoid;
+        height: 292mm;
+        margin:0;
+    }
+
+    .report-template
+    {
+        display:none;
+    }
+
+    .report .report-page-footer
+    {
+        position: absolute;
+        bottom: 0mm;
+    }
+
+    .report-last-page
+    {
+        page-break-after: avoid;
+    }
+}
+
+@media screen 
+{
+    .report .page
+    {
+        box-shadow:0 0 5px 0 gray;
+        height:297mm;
+        padding-bottom: 5mm;
+        margin:10px auto;
+    }
+
+    .report .report-page-footer
+    {
+        bottom:5mm;
+    }
+
+    .report
+    {
+        padding: 0mm;
+    }
+}
     

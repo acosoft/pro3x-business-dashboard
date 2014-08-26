@@ -16,100 +16,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         
-        <style>
-
-            .report-content .report-item
-            {
-                    background-color:#efefef!important;
-                    border-bottom:solid 1px #fff;
-            }
-
-            .report-template
-            {
-                    width:210mm;
-                    margin:50px auto;
-            }
-
-            .report .report-page-footer
-            {
-                    position:absolute;
-                    width:200mm;
-            }
-
-            .report
-            {
-                    background-color:#efefef;
-            }
-
-            .report .page
-            {
-                    background-color:#fff;
-                    width:210mm;
-                    position:relative;
-                    margin:0;
-            }
-
-            .report-page-footer,.report-page-header
-            {
-            }
-
-            .report-content-footer,.report-content-header
-            {
-            }
-
-            @media print 
-            {    
-                @page
-                {
-                        size:A4 portrait;
-                        margin:0;
-                }
-
-                .report .page
-                {
-                        page-break-after:always;
-                        height:292mm;
-                        margin:0;
-                }
-
-                .report-template
-                {
-                        display:none;
-                }
-
-                .report .report-page-footer
-                {
-                        bottom:0;
-                }
-
-                .report-last-page
-                {
-                        page-break-after:never;
-                }
-            }
-
-            @media screen 
-            {
-                .report .page
-                {
-                        box-shadow:0 0 5px 0 gray;
-                        height:297mm;
-                        margin:10px auto;
-                }
-
-                .report .report-page-footer
-                {
-                        bottom:5mm;
-                }
-
-                .report
-                {
-                        padding: 0mm;
-                }
-            }
-            
-        </style>
-        
     </head>
     <body class="pro3x-report">
         <div class="pro3x-ui">
@@ -158,13 +64,13 @@
                     var report = this;
                     var page = null;
                     var content = null;
+                    var pageContent = null;
                     var height = 0;
                     var count = 0;
 
                     var settings = $.extend({
                         pageHeaderClass         : 'report-page-header',
                         pageFooterClass         : 'report-page-footer',
-                        contentHeaderClass      : 'report-content-header',
                         contentFooterClass      : 'report-content-footer',
                         contentClass            : 'report-content',
                         itemClass               : 'report-item',
@@ -172,6 +78,7 @@
                         lastPageClass           : 'report-last-page',
                         pageNumberClass         : 'report-page-number',
                         pageCountClass          : 'report-page-count',
+                        clearContentSelector    : 'tbody tr',
                         removeTemplate          : true
                     }, options);
 
@@ -182,14 +89,12 @@
                         page.append($('.' + settings.pageHeaderClass, template).clone());
                         page.append($('.' + settings.pageFooterClass, template).clone());
 
-                        var contentTemplate = $('.' + settings.contentClass, template).clone();
-                        $('tbody tr', contentTemplate).remove();
+                        pageContent = $('.' + settings.contentClass, template).clone();
+                        $(settings.clearContentSelector, pageContent).remove();
                         
-                        content = $('tbody', contentTemplate);
+                        content = $('tbody', pageContent);
                         
-                        page.append(contentTemplate);
-
-                        //content.append($('.' + settings.contentHeaderClass, template).clone());
+                        page.append(pageContent);
 
                         count++;
                     }
@@ -197,7 +102,7 @@
                     appendPage();
 
                     // calculate max content height
-                    height = page.height() - 100;
+                    height = page.height();
 
                     page.children().each(function() {
                         height -= $(this).innerHeight();
@@ -207,7 +112,7 @@
                     $('.' + settings.contentClass + ' .' + settings.itemClass, template).each(function() {
                         var item = $(this);
 
-                        if((content.height() + item.innerHeight()) > height) {
+                        if((pageContent.height() + item.innerHeight()) > height) {
                             appendPage();
                         }
 
@@ -217,7 +122,7 @@
                     // append report footer
                     var footer = $('.' + settings.contentFooterClass, template);
 
-                    if((content.height() + footer.innerHeight()) > height) {
+                    if((pageContent.height() + footer.innerHeight()) > height) {
                         appendPage();
                     }
 
