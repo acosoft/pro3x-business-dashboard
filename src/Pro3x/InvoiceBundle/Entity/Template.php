@@ -31,10 +31,15 @@ class Template
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $dueDays;    
+    private $dueDays;   
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $background;   
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $filename;
 
@@ -91,6 +96,15 @@ class Template
     public function setTenders($tenders)
     {
             $this->tenders = $tenders;
+    }
+    
+    public function getBackground() {
+        return $this->background;
+    }
+
+    public function setBackground($background) {
+        $this->background = $background;
+        return $this;
     }
 
     public function getPriority()

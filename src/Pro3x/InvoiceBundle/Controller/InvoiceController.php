@@ -230,13 +230,13 @@ class InvoiceController extends AdminController {
         
         if($type == 'invoice')
         {
-            $template = 'Pro3xInvoiceBundle:Invoice:print-invoice-template.html.twig';
-            $color = $invoice->getTemplate()->getFilename();
+            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '-template.html.twig';
+            $color = $invoice->getTemplate()->getBackground();
         }
         else
         {
-            $template = 'Pro3xInvoiceBundle:Invoice:print-tender-template.html.twig';
-            $color = $invoice->getTenderTemplate()->getFilename();
+            $template = 'Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '-template.html.twig';
+            $color = $invoice->getTenderTemplate()->getBackground();
         }
         
         return $this->render('Pro3xInvoiceBundle:Invoice:print-preview.html.twig', 
@@ -327,15 +327,15 @@ class InvoiceController extends AdminController {
         }
         
         if ($type == "invoice" || $invoice->getTenderTemplate() == null)
-            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-invoice-template.html.twig', 
+            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTemplate()->getFilename() . '-template.html.twig', 
                     array('hello' => 'Hello Google Cloud Print : )', 
                         'invoice' => $invoice,
-                        'background' => $invoice->getTemplate()->getFilename()));
+                        'background' => $invoice->getTemplate()->getBackground()));
         else
-            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-tender-template.html.twig', 
+            $print = $this->renderView('Pro3xInvoiceBundle:Invoice:print-' . $invoice->getTenderTemplate()->getFilename() . '-template.html.twig', 
                     array('hello' => 'Hello Google Cloud Print : )', 
                         'invoice' => $invoice,
-                        'background' => $invoice->getTenderTemplate()->getFilename()));
+                        'background' => $invoice->getTenderTemplate()->getBackground()));
 
         $direct = $this->getParam('print', 'true');
 
