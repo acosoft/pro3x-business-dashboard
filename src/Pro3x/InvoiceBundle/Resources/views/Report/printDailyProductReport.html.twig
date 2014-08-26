@@ -2,86 +2,101 @@
 
 {% block content %}
     
-        <div class="pro3x-document shadow">        
-            
-            <div style="padding-top: 10mm; padding-left: 10mm;">
-                {% if position.location.logo %}
-                    <img src="{{ position.location.logo }}" />
-                {% endif %}
-            </div>
-            
-            <div style="text-align: right; font-size: 12px; font-weight: 300; padding-right: 10mm;">
-                <div>{{ position.location.companyName }}</div>
-                <div>{{ position.location.address }}</div>
-                <div>{{ position.location.other }}</div>
-            </div>
-            
-            <div class="clearfix"></div>
+        <div class="pro3x-document report"></div>
+    
+        <div class="pro3x-document shadow report-template">        
+            <div class="report-page-header">
+                <div style="padding-top: 10mm; padding-left: 10mm;">
+                    {% if position.location.logo %}
+                        <img src="{{ position.location.logo }}" />
+                    {% endif %}
+                </div>
 
-            <h1 class="pro3x">Promet proizvoda i usluga</h1>
-            <div class="clearfix"></div>
-            
-            <div class="pro3x-document-info">
-                <div style="width: 85mm; float: left;">
-                    
-                    {% set total = 0 %}
-                    {% for  item in data %}
-                        {% set total = total + item.total %}
-                    {% endfor %}
-                        
-                    <div><span class="pro3x-name">Operater</span>{{ operator.displayName }}</div>
-                    <div><span class="pro3x-name">Ukupno</span>{{ total|number_format(2, ',', '.') }}kn</div>
+                <div style="text-align: right; font-size: 12px; font-weight: 300; padding-right: 10mm;">
+                    <div>{{ position.location.companyName }}</div>
+                    <div>{{ position.location.address }}</div>
+                    <div>{{ position.location.other }}</div>
                 </div>
-                
-                <div style="float: right; width: 100mm;">
-                    <div><span class="pro3x-name">Datum</span>{{ created|date('d.m.Y') }}</div>
-                    <div><span class="pro3x-name">Vrijeme</span>{{ created|date('H:i\\h') }}</div>
-                </div>
-                
+
                 <div class="clearfix"></div>
+
+                <h1 class="pro3x"><span class="pro3x-report-title">Promet proizvoda i usluga</span><small class="pro3x-report-subtitle"><span class="report-page-number"></span> / <span class="report-page-count"></span></small></h1>
+                <div class="clearfix"></div>
+
+                <div class="pro3x-document-info">
+                    <div style="width: 85mm; float: left;">
+
+                        {% set total = 0 %}
+                        {% for  item in data %}
+                            {% set total = total + item.total %}
+                        {% endfor %}
+
+                        <div><span class="pro3x-name">Operater</span>{{ operator.displayName }}</div>
+                        <div><span class="pro3x-name">Ukupno</span>{{ total|number_format(2, ',', '.') }}kn</div>
+                    </div>
+
+                    <div style="float: right; width: 100mm;">
+                        <div><span class="pro3x-name">Datum</span>{{ created|date('d.m.Y') }}</div>
+                        <div><span class="pro3x-name">Vrijeme</span>{{ created|date('H:i\\h') }}</div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
             </div>
 	   
-            <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
-                <table class="table table-striped">
-		<thead>
-		    <tr>
-			<th>Naziv</th>
-			<th style="text-align: right;">Jedinična cijena</th>
-			<th style="text-align: right;">Količina</th>
-			<th style="text-align: left;">Jedinica</th>
-			<th style="text-align: right;">Osnovica</th>
-			<th style="text-align: right;">Popust</th>
-			<th style="text-align: right;">Ukupno</th>
-		    </tr>
-		</thead>
-		<tbody>
-		{% set total = 0 %}
-		{% for  item in data %}
-			<tr>
-			    <td>{{ item.description }}</td>
-			    <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: left;">{{ item.unit }}</td>
-			    <td style="text-align: right;">{{ item.totalPrice|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.discount|number_format(2, ',', '.') }}</td>
-			    <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
-			</tr>
-			{% set total = total + item.total %}
-		{% else %}
-			<tr>
-			    <td colspan="100">Nema rezultata</td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	    </table>
-	    
-	     </div>
-                    
+            <div class="report-content">
+                <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Naziv</th>
+                                <th style="text-align: right;">Jedinična cijena</th>
+                                <th style="text-align: right;">Količina</th>
+                                <th style="text-align: left;">Jedinica</th>
+                                <th style="text-align: right;">Osnovica</th>
+                                <th style="text-align: right;">Popust</th>
+                                <th style="text-align: right;">Ukupno</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set total = 0 %}
+                        {% for  item in data %}
+                                <tr class="report-item">
+                                    <td>{{ item.description }}</td>
+                                    <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>
+                                    <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',', '.') }}</td>
+                                    <td style="text-align: left;">{{ item.unit }}</td>
+                                    <td style="text-align: right;">{{ item.totalPrice|number_format(2, ',', '.') }}</td>
+                                    <td style="text-align: right;">{{ item.discount|number_format(2, ',', '.') }}</td>
+                                    <td style="text-align: right;">{{ item.total|number_format(2, ',', '.') }}</td>
+                                </tr>
+                                {% set total = total + item.total %}
+                        {% else %}
+                                <tr class="report-item">
+                                    <td colspan="100">Nema rezultata</td>
+                                </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+            </div>    
             <div style="text-align: right; border-top: solid 0.5mm transparent; margin-top: 0mm;">
                     <h3 style="margin: 0mm 10mm 0mm 0mm; font-weight: 300;">Ukupno: {{ total|number_format(2, ',', '.') }}kn</h3>
                 </div>
                     
             <div class="clearfix"></div>
+            
+            <div class="pro3x-footer report-page-footer" style="background-color: rgb(249, 249, 249) !important;">
+                <div>{{ position.location.note1 }}</div>
+                <div>{{ position.location.note3 }}</div>
+            </div>
         </div>
         
 {% endblock %}
+    
+{% block javascript %}
+    {{ parent() }}
+    
+    $('.report').report('.report-template', {removeTemplate: true});
+{% endblock %}    

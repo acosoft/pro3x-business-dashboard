@@ -213,6 +213,7 @@ textarea.form-control
 {
     width:210mm;
     margin:50px auto;
+    display: none;
 }
 
 .report .report-page-footer
