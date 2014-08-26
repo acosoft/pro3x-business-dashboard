@@ -138,8 +138,10 @@ class ReportController extends AdminController
 				->setParameter('location', $location)
 				->setParameter('start', $start)
 				->setParameter('end', $endParam)->getQuery()->getResult();
+                
+                $position = $this->getPositionRepository()->find($this->getUser()->getPosition());
 		
-		return array('location' => $location, 'operator' => $operater, 
+		return array('location' => $location, 'position' => $position, 'operator' => $operater, 
 			'start' => $start, 'end' => $end, 'data' => $data, 'created' => new \DateTime('now'));
 	}
 	
@@ -303,7 +305,7 @@ class ReportController extends AdminController
 				->join('i.items', 'ii')
 				->select('ii.description AS description, ii.unit, ii.taxedPrice AS unitPrice, sum(ii.amount) AS totalAmount, '
 						. 'sum(ii.totalTaxedPrice) AS totalPrice, sum(ii.discountAmount) AS discount, sum(ii.dicountPrice) AS total')
-				->groupBy('ii.description, ii.unit, ii.unitPrice')
+				->groupBy('ii.description, ii.unit, ii.taxedPrice')
 				->orderBy('ii.description', 'ASC');
 	}
 	
