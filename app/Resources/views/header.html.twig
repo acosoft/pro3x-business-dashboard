@@ -9,8 +9,7 @@
             </button>
 
             {% if app.request.get('back') %}
-                <a class="hidden-xs navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
-                <a class="visible-xs navbar-brand" href="{{ app.request.get('back')  }}"><span class="glyphicon glyphicon-chevron-left"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
+                <a class="navbar-brand" href="{{ app.request.get('back')  }}"><span class="glyphicon glyphicon-chevron-left"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
             {% else %}
                 <a class="navbar-brand" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Pro3x Online Dashboard'|trans }}</a>
             {% endif %}
