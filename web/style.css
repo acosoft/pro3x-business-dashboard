@@ -191,6 +191,9 @@ textarea.form-control
     .pro3x-print
         { display: none; }
         
+    body.invoice .pro3x-print
+        { display: block; position: absolute; left: -300mm; width: 250mm; overflow: visible;  }
+        
     .pro3x-report
         { background-color: #efefef; }
         
@@ -205,15 +208,13 @@ textarea.form-control
 
 .report-content .report-item
 {
-    background-color:#efefef!important;
-    border-bottom:solid 1px #fff;
+    
 }
 
 .report-template
 {
     width:210mm;
     margin:50px auto;
-    display: none;
 }
 
 .report .report-page-footer

@@ -20,19 +20,20 @@
                 <li class="visible-xs"><a href="{{ path('dashboard') }}">{{ 'Početna stranica'|trans }}</a></li>
                 
                 {% block menu %}{% endblock %}
+                
+                {% if is_granted('ROLE_USER') %}
+                    <li class="hidden-xs"><a href="{{ path('dashboard') }}">Naslovnica</a></li>
+                    <li class="hidden-xs"><a href="{{ path('add_invoice') }}">Novi račun</a></li>
+                {% endif %}
 
                 <li class="dropdown">
                     {% if is_granted('ROLE_USER') %}
                         <a class="dropdown-toogle" data-toggle="dropdown" href="#">{{ app.user.displayName }}</a>
                     {% else %}
                         <a class="dropdown-toogle" data-toggle="dropdown" href="#">Info <span class="caret"></span></a>
-                        {% endif %}
-
+                    {% endif %}
+                    
                     <ul class="dropdown-menu">
-
-                        {% if is_granted('ROLE_USER') %}
-                            
-                        {% endif %}
                         
                         <li><a href="http://www.pro3x.com">Pro3x Community</a></li>
                         
@@ -42,6 +43,7 @@
                             <li><a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a></li>
                         {% endif %}
                     </ul>
+                    
                 </li>
             </ul>
         </div>

@@ -122,6 +122,9 @@
                     $('.pro3x-invoice-title').replaceWith(data.invoiceTitle);
                     $('.pro3x-invoice-sequence').html(data.invoiceSequence);
                     $('.pro3x-invoice-title-mobile').replaceWith(data.invoiceTitleMobile);
+                    
+                    $('.report').report('.report-template', {removeTemplate: false});
+                    
                     window.print();
                 }
             }, 'json');
@@ -136,29 +139,29 @@
 	$.get(form.attr('action'), form.serialize(), function(data) {
 	    if(data.search)
 	    {
-			var table = $('.pro3x_dialog table');
-			table.empty();
+                var table = $('.pro3x_dialog table');
+                table.empty();
 
-			$.each(data.items, function(index, value) {
-				var item = $('<tr><td style="padding-left: 0px;">' + value.name + '</td><td>' + value.price + '</td></tr>');
-				item.append($('<td style="text-align: center;" class="pro3x_tools"></td>')
-                                    .append($('<a href="#">{{ 'odaberi'|trans }}</a>').data('code', value.code)
-                                    .data('amount', data.amount)
-                                    .data('discount', data.discount)
-                                    .click(function(event) { 
-                                    
-				event.preventDefault();
-				var me = $(this);
-				$('.actionCode', form).val(me.data('amount') + '*' + me.data('code') + '-' + me.data('discount'));
-				$('.pro3x_dialog').modal('hide');
-				addItem(form);
-				$('.actionCode', form).val('').focus();
-				})));
+                $.each(data.items, function(index, value) {
+                        var item = $('<tr><td style="padding-left: 0px;">' + value.name + '</td><td>' + value.price + '</td></tr>');
+                        item.append($('<td style="text-align: center;" class="pro3x_tools"></td>')
+                            .append($('<a href="#">{{ 'odaberi'|trans }}</a>').data('code', value.code)
+                            .data('amount', data.amount)
+                            .data('discount', data.discount)
+                            .click(function(event) { 
 
-				table.append(item);
-			});
+                        event.preventDefault();
+                        var me = $(this);
+                        $('.actionCode', form).val(me.data('amount') + '*' + me.data('code') + '-' + me.data('discount'));
+                        $('.pro3x_dialog').modal('hide');
+                        addItem(form);
+                        $('.actionCode', form).val('').focus();
+                        })));
 
-			$('.pro3x_dialog').modal('show');
+                        table.append(item);
+                });
+
+                $('.pro3x_dialog').modal('show');
 	    }
             else if(data.msg)
             {
@@ -182,11 +185,11 @@
             }
 	    else
 	    {
-			$('tbody.pro3x_invoice_items').append($(data.item));
-			$('tbody.pro3x_invoice_items .pro3x_no_data').parents('tr').remove();
-                        $('#mForm').before(data.mobile);
-			$('.pro3x_invoice_total').text(data.total);
-			$("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
+                $('tbody.pro3x_invoice_items').append($(data.item));
+                $('tbody.pro3x_invoice_items .pro3x_no_data').parents('tr').remove();
+                $('#mForm').before(data.mobile);
+                $('.pro3x_invoice_total').text(data.total);
+                $("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
 	    }
 	    
 	    $('.actionCode', form).removeClass('ajax');
@@ -226,4 +229,93 @@
 	    }
 	}, 'json');
     });
+    
+    (function($) {
+
+        $.fn.report = function(template, options) {
+
+            var template = $(template);
+            var report = this;
+            var page = null;
+            var content = null;
+            var pageContent = null;
+            var height = 0;
+            var count = 0;
+
+            var settings = $.extend({
+                pageHeaderClass         : 'report-page-header',
+                pageFooterClass         : 'report-page-footer',
+                contentFooterClass      : 'report-content-footer',
+                contentClass            : 'report-content',
+                itemClass               : 'report-item',
+                pageClass               : 'page',
+                lastPageClass           : 'report-last-page',
+                pageNumberClass         : 'report-page-number',
+                pageCountClass          : 'report-page-count',
+                clearContentSelector    : 'tbody tr',
+                removeTemplate          : true
+            }, options);
+
+            function appendPage() {
+                page = $('<div class="' + settings.pageClass + '"></div>');
+                report.append(page);
+
+                page.append($('.' + settings.pageHeaderClass, template).clone());
+                page.append($('.' + settings.pageFooterClass, template).clone());
+
+                pageContent = $('.' + settings.contentClass, template).clone();
+                $(settings.clearContentSelector, pageContent).remove();
+
+                content = $('tbody', pageContent);
+
+                page.append(pageContent);
+
+                count++;
+            }
+
+            appendPage();
+
+            // calculate max content height
+            height = page.height();
+
+            page.children().each(function() {
+                height -= $(this).innerHeight();
+            });
+
+            // generate report
+            $('.' + settings.contentClass + ' .' + settings.itemClass, template).each(function() {
+                var item = $(this);
+
+                if((pageContent.height() + item.innerHeight()) > height) {
+                    appendPage();
+                }
+
+                content.append(item.clone());
+            });
+
+            // append report footer
+            var footer = $('.' + settings.contentFooterClass, template);
+
+            if((pageContent.height() + footer.innerHeight()) > height) {
+                appendPage();
+            }
+
+            page.append(footer.clone());
+
+            // add last page class
+            page.addClass(settings.lastPageClass);
+
+            // enumerate pages
+            $('.' + settings.pageClass, report).each(function(index) {
+               $('.' + settings.pageNumberClass, this).text(index + 1);
+               $('.' + settings.pageCountClass, this).text(count);
+            });
+
+            // remove template
+            if(settings.removeTemplate) {
+                template.remove();
+            }
+        };
+
+    })(jQuery);
 {% endblock %}

@@ -217,7 +217,7 @@ class InvoiceController extends AdminController {
         $this->redirect404($invoice);
 
         $invoice->setNumeric($this->getNumeric());
-        return array('total' => $this->formatNumber($invoice->getTotal(), 2), 'invoice' => $invoice);
+        return array('bodyClass' => 'invoice', 'total' => $this->formatNumber($invoice->getTotal(), 2), 'invoice' => $invoice);
     }
     
     /**

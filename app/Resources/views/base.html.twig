@@ -19,7 +19,7 @@
         {% block header %}{% endblock %}
 
     </head>
-    <body>
+    <body class="{{ (bodyClass is defined)?bodyClass:'' }}">
         <div class="pro3x-ui">
             {% block head %}
                 {% include '::header.html.twig' %}
