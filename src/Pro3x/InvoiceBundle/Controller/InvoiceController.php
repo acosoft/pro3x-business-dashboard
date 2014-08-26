@@ -221,7 +221,7 @@ class InvoiceController extends AdminController {
     }
     
     /**
-     * @Route("/preview/{type}/{id}")
+     * @Route("/document/{type}/{id}", name="document")
      */
     public function printDocumentAction($type, $id)
     {

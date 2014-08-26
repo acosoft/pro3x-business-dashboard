@@ -106,6 +106,12 @@ textarea.form-control
     
 .pro3x-report-subtitle    
     { display: inline-block; width: 30mm; text-align: right; }
+    
+table.pro3x td, table.pro3x th
+    { padding: 1mm 2mm; border-spacing: 0px; font-size: 12px; }
+
+table.pro3x
+    { margin-left: 10mm; margin-top: 5mm; }    
         
 @media print {
     .pro3x-ui
@@ -172,12 +178,6 @@ textarea.form-control
         
     .table > tbody > tr > td, .table > thead > tr > th
         { padding: 2mm 5mm; font-size: 12px; }
-        
-    table.pro3x td, table.pro3x th
-        { padding: 1mm 2mm; border-spacing: 0px; font-size: 12px; }
-        
-    table.pro3x
-        { margin-left: 10mm; margin-top: 5mm; }
 }
 
 @media screen {
