@@ -1,18 +1,16 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: localhost
+    database_host: 127.0.0.1
     database_port: null
-    database_name: symfony
+    database_name: dashboard
     database_user: root
-    database_password: 
-    mailer_transport: smtp
-    mailer_host: localhost
-    mailer_user: null
-    mailer_password: null
-    locale: en
+    database_password: null
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: acosoft@gmail.com
+    mailer_password: 
+    locale: hr_HR
     secret: 
     database_path: null
     fina_wsdl: http://localhost/pro3x/fina-1-2/wsdl/FiskalizacijaService.wsdl
     daily_report: Pro3xInvoiceBundle:Report:printDailyReport.html.twig
-    logo_url: 
-    company_info: 

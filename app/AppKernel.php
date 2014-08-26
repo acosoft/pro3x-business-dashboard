@@ -23,7 +23,7 @@ class AppKernel extends Kernel
             new Pro3x\jQueryUIBundle\Pro3xjQueryUIBundle(),
             new Pro3x\AppBundle\Pro3xAppBundle(),
             new Pro3x\InvoiceBundle\Pro3xInvoiceBundle(),
-			new Acme\DemoBundle\AcmeDemoBundle(),
+            //new Acme\DemoBundle\AcmeDemoBundle(),
             new Pro3x\RegistrationKeysBundle\Pro3xRegistrationKeysBundle(),
             new Pro3x\WarehouseBundle\Pro3xWarehouseBundle(),
         );
@@ -32,7 +32,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-			//$bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+            //$bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         return $bundles;

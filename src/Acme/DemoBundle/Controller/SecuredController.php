@@ -32,14 +32,6 @@ class SecuredController extends Controller
     }
 
     /**
-     * @Route("/login_check", name="_security_check")
-     */
-    public function securityCheckAction()
-    {
-        // The security layer will intercept this request
-    }
-
-    /**
      * @Route("/logout", name="_demo_logout")
      */
     public function logoutAction()

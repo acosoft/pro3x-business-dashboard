@@ -59,24 +59,30 @@ class DefaultController extends Controller
 //		return array('register' => $form->createView());
 //	}
 	
-	/**
-	 * @Route("/lost-password", name="lost_password")
-	 * @Template()
-	 */
-	public function lostPasswordAction()
-	{
+    /**
+     * @Route("/lost-password", name="lost_password")
+     * @Template()
+     */
+    public function lostPasswordAction()
+    {
+        return array();
+    }
+    
+    /**
+     * @Route("/admin/login_check", name="_security_check")
+     */
+    public function securityCheckAction()
+    {
+        // The security layer will intercept this request
+    }
 
-		
-		return array();
-	}
-	
-	/**
+    /**
      * @Route("/login", name="login")
      * @Template()
      */
-	public function loginAction()
-	{
-		if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+    public function loginAction()
+    {
+        if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
             $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
@@ -87,11 +93,11 @@ class DefaultController extends Controller
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
         );
-	}
+    }
 	
-	/**
-	 * @todo Delete Acme bundle and change logout pattern
-     * @Route("/logout", name="logout")
+    /**
+     * @todo Delete Acme bundle and change logout pattern
+     * @Route("/admin/logout", name="logout")
      */
     public function logoutAction()
     {

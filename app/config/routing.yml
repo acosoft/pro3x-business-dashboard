@@ -30,9 +30,9 @@ home:
         route: dashboard
         permanent: true
     
-_demo_secured:
-    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
-    type:     annotation
+#_demo_secured:
+#    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
+#    type:     annotation
 
   
 # Internal routing configuration to handle ESI

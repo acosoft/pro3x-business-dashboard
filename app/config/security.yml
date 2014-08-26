@@ -29,12 +29,12 @@ security:
             security: false
 
         secured_area:
-            pattern:    ^/demo/secured/|^/admin|^/logout
+            pattern:    ^/admin
             form_login:
-                check_path: /demo/secured/login_check
+                check_path: /admin/login_check
                 login_path: /login
             logout:
-                path:   /logout
+                path:   /admin/logout
                 target: /admin
             #anonymous: ~
             #http_basic:
