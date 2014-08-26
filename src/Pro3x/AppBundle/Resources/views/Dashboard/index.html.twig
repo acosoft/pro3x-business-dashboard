@@ -12,7 +12,7 @@
             <div class="panel-body">
 
                 <div class="col-md-3 nopadding">
-                    <a class="button" href="{{ path('add_invoice', {'back': app.request.uri}) }}">
+                    <a class="button" href="{{ path('add_invoice') }}">
                         <img class="hidden-xs" src="{{ asset('icons/invoice_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/invoice_add.png') }}" />
                         {{ 'Novi račun'|trans }}
@@ -20,7 +20,7 @@
                 </div >
                 
                 <div class="col-md-3 visible-xs">
-                    <a class="button"  href="{{ path('add_client', {'back': app.request.uri}) }}">
+                    <a class="button"  href="{{ path('add_client') }}">
                         <img class="hidden-xs" src="{{ asset('icons/client_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/client_add.png') }}" />
                         {{ 'Novi kupac'|trans }}
@@ -28,7 +28,7 @@
                 </div>
                     
                 <div class="col-md-3 visible-xs">
-                    <a class="button"  href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">
+                    <a class="button"  href="{{ path('pro3x_invoice_product_add') }}">
                         <img class="hidden-xs" src="{{ asset('icons/inventory_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory_add.png') }}" />
                         {{ 'Novi proizvod'|trans }}
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col-md-3 hidden-xs">
-                    <a class="button"  href="{{ path('pro3x_invoice_product_add', {'back': app.request.uri}) }}">
+                    <a class="button"  href="{{ path('pro3x_invoice_product_add') }}">
                         <img class="hidden-xs" src="{{ asset('icons/inventory_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/inventory_add.png') }}" />
                         {{ 'Novi proizvod'|trans }}
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="col-md-3 hidden-xs">
-                    <a class="button"  href="{{ path('add_client', {'back': app.request.uri}) }}">
+                    <a class="button"  href="{{ path('add_client') }}">
                         <img class="hidden-xs" src="{{ asset('icons/client_add.png') }}" />
                         <img class="visible-xs-inline-block" src="{{ asset('icons/small/client_add.png') }}" />
                         {{ 'Novi kupac'|trans }}
