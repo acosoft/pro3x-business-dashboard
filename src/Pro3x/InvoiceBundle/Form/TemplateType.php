@@ -40,28 +40,28 @@ class TemplateType extends AbstractType
         ;
     }
 	
-	public static function getTransactionTypes()
-	{
-		return array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'P' => 'Ponuda', 'O' => 'Ostalo');
-	}		
-	
-	public static function isTenderTransaction($transactionType)
-	{
-		if($transactionType == 'P')
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	public static function formatTransactionType($type)
-	{
-		$types = self::getTransactionTypes();
-		return $types[$type];
-	}
+    public static function getTransactionTypes()
+    {
+            return array('G' => 'Gotovina', 'K' => 'Kartice', 'C' => 'Čekovi', 'T' => 'Virman', 'P' => 'Ponuda', 'O' => 'Ostalo');
+    }		
+
+    public static function isTenderTransaction($transactionType)
+    {
+            if($transactionType == 'P')
+            {
+                    return true;
+            }
+            else
+            {
+                    return false;
+            }
+    }
+
+    public static function formatTransactionType($type)
+    {
+            $types = self::getTransactionTypes();
+            return $types[$type];
+    }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
