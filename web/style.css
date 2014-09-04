@@ -111,7 +111,13 @@ table.pro3x td, table.pro3x th
     { padding: 1mm 2mm; border-spacing: 0px; font-size: 12px; }
 
 table.pro3x
-    { margin-left: 10mm; margin-top: 5mm; }    
+    { margin-left: 10mm; margin-top: 5mm; }  
+    
+.icon-lg
+    { width: 64px; height: 64px; }
+    
+.icon-xs
+    { width: 32px; height: 32px; }
         
 @media print {
     .pro3x-ui
