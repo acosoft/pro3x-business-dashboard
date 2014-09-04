@@ -52,15 +52,6 @@ class CustomerController extends AdminController
 			
 //			if($form->isValid())
 //			{
-				if($client->getFile())
-				{
-					$filename = uniqid('avatar-', true) . '.jpg';
-					$client->setImage($filename);
-					
-					$fileUploadConfig = $this->getFileUploadConfig();
-					$client->getFile()->move($fileUploadConfig->getDir(), $filename);
-				}
-				
 				$manager = $this->getDoctrine()->getEntityManager();
 				$manager->persist($form->getData());
 				
@@ -93,8 +84,7 @@ class CustomerController extends AdminController
 //			}
 		}
 		
-		$avatar = $this->getFileUploadConfig()->getUrl($client->getImage());
-		return array_merge($this->editParams($form, $title, $icon), array('avatar' => $avatar));
+		return $this->editParams($form, $title, $icon);
 	}
 	
 	/**

@@ -77,15 +77,6 @@ class AdminController extends Controller
 	
 	/**
 	 * 
-	 * @return \Pro3x\Online\FileUploadConfig
-	 */
-	public function getFileUploadConfig()
-	{
-		return $this->get('file.upload.config');
-	}
-	
-	/**
-	 * 
 	 * @return \NumberFormatter
 	 */
 	public function getNumberFormatter($minDecimals, $maxDecimals = null)
