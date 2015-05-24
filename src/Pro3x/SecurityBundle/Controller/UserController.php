@@ -5,7 +5,7 @@ namespace Pro3x\SecurityBundle\Controller;
 use Pro3x\AppBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pro3x\SecurityBundle\Form\UserType;
 use Pro3x\SecurityBundle\Entity\User;
@@ -17,7 +17,7 @@ class UserController extends AdminController
 {
 	/**
 	 * @Route("/delete/{id}", name="delete_user")
-	 * @Secure(roles="ROLE_SECURITY_ADMIN")
+	 * @Security("has_role('ROLE_SECURITY_ADMIN')")
 	 */
 	public function deleteAction()
 	{
@@ -121,7 +121,7 @@ class UserController extends AdminController
 	
 	/**
 	 * @Route("/add", name="add_user")
-	 * @Secure(roles="ROLE_SECURITY_ADMIN")
+	 * @Security("has_role('ROLE_SECURITY_ADMIN')")
 	 * @Template("Pro3xSecurityBundle:User:edit.html.twig")
 	 */
 	public function addAction()
@@ -157,7 +157,7 @@ class UserController extends AdminController
 	
 	/**
 	 * @Route("/{page}", name="users_list", defaults={"page" = 1})
-	 * @Secure(roles="ROLE_SECURITY_ADMIN")
+	 * @Security("has_role('ROLE_SECURITY_ADMIN')")
 	 * @Template()
 	 */
 	public function listAction()

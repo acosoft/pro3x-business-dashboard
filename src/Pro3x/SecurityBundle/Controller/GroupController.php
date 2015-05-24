@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pro3x\SecurityBundle\Form\GroupType;
-use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/admin/groups")
@@ -15,7 +15,7 @@ class GroupController extends Controller
 {
 	/**
 	 * @Route("/add", name="add_group")
-	 * @Secure(roles="ROLE_GROUP_ADMIN")
+	 * @Security("has_role('ROLE_GROUP_ADMIN')")
 	 * @Template("::edit.html.twig")
 	 */
 	public function addAction()
@@ -48,7 +48,7 @@ class GroupController extends Controller
 	
 	/**
 	 * @Route("/edit/{id}", name="edit_group")
-	 * @Secure(roles="ROLE_GROUP_ADMIN")
+	 * @Security("has_role('ROLE_GROUP_ADMIN')")
 	 * @Template("::edit.html.twig")
 	 */
 	public function editAction()
@@ -66,7 +66,7 @@ class GroupController extends Controller
 	
 	/**
 	 * @Route("/delete/{id}", name="delete_group")
-	 * @Secure(roles="ROLE_GROUP_ADMIN")
+	 * @Security("has_role('ROLE_GROUP_ADMIN')")
 	 * @Template()
 	 */
 	public function deleteAction()
@@ -85,7 +85,7 @@ class GroupController extends Controller
 	
 	/**
 	 * @Route("/", name="list_groups")
-	 * @Secure(roles="ROLE_GROUP_ADMIN")
+	 * @Security("has_role('ROLE_GROUP_ADMIN')")
 	 * @Template()
 	 */
 	public function listAction()

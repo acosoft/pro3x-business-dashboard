@@ -1,41 +1,44 @@
 {% extends '::form.html.twig' %}
 
-{% block page_title %}<span class="pro3x_small_icon pro3x_small_icon_authorization"></span>{{ 'Dozvole Korisnika |'|trans|title }} <a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri}) }}">{{ user.username|title }}</a>{% endblock %}
+{% block page_title %}<img src="{{ asset("icons/small/#{icon}.png") }}"><a href="{{ path('edit_user', {'id': user.id, 'back': app.request.uri}) }}">{{ user.displayName|title }}</a>{% endblock %}
 
 {% block body %}
     <form method="post">
-	<div class="grid_8 push_2">
-	    {% include '::message.html.twig' %}
-	    <table class="ui-widget-content ui-corner-all pro3x">
-		<thead>
-		    <tr>
-			<th class="ui-widget-header ui-corner-all">{{ 'Naziv grupe'|trans|title }}</th>
-		    </tr>
-		</thead>
-	    {% for group in groups %}
-		<tr>
-		    <td>
-			<input type="checkbox" value="{{ group.id }}" {{ (group in user.groups)?'checked="checked"':'' }} name="groups[]" /> {{ group.name }}
-		    </td>
-		</tr>
-	    {% else %}
-		<tr>
-		    <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
-		</tr>
-	    {% endfor %}
-	    </table>
+	<div class="col-md-6 col-md-offset-3">
+            
+                <div class="panel panel-default">
+                    <div class="panel-heading">Odabir korisničkih grupa</div>
+                    
+                    {% include '::message.html.twig' %}
+                    <table class="table table-striped">
+                    {% for group in groups %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="{{ group.id }}" {{ (group in user.groups)?'checked="checked"':'' }} name="groups[]" /> {{ group.name }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td class="pro3x_no_data" colspan="100">Nema rezultata</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                    
+                </div>
+            
 	</div>
 
-	<div class="grid_8 push_2">
-	    <div class="pro3x_table_buttons" style="margin-top: 0.6em;">
-		<input type="submit" class="button" value="{{ 'Spremi'|trans }}" />
-		<input type="button" data-href="{{ app.request.get('back') }}" class="button link" value="{{ 'Odustani'|trans }}" />
+	<div class="col-md-6 col-md-offset-3">
+	    <div class="pro3x-buttons">
+		<input type="submit" class="btn btn-primary" value="{{ 'Spremi'|trans }}" />
+		<input type="button" data-href="{{ app.request.get('back') }}" class="btn btn-primary link" value="{{ 'Odustani'|trans }}" />
 	    </div>
 	</div>
 	
 	<input type="hidden" name="id" value="{{ user.id }}" />
 	<input type="hidden" name="back" value="{{ app.request.get('back') }}" />
     </form>
+    
 {% endblock %}
 
 {% block javascripts %}{% endblock %}

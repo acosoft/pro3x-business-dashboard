@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pro3x\SecurityBundle\Entity\User;
-use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class PermissionsController extends Controller
 {
 	/**
 	 * @Route("/admin/user/permisions/{id}", name="edit_permissions")
-	 * @Secure(roles="ROLE_PERMISSION_ADMIN")
+	 * @Security("has_role('ROLE_PERMISSION_ADMIN')")
 	 * @Template()
 	 */
 	public function editAction()
@@ -40,11 +40,11 @@ class PermissionsController extends Controller
 			$manager->persist($user);
 			$manager->flush();
 			
-			$this->get('session')->setFlash('message', 'Dozvole korisnika su uspješno izmijenjene');
+			$this->addFlash('message', 'Dozvole korisnika su uspješno izmijenjene');
 			return $this->redirect($this->getRequest()->get('back'));
 		}
 		
-		return array('user' => $user, 'groups' => $groups);
+		return array('user' => $user, 'groups' => $groups, 'icon' => 'user');
 	}
 }
 

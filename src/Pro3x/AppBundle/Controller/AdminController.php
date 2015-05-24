@@ -30,12 +30,14 @@ class AdminController extends Controller
 	
 	public function setMessage($message)
 	{
-		$this->get('session')->setFlash('message', $message);
+            $this->get('session')->getFlashBag()->add('message', $message);
+            //$this->get('session')->setFlash('message', $message);
 	}
 	
 	public function setWarning($message)
 	{
-		$this->get('session')->setFlash('warning', $message);
+            $this->get('session')->getFlashBag()->add('warning', $message);
+            //$this->get('session')->setFlash('warning', $message);
 	}
 	
 	public function goBack()
@@ -389,7 +391,8 @@ class AdminController extends Controller
 		$manager->remove($group);
 		$manager->flush();
 		
-		$this->get('session')->setFlash('message', $message);
+		//$this->get('session')->setFlash('message', $message);
+                $this->setMessage($message);
 		return $this->redirect($this->getRequest()->get('back'));
 	}
 	
@@ -427,7 +430,8 @@ class AdminController extends Controller
 				$manager->persist($form->getData());
 				$manager->flush();
 				
-				$this->get('session')->setFlash('message', $message);
+				//$this->get('session')->setFlash('message', $message);
+                                $this->setMessage($message);
 				return $this->redirect($this->getBackUrl());
 			}
 		}

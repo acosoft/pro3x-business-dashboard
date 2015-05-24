@@ -1,0 +1,20 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: dashboard
+    database_user: root
+    database_password: LogIn123
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: acosoft@gmail.com
+    mailer_password: johny.bravo
+    locale: hr_HR
+    secret: top-secret
+    database_path: null
+    fina_wsdl: http://localhost/pro3x/fina-1-2/wsdl/FiskalizacijaService.wsdl
+    daily_report: Pro3xInvoiceBundle:Report:printDailyReport.html.twig
+    logo: <img src="http://www.mali-zeleni.hr/wp-content/themes/mali-zeleni/images/mali-zeleni-logo-v4-small.png" />
+    company: <div>Mali zeleni d.o.o, Baretićevo 7c, 51000 Rijeka</div>
+    file_upload_dir_url: http://localhost/dashboard/uploads/
+    file_upload_dir: /var/www/html/dashboard/uploads

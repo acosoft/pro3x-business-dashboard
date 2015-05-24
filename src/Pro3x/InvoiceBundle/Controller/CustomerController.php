@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pro3x\InvoiceBundle\Form\CustomerType;
 use Pro3x\InvoiceBundle\Entity\Customer;
-use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/admin/customers")
@@ -110,7 +110,7 @@ class CustomerController extends AdminController
 	
 	/**
 	 * @Route("/relation/add/{id}", name="customer_relations")
-	 * @Secure(roles="ROLE_RELATIONS")
+	 * @Security("has_role('ROLE_RELATIONS')")
 	 * @Template()
 	 */
 	public function relationsAction($id)
@@ -124,7 +124,7 @@ class CustomerController extends AdminController
 	/**
 	 * @Route("/select/{owner}/{page}", name="select_customer", defaults={"page"=1})
 	 * @Template("Pro3xInvoiceBundle:Customer:select.html.twig")
-	 * @Secure(roles="ROLE_RELATIONS")
+	 * @Security("has_role('ROLE_RELATIONS')")
 	 */
 	public function selectAction($owner, $page)
 	{
@@ -138,7 +138,7 @@ class CustomerController extends AdminController
 	/**
 	 * @Route("/selectBy/{owner}/{relation}/{page}", name="select_by_customer", defaults={"page"=1})
 	 * @Template("Pro3xInvoiceBundle:Customer:select.html.twig")
-	 * @Secure(roles="ROLE_RELATIONS")
+	 * @Security("has_role('ROLE_RELATIONS')")
 	 */
 	public function selectByAction($owner, $relation, $page)
 	{
@@ -156,7 +156,7 @@ class CustomerController extends AdminController
 	}
 	
 	/**
-	 * @Secure(roles="ROLE_RELATIONS")
+	 * @Security("has_role('ROLE_RELATIONS')")
 	 * @Route("/relations/add/{owner}/{related}/{relation}", name="add_customer_relation")
 	 * @Template()
 	 */
@@ -183,7 +183,7 @@ class CustomerController extends AdminController
 	/**
 	 * @Route("/relation/delete/{id}", name="delete_relation")
 	 * @Template()
-	 * @Secure(roles="ROLE_RELATIONS")
+	 * @Security("has_role('ROLE_RELATIONS')")
 	 */
 	public function deleteRelationAction($id)
 	{
@@ -200,7 +200,7 @@ class CustomerController extends AdminController
 	
 	/**
 	 * @Route("/notes/{id}", name="customer_notes")
-	 * @Secure(roles="ROLE_NOTES")
+	 * @Security("has_role('ROLE_NOTES')")
 	 * @Template()
 	 */
 	public function notesAction($id)
@@ -211,7 +211,7 @@ class CustomerController extends AdminController
 	
 	/**
 	 * @Route("/notes/add/{id}", name="add_customer_note")
-	 * @Secure(roles="ROLE_NOTES")
+	 * @Security("has_role('ROLE_NOTES')")
 	 * @Template("::edit.html.twig")
 	 */
 	public function addCustomerNoteAction($id)
@@ -233,7 +233,7 @@ class CustomerController extends AdminController
 	
 	/**
 	 * @Route("/notes/delete/{id}", name="delete_customer_note")
-	 * @Secure(roles="ROLE_NOTES")
+	 * @Security("has_role('ROLE_NOTES')")
 	 * @Template()
 	 */
 	public function deleteCustomerNoteAction()
@@ -244,7 +244,7 @@ class CustomerController extends AdminController
 	/**
 	 * @Route("/notes/edit/{id}", name="edit_customer_note")
 	 * @Template("::edit.html.twig")
-	 * @Secure(roles="ROLE_NOTES")
+	 * @Security("has_role('ROLE_NOTES')")
 	 */
 	public function editCustomerNoteAction($id)
 	{

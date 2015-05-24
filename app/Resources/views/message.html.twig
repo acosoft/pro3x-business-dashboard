@@ -1,14 +1,14 @@
 <div class="ajax-message"></div>
-{% if app.session.hasFlash('message') %}
-<div class="alert alert-success alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <span class="glyphicon glyphicon-leaf"></span> {{ app.session.flash('message')|trans }}
-</div>
-{% endif %}
+{% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <span class="glyphicon glyphicon-leaf"></span> {{ flashMessage |trans }}
+    </div>
+{% endfor %}
 
-{% if app.session.hasFlash('warning') %}
-<div class="alert alert-warning alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <span class="glyphicon glyphicon-fire"></span> {{ app.session.flash('warning')|trans }}
-</div>
-{% endif %}
+{% for flashMessage in app.session.flashbag.get('warning') %}
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <span class="glyphicon glyphicon-fire"></span> {{ flashMessage|trans }}
+    </div>
+{% endfor %}
