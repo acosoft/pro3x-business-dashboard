@@ -18,6 +18,9 @@ use Pro3x\Online\TableParams;
 use Pro3x\InvoiceBundle\Form\CustomerType;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Pro3x\InvoiceBundle\Entity\Json\JsonInvoiceItem;
 
 /**
  * @Route("/admin/invoices")
@@ -144,7 +147,109 @@ class InvoiceController extends AdminController {
                     'total' => $this->formatNumber($invoice->getTotal(), 2),
                     'item' => $itemView, 'mobile' => $mobileView), JSON_FORCE_OBJECT));
     }
+    
+    /**
+     * @Route("/item", name="get_invoice_item")
+     */
+    public function getItemAction(Request $request) {
+        $id = $request->query->get('id', null);
+        
+        if(!$id) {
+            return $this->createNotFoundException();
+        }
+        
+        $item = $this->getInvoiceItemRepository()->find($id);
+        if(!$item) {
+            return $this->createNotFoundException();
+        }
+        
+        return new JsonResponse(new JsonInvoiceItem($item));
+    }
+    
+    /**
+     * @Route("/change-item-total", name="change-item-total")
+     */
+    public function changeTotalAction(Request $request) {
 
+        $id = $request->query->get('id');
+        $item = $this->getInvoiceItemRepository()->find($id); /* @var $item InvoiceItem */
+        
+        if(!$item) {
+            return $this->createNotFoundException();
+        }
+        
+        
+        
+        return array();
+    }
+    
+    /**
+     * @Route("/change-item-price", name="change-item-price")
+     */
+    public function changeItemPriceAction(Request $request) {
+
+        $id = $request->query->get('id');
+        $item = $this->getInvoiceItemRepository()->find($id); /* @var $item InvoiceItem */
+        
+        if(!$item) {
+            return $this->createNotFoundException();
+        }
+        
+        $unitPrice = $this->parseNumber($request->query->get('unitPrice'));
+        $item->setUnitPrice($unitPrice / (1 + $item->getTaxRate()));
+        
+        $amount = $this->parseNumber($request->query->get('amount'));
+        $item->setAmount($amount);
+        
+        $discount = $this->parseNumber($request->query->get('discount'));
+        $item->setDiscount($discount / 100);
+        
+        $item->calculate();
+        
+        return new JsonResponse(new JsonInvoiceItem($item));
+    }
+
+    /**
+     * @Route("/save-changed-item", name="save-changed-item")
+     */
+    public function saveChangedItemAction(Request $request) {
+
+        $id = $request->request->get('id');
+        $item = $this->getInvoiceItemRepository()->find($id); /* @var $item InvoiceItem */
+        
+        if(!$item) {
+            return $this->createNotFoundException();
+        }
+        
+        $item->setDescription($request->request->get('description'));
+        
+        $unitPrice = $this->parseNumber($request->request->get('unitPrice'));
+        $item->setUnitPrice($unitPrice / (1 + $item->getTaxRate()));
+        
+        $amount = $this->parseNumber($request->request->get('amount'));
+        $item->setAmount($amount);
+        
+        $discount = $this->parseNumber($request->request->get('discount'));
+        $item->setDiscount($discount / 100);
+        
+        $item->calculate();
+        $item->getInvoice()->calculate();
+        $item->setNumeric($this->getNumeric());
+        
+        $manager = $this->getDoctrine()->getManager();
+        
+        $manager->persist($item->getInvoice());
+        $manager->persist($item);
+        
+        $manager->flush();
+        
+        $view = $this->renderView('Pro3xInvoiceBundle:Invoice:addItem.html.twig', array('item' => $item));
+        return new JsonResponse(array(
+            'item' => $view,
+            'total' => $this->formatNumber($item->getInvoice()->getTotal())
+        ));
+    }
+    
     /**
      * @Route("/add-item", name="add_invoice_item")
      * @Template()

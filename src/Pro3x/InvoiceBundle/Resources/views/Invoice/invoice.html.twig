@@ -8,6 +8,9 @@
 	    
 	.ui-dialog-content
 	    { padding: 2px 0px 2px 0px !important; }
+            
+        .pro3x-editable-invoice .invoice-item-description:hover
+            { color: #2a6496; cursor: pointer; }
     </style>
 {% endblock %}
 
@@ -44,7 +47,7 @@
 
         <form>
             <div class="panel panel-default pro3x-table-panel">
-            <table class="table table-striped table-hover table-bordered">
+                <table class="table table-striped table-hover table-bordered {{ (invoice.sequence == null and invoice.tenderSequence == null)?'pro3x-editable-invoice':'' }}">
                 <thead>
                     <tr>
                             <th class="ui-widget-header ui-corner-all" style="width: 350px;">{{ 'Naziv artikla'|trans }}</th>
@@ -122,6 +125,7 @@
                     $('.pro3x-invoice-title').replaceWith(data.invoiceTitle);
                     $('.pro3x-invoice-sequence').html(data.invoiceSequence);
                     $('.pro3x-invoice-title-mobile').replaceWith(data.invoiceTitleMobile);
+                    $('.pro3x-editable-invoice').removeClass('pro3x-editable-invoice');
                     
                     $('.report').report('.report-template', {removeTemplate: false});
                     
@@ -318,4 +322,190 @@
         };
 
     })(jQuery);
+{% endblock %}
+
+{% block scripts %}
+    
+    {{ parent() }}
+    
+    <div id="pro3x-edit-description" class="modal fade ag-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h4 class="modal-title">Uređivanje stavke<span class="glyphicon glyphicon-remove close" data-dismiss="modal"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Opis stavke</label>
+                            <div class="col-md-9">
+                                <textarea id="pro3x-selected-description" class="form-control"></textarea>
+                            </div>
+                        </div>                    
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Jedinična cijena</label>
+                            <div class="col-md-9">
+                                <input type="text" id="pro3x-item-unit-price" class="form-control" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Količina</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" id="pro3x-item-amount" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span id="pro3x-item-unit" style="width: 60px; display: inline-block;"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Osnovica</label>
+                            <div class="col-md-9">
+                                <input type="text" id="pro3x-item-base" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Popust</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" id="pro3x-item-discount" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span id="pro3x-item-unit" style="width: 60px; display: inline-block;">%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label class="control-label col-md-3">Ukupno</label>
+                            <div class="col-md-9">
+                                <input type="text" id="pro3x-item-total" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="pro3x-save-changed-item" class="btn btn-primary ag-btn">Spremi</button>
+                    <button type="button" class="btn btn-primary ag-btn" data-dismiss="modal">Zatvori</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <script>
+        jQuery(document).ready(function($) {
+            var self = this;
+            
+            self.dialog = $('#pro3x-edit-description');
+            self.editor = $('#pro3x-selected-description');
+            self.unitPrice = $('#pro3x-item-unit-price');
+            self.amount = $('#pro3x-item-amount');
+            self.totalPrice = $('#pro3x-item-base');
+            self.discount = $('#pro3x-item-discount');
+            self.discountPrice = $('#pro3x-item-total');
+            self.unit = $('#pro3x-item-unit');
+            self.invoiceTotal = $('.pro3x_invoice_total');
+            
+            self.data = null;
+            
+            self.id = function() {
+                return self.item.data('id');
+            };
+            
+            self.params = function() {
+                return { 
+                    'id': self.id(), 
+                    'unitPrice': self.unitPrice.val(), 
+                    'amount': self.amount.val(),
+                    'discount': self.discount.val()
+                };
+            };
+            
+            self.calculateTotal = function() {
+
+                var params = self.params();
+
+                $.get('{{ path('change-item-price') }}', params, function(data) {
+                    self.set(data);
+                });
+            };
+            
+            self.showLoading = function() {
+                $('form .actionCode').addClass('ajax');
+            };
+            
+            self.hideLoading = function() {
+                $('form .actionCode').removeClass('ajax');
+            };
+            
+            self.saveChangedItem = function() {
+                
+                self.showLoading();
+                
+                var params = self.params();
+                params.description = self.editor.val();
+                
+                $.post('{{ path('save-changed-item') }}', params, function(data) {
+                    self.item.parents('tr').replaceWith(data.item);
+                    self.invoiceTotal.text(data.total);
+                    self.hideLoading();
+                });
+            };
+            
+            self.set = function(data) {
+                self.data = data;
+                
+                self.unitPrice.val(data.unitPrice);
+                self.amount.val(data.amount);
+                self.totalPrice.val(data.totalPrice);
+                self.discount.val(data.discount);
+                self.discountPrice.val(data.discountPrice);
+                self.unit.text(data.unit);
+            };
+            
+            $('.pro3x-table-panel').delegate('.pro3x-editable-invoice .invoice-item-description', 'click', function() {
+                
+                self.showLoading();
+                
+                self.item = $(this);
+                self.editor.val(self.item.text());
+                
+                $.get('{{ path('get_invoice_item') }}', { 'id': self.id() }, function(data) {
+                    self.hideLoading();
+                    
+                    self.set(data);
+                    self.dialog.modal('show');
+                });
+            });
+            
+            self.unitPrice.change(function() {
+                if(self.data.unitPrice != self.unitPrice.val()) {
+                    self.calculateTotal();
+                }
+            });
+            
+            self.amount.change(function() {
+                if(self.data.amount != self.amount.val()) {
+                    self.calculateTotal();
+                }
+            });
+            
+            self.discount.change(function() {
+                if(self.data.discount != self.discount.val()) {
+                    self.calculateTotal();
+                }
+            });
+            
+            $('#pro3x-save-changed-item').click(function() {
+                self.dialog.modal('hide');
+                self.saveChangedItem();
+            });
+        });
+    </script>
+    
 {% endblock %}

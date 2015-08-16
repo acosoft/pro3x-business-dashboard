@@ -1,5 +1,5 @@
-<tr data-total="{{ item.taxedPrice }}" class="item-{{ item.id}}">
-    <td>{{ item.description }}{% if item.invoice.sequence == null and item.invoice.tenderSequence == null %} <a data-target=".item-{{ item.id }}" class="pro3x_delete_invoice_item pro3x-document-action" href="{{ path('delete_invoice_item', {'id' : item.id}) }}">{{ 'izbriši'|trans }}</a>{% endif %}</td>
+<tr data-total="{{ item.taxedPrice }}" class="item-{{ item.id}}" data-id="{{ item.id }}">
+    <td><span class="invoice-item-description" data-id="{{ item.id }}">{{ item.description }}</span>{% if item.invoice.sequence == null and item.invoice.tenderSequence == null %} <a data-target=".item-{{ item.id }}" class="pro3x_delete_invoice_item pro3x-document-action" href="{{ path('delete_invoice_item', {'id' : item.id}) }}">{{ 'izbriši'|trans }}</a>{% endif %}</td>
     <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
     <td style="text-align: right;">{{ item.amountFormated }} <span class="pro3x_unit">{{ item.unit }}</span></td>
     <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>

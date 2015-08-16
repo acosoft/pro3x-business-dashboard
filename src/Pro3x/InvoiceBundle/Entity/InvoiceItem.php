@@ -179,6 +179,10 @@ class InvoiceItem
 	{
 		return $this->dicountPrice;
 	}
+        
+        public function setDiscountPrice($value) {
+            $this->dicountPrice = $value;
+        }
 
 	public function getDiscountAmount()
 	{
