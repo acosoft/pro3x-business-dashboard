@@ -84,7 +84,7 @@ class ReceiptItem
 	private $discountAmount;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Pro3x\InvoiceBundle\Entity\TaxRate", inversedBy="receiptItems")
+	 * @ManyToOne(targetEntity="\Pro3x\InvoiceBundle\Entity\TaxRate")
 	  */
 	private $inputTaxRate;
 	
