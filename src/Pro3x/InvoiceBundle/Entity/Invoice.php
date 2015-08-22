@@ -115,6 +115,21 @@ class Invoice
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $companySecureCode;
+        
+        /**
+         *
+         * @ORM\Column(type="text", nullable=true)
+         */
+        private $note;
+        
+        function getNote() {
+            return $this->note;
+        }
+
+        function setNote($note) {
+            $this->note = $note;
+            return $this;
+        }
 	
 	public function getCompanySecureCode()
 	{

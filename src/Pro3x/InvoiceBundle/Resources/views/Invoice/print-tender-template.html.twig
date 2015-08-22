@@ -63,7 +63,10 @@
             <tbody>
             {% for  item in invoice.items %}
                     <tr class="report-item">
-                        <td><span class="pro3x-index">{{ loop.index }}.</span>{{ item.description }}</td>
+                        <td>
+                            <span class="pro3x-index pull-left">{{ loop.index }}.</span>
+                            <div style="margin-left: 7mm;">{{ item.description|raw }}</div>
+                        </td>
                         <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
                         <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
                         <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
@@ -110,6 +113,12 @@
         <div style="margin-top: 5mm; margin-left: 10mm;">
             <div>Operater:  {{ invoice.user.displayName }}</div>
         </div>
+        
+        {% if invoice.note %}
+        <div style="margin-top: 5mm; margin-left: 10mm;">
+            {{ invoice.note|raw }}
+        </div>    
+        {% endif %}
         
         <div style="clearfix"></div>
     </div>

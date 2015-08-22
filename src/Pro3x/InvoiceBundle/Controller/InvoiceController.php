@@ -251,6 +251,56 @@ class InvoiceController extends AdminController {
     }
     
     /**
+     * @Route("/save-invoice-info", name="save-invoice-info")
+     */
+    public function saveNoteAction(Request $request) {
+        
+        $id = $request->request->get('id');
+        $invoice = $this->getInvoiceRepository()->find($id); /* @var $invoice Invoice */
+        
+        if(!$invoice) {
+            return $this->createNotFoundException();
+        }
+
+        $note = $request->request->get('note');
+        if($note !== null) {
+            $invoice->setNote($note);
+        }
+        
+        $number = $request->request->get('number');
+        if($number !== null) {
+            $invoice->setOriginalInvoiceNumber($number);
+        }
+        
+        
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($invoice);
+        $manager->flush();
+        
+        return $this->renderInfo($invoice);
+    }
+    
+    /**
+     * @Route("/get-invoice-info", name="get-invoice-info")
+     */
+    public function getNoteAction(Request $request) {
+        
+        $id = $request->request->get('id');
+        $invoice = $this->getInvoiceRepository()->find($id); /* @var $invoice Invoice */
+        
+        if(!$invoice) {
+            return $this->createNotFoundException();
+        }
+        
+        return new JsonResponse(array('note' => $invoice->getNote(), 'number' => $invoice->getOriginalInvoiceNumber()));
+    }
+    
+    private function renderInfo($invoice) {
+        $view = $this->renderView('Pro3xInvoiceBundle:Invoice:invoice-info.html.twig', array('invoice' => $invoice));
+        return new \Symfony\Component\HttpFoundation\JsonResponse(array('info' => $view));
+    }
+    
+    /**
      * @Route("/add-item", name="add_invoice_item")
      * @Template()
      */
@@ -273,9 +323,9 @@ class InvoiceController extends AdminController {
             $man->persist($invoice);
             $man->flush();
 
-            $msgView = $this->renderView('Pro3xInvoiceBundle:Invoice:paperInvoiceNumber.html.twig', array('invoiceNumber' => $invoiceNumber));
-            $brResult = array('msg' => $msgView, 'paragon' => $invoiceNumber);
-            return new \Symfony\Component\HttpFoundation\JsonResponse($brResult);
+//            $msgView = $this->renderView('Pro3xInvoiceBundle:Invoice:paperInvoiceNumber.html.twig', array('invoiceNumber' => $invoiceNumber));
+//            $brResult = array('msg' => $msgView, 'paragon' => $invoiceNumber);
+            return $this->renderInfo($invoice);
         }
 
         foreach (array(new AmountCodePercentParser($this), new AmountCodeParser($this), new CodePercentParser($this), new CodeParser($this)) as $parser) /* @var $parser \Pro3x\InvoiceBundle\Parsers\BaseParser */ {

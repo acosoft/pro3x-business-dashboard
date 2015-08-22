@@ -4,12 +4,19 @@
         <div class="col-md-4" style="padding: 0px 4px 0px 0px;">
             <input type="text" class="form-control actionCode" placeholder="Barkod, šifra ili naziv artikla" name="code" />
         </div>
-        <input  id="addProduct" class="btn btn-primary" type="button" name="action" value="Dodaj" />
-        <a class="btn btn-primary" href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Kupac'|trans }}</a>
+        <div class="btn-group">
+            <input  id="addProduct" class="btn btn-primary" style="width: 75px;" type="button" name="action" value="Dodaj" />
+            <button class="btn btn-primary dropdown-toggle" style="width: auto;" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('change_invoice_customer', {'id': invoice.id, 'back': app.request.uri}) }}">{{ 'Kupac'|trans }}</a></li>
+                <li><a href="#" id="pro3x-action-napomena">Napomena</a></li>
+                <li><a href="#" id="pro3x-action-number">Broj računa</a></li>
+            </ul>
+        </div>
     {% endif %}
     <div style="display: inline-block;">
         <div class="btn-group">
-            <input  id="print" style="width: 74px;" data-mode="{{ invoice.position.location.templatesSorted[0].id }}" data-cloud="{{ invoice.position.location.templatesSorted[0].useGoogleCloud }}" class="btn btn-primary" type="button" name="action" value="Ispis" />
+            <input  id="print" style="width: 75px;" data-mode="{{ invoice.position.location.templatesSorted[0].id }}" data-cloud="{{ invoice.position.location.templatesSorted[0].useGoogleCloud }}" class="btn btn-primary" type="button" name="action" value="Ispis" />
             <button  id="select" class="btn btn-primary dropdown-toggle" style="width: auto;" data-toggle="dropdown" type="button" name="action" value=""><span class="caret"></span></button>
             <ul id="invoice-templates" class="dropdown-menu" role="menu">
                 {% for item in invoice.position.location.templatesSorted %}

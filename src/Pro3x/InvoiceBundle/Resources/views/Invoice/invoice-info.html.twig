@@ -1,0 +1,38 @@
+<div id="pro3x-invoice-info">
+    {% if invoice.customer or invoice.originalInvoiceNumber or invoice.note %}
+    <div class="col-md-12" style="padding-top: 5px;">
+
+        <div class="panel panel-default">
+
+            <table class="table table-bordered">
+                {% if invoice.customer %}
+                <tr>
+                    <th style="width: 350px">Kupac</th>
+                    <td>
+                        <a class="pull-right" title="Kartica" style="margin-right: 8px;" target="_blank" href="{{ path('customer_history', {'customer': invoice.customer.id}) }}">
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                        </a>
+                        <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> 
+                    </td>
+                </tr>
+                {% endif %}
+
+                {% if invoice.originalInvoiceNumber %}
+                <tr>
+                    <th style="width: 350px">Broj računa</th>
+                    <td>{{ invoice.originalInvoiceNumber }}</td>
+                </tr>
+                {% endif %}
+                
+                {% if invoice.note %}
+                <tr>
+                    <th style="width: 350px">Napomena</th>
+                    <td>{{ invoice.note|raw }}</td>
+                </tr>
+                {% endif %}
+
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>

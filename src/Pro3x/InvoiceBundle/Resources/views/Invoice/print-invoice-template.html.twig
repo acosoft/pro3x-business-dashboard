@@ -63,7 +63,10 @@
             <tbody>
             {% for  item in invoice.items %}
                     <tr class="report-item">
-                        <td><span class="pro3x-index">{{ loop.index }}.</span>{{ item.description }}</td>
+                        <td>
+                            <span class="pro3x-index pull-left">{{ loop.index }}.</span>
+                            <div style="margin-left: 7mm;">{{ item.description|raw }}</div>
+                        </td>
                         <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
                         <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
                         <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
@@ -97,7 +100,9 @@
             <tbody>
             {% for  item in invoice.taxItems %}
                     <tr>
-                        <td style="padding-left: 0;"><span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}</td>
+                        <td style="padding-left: 0;">
+                            <span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}
+                        </td>
                         <td style="text-align: right;">{{ item.rate }} %</td>
                         <td style="text-align: right;">{{ item.base }}</td>
                         <td style="text-align: right;">{{ item.amount }}</td>
@@ -122,6 +127,12 @@
                 <div>ZKI: {{ invoice.companySecureCode }}</div>
             {% endif %}
         </div>
+        
+        {% if invoice.note %}
+        <div style="margin-top: 5mm; margin-left: 10mm;">
+            {{ invoice.note|raw }}
+        </div>    
+        {% endif %}
     </div>
         
     <div class="pro3x-footer report-page-footer" style="background-color: {{ background }} !important;">

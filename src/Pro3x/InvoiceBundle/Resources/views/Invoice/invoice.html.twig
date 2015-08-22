@@ -11,6 +11,9 @@
             
         .pro3x-editable-invoice .invoice-item-description:hover
             { color: #2a6496; cursor: pointer; }
+            
+        .invoice-item-description
+            { margin-right: 24px; }
     </style>
 {% endblock %}
 
@@ -21,25 +24,14 @@
         / <a href="{{ path('edit_location', {'id': invoice.position.location.id, 'back': app.request.uri }) }}">{{ invoice.position.location.name }}</a>
         / <a href="{{ path('edit_position', {'id': invoice.position.id, 'back': app.request.uri}) }}">{{ invoice.position.name }}</a>
     </span>
-
-    <span class="col-md-4" style="text-align: right; padding-right: 8px;">
-        <small class="pro3x_subtitle">
-            {% if invoice.customer %} <a href="{{ path('edit_client', {'id': invoice.customer.id, 'back': app.request.uri}) }}">{{ invoice.customer.name }}</a> 
-                | <a href="{{ path('customer_history', {'customer': invoice.customer.id, 'back': app.request.uri}) }}">Kartica</a>
-            {% endif %}
-        </small>
-    </span>
-        
+    
     <div class="clearfix"></div>
     
 {% endblock %}
 
 {% block body %}
     
-    <div style="margin-bottom: 15px;" class="col-md-12 paragon-box {{ invoice.originalInvoiceNumber?'':'hidden' }}">
-        <div style="padding-right: 8px; text-align: right;">Paragon : <span class="paragon">{{ invoice.originalInvoiceNumber }}</span></div>
-    </div>
-    
+    {% include 'Pro3xInvoiceBundle:Invoice:invoice-info.html.twig' %}
     
     <div class="col-md-12" style="margin-bottom: 0.6em;">
 
@@ -141,32 +133,36 @@
 	$('.actionCode', form).addClass('ajax');
     
 	$.get(form.attr('action'), form.serialize(), function(data) {
-	    if(data.search)
+	    if(data.items)
 	    {
                 var table = $('.pro3x_dialog table');
                 table.empty();
+                
+                if(data.items.length > 0) {
+                    $.each(data.items, function(index, value) {
+                            var item = $('<tr><td style="padding-left: 15px;">' + value.name + '</td><td>' + value.price + '</td></tr>');
+                            item.append($('<td style="text-align: center;" class="pro3x_tools"></td>')
+                                .append($('<a href="#">{{ 'odaberi'|trans }}</a>').data('code', value.code)
+                                .data('amount', data.amount)
+                                .data('discount', data.discount)
+                                .click(function(event) { 
 
-                $.each(data.items, function(index, value) {
-                        var item = $('<tr><td style="padding-left: 0px;">' + value.name + '</td><td>' + value.price + '</td></tr>');
-                        item.append($('<td style="text-align: center;" class="pro3x_tools"></td>')
-                            .append($('<a href="#">{{ 'odaberi'|trans }}</a>').data('code', value.code)
-                            .data('amount', data.amount)
-                            .data('discount', data.discount)
-                            .click(function(event) { 
+                            event.preventDefault();
+                            var me = $(this);
+                            $('.actionCode', form).val(me.data('amount') + '*' + me.data('code') + '-' + me.data('discount'));
+                            $('.pro3x_dialog').modal('hide');
+                            addItem(form);
+                            $('.actionCode', form).val('').focus();
+                            })));
 
-                        event.preventDefault();
-                        var me = $(this);
-                        $('.actionCode', form).val(me.data('amount') + '*' + me.data('code') + '-' + me.data('discount'));
-                        $('.pro3x_dialog').modal('hide');
-                        addItem(form);
-                        $('.actionCode', form).val('').focus();
-                        })));
-
-                        table.append(item);
-                });
-
-                $('.pro3x_dialog').modal('show');
+                            table.append(item);
+                    });
+                    $('.pro3x_dialog').modal('show');
+                }
 	    }
+            else if(data.info) {
+                $('#pro3x-invoice-info').replaceWith(data.info);
+            }
             else if(data.msg)
             {
                 if(data.paragon == null)
@@ -201,7 +197,7 @@
     }
 
     $('#addProduct').click(function() {
-	var form = $(this).parent();
+	var form = $(this).parents('form');
 	addItem(form);
     });
     
@@ -397,6 +393,60 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     
+    
+    <!-- NAPOMENA -->
+    <div id="pro3x-edit-napomena" class="modal fade ag-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h4 class="modal-title">Uređivanje napomene<span class="glyphicon glyphicon-remove close" data-dismiss="modal"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <div class="col-md-12">
+                                <textarea id="pro3x-napomena" class="form-control"></textarea>
+                            </div>
+                        </div>                    
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="pro3x-save-napomena" class="btn btn-primary ag-btn">Spremi</button>
+                    <button type="button" class="btn btn-primary ag-btn" data-dismiss="modal">Zatvori</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <!-- BROJ -->
+    <div id="pro3x-edit-broj" class="modal fade ag-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h4 class="modal-title">Uređivanje broja računa<span class="glyphicon glyphicon-remove close" data-dismiss="modal"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label>Broj originalnog računa</label>
+                            <p class="help-block">
+                                Ručno izdani fiskalni računi se trebaju naknadno fiskalizirati upisivanjem u program. Kod upisa
+                                takvih računa, u ovo polje treba unesti oznaku ručno izdanog računa.
+                            </p>
+                            <input type="text" id="pro3x-broj" class="form-control" />
+                        </div>                    
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="pro3x-save-broj" class="btn btn-primary ag-btn">Spremi</button>
+                    <button type="button" class="btn btn-primary ag-btn" data-dismiss="modal">Zatvori</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
     <script>
         jQuery(document).ready(function($) {
             var self = this;
@@ -410,6 +460,13 @@
             self.discountPrice = $('#pro3x-item-total');
             self.unit = $('#pro3x-item-unit');
             self.invoiceTotal = $('.pro3x_invoice_total');
+            
+            self.dialogNapomena = $('#pro3x-edit-napomena');
+            self.editNapomena = $('#pro3x-napomena');
+            self.invoiceId = '{{ invoice.id }}';
+            
+            self.dialogNumber = $('#pro3x-edit-broj');
+            self.editNumber = $('#pro3x-broj');
             
             self.data = null;
             
@@ -473,7 +530,7 @@
                 self.showLoading();
                 
                 self.item = $(this);
-                self.editor.val(self.item.text());
+                self.editor.val(self.item.html());
                 
                 $.get('{{ path('get_invoice_item') }}', { 'id': self.id() }, function(data) {
                     self.hideLoading();
@@ -505,6 +562,57 @@
                 self.dialog.modal('hide');
                 self.saveChangedItem();
             });
+            
+            $('#pro3x-action-napomena').click(function() {
+                self.showLoading();
+                
+                $.post('{{ path('get-invoice-info') }}', { 'id': self.invoiceId }, function(data) {
+                    self.editNapomena.val(data.note);
+                    self.dialogNapomena.modal('show');
+                    self.hideLoading();
+                });
+            });
+            
+            $('#pro3x-save-napomena').click(function() {
+                self.showLoading();
+                
+                var params = {
+                    'id': self.invoiceId,
+                    'note': self.editNapomena.val()
+                };
+                
+                $.post('{{ path('save-invoice-info') }}', params, function(data) {
+                     $('#pro3x-invoice-info').replaceWith(data.info);
+                     self.dialogNapomena.modal('hide');
+                     self.hideLoading();
+                });
+            });
+            
+            $('#pro3x-action-number').click(function() {
+                self.showLoading();
+                
+                $.post('{{ path('get-invoice-info') }}', { 'id': self.invoiceId }, function(data) {
+                    self.editNumber.val(data.number);
+                    self.dialogNumber.modal('show');
+                    self.hideLoading();
+                });
+            });
+            
+            $('#pro3x-save-broj').click(function() {
+                self.showLoading();
+                
+                var params = {
+                    'id': self.invoiceId,
+                    'number': self.editNumber.val()
+                };
+                
+                $.post('{{ path('save-invoice-info') }}', params, function(data) {
+                     $('#pro3x-invoice-info').replaceWith(data.info);
+                     self.dialogNumber.modal('hide');
+                     self.hideLoading();
+                });
+            });
+            
         });
     </script>
     
