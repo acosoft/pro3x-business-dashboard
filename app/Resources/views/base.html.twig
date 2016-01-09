@@ -39,6 +39,7 @@
             </div>
 
 
+            {% block scripts %}
             <script>
                 jQuery(document).ready(function($) {
                     {% block javascripts %}{% endblock %}
@@ -46,6 +47,7 @@
                     {% include '::scripts.html.twig' %}
                 });
             </script>
+            {% endblock %}
 	</div>
         <div class="pro3x-print">
             
