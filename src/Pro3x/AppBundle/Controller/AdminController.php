@@ -342,6 +342,15 @@ class AdminController extends Controller
 						$this->setWarning('Iznimka u komunikacija sa servisima: ' . $exc->getMessage());
 					}
 					
+                                        $log = new \Pro3x\InvoiceBundle\Entity\FiscalRequest();
+
+                                        $log->setRequest($soap->__getLastRequest());
+                                        $log->setResponse($soap->__getLastResponse());
+
+                                        $manager = $this->getDoctrine()->getManager();
+                                        $manager->persist($log);
+                                        $manager->flush();
+                                        
 					if(!$invoice->getCompanySecureCode())
 					{
 						$invoice->setCompanySecureCode($zahtjev->getRacun()->getZastKod());
