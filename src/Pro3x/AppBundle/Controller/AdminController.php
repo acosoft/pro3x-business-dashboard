@@ -332,20 +332,21 @@ class AdminController extends Controller
 						$racun->setParagonBrRac($invoice->getOriginalInvoiceNumber());
 					}
 
+                                        $log = new \Pro3x\InvoiceBundle\Entity\FiscalRequest();
+                                        
 					try
 					{
 						$data = $soap->racuni($zahtjev); /* @var $data \Pro3x\Online\Fina\RacunOdgovor */
+                                                $log->setResponse($soap->__getLastResponse());
 					}
 					catch(\Exception $exc)
 					{
 						$data = null;
 						$this->setWarning('Iznimka u komunikacija sa servisima: ' . $exc->getMessage());
+                                                $log->setResponse($exc->getMessage() . "\n\n- - -\n\n" . $exc->getTraceAsString());
 					}
 					
-                                        $log = new \Pro3x\InvoiceBundle\Entity\FiscalRequest();
-
                                         $log->setRequest($soap->__getLastRequest());
-                                        $log->setResponse($soap->__getLastResponse());
 
                                         $manager = $this->getDoctrine()->getManager();
                                         $manager->persist($log);

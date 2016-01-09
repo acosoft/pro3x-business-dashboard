@@ -24,14 +24,14 @@ class FiscalRequest
     /**
      * @var string
      *
-     * @ORM\Column(name="request", type="text")
+     * @ORM\Column(name="request", type="text", nullable=true)
      */
     private $request;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="response", type="text")
+     * @ORM\Column(name="response", type="text", nullable=true)
      */
     private $response;
 
