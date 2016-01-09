@@ -66,7 +66,7 @@
                         {% set total = 0 %}
                         {% for  item in data %}
                                 <tr class="report-item">
-                                    <td>{{ item.description }}</td>
+                                    <td>{{ item.description|raw }}</td>
                                     <td style="text-align: right;">{{ item.unitPrice|number_format(2, ',', '.') }}</td>
                                     <td style="text-align: right;">{{ item.totalAmount|number_format(2, ',', '.') }}</td>
                                     <td style="text-align: left;">{{ item.unit }}</td>
