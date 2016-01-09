@@ -76,10 +76,10 @@ class TemplateController extends AdminController
 
 		$params->setTitle('Pregled predložaka')
 				->setIcon('template')
-				->addColumn('locationName', 'Naziv lokacije')
 				->addColumn('name', 'Naziv predloška')
+                                ->addColumn('locationName', 'Lokacija')
 				->addColumn('priority', 'Prioritet')
-				->addColumn('useGoogleCloudFormated', "Način ispisa")
+				//->addColumn('useGoogleCloudFormated', "Način ispisa")
 				->setDeleteType('predložak')
 				->setDeleteColumn('name')
 				->setRoutes('template')

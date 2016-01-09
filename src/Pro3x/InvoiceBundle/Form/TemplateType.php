@@ -17,7 +17,7 @@ class TemplateType extends AbstractType
 				'multiple' => false, 
 				'class' => 'Pro3xInvoiceBundle:Location'))
 			->add('transactionType', 'choice', array('choices' => self::getTransactionTypes(), 'label' => 'Vrsta predloška'))
-			->add('useGoogleCloud', 'choice', array('label' => 'Način ispisa', 'choices' => array(true => 'Google Cloud Ispis', false => 'Direktni ispis')))
+			->add('useGoogleCloud', 'hidden', array('data' => 0))
             ->add('name', 'text', array('label' => 'Naziv'))
             ->add('description', 'text', array('label' => 'Opis dokumenta'))
             ->add('paymentMethod', 'text', array('label' => 'Način plaćanja'))
