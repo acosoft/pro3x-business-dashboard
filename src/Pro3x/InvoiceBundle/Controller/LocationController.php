@@ -44,6 +44,9 @@ class LocationController extends AdminController
 	{
 		if($this->getRequest()->isMethod('POST'))
 		{
+                        $isFiscal = false;
+                        $error = false;
+                        
 			try
 			{
 				$location = $this->getLocationRepository()->find($id); /* @var $location \Pro3x\InvoiceBundle\Entity\Location */
@@ -72,6 +75,7 @@ class LocationController extends AdminController
 					$pocetak = new \DateTime('now');
 					$zahtjev->getPoslovniProstor()->setDatumPocetkaPrimjene($pocetak->format('d.m.Y'));
 
+                                        $isFiscal = true;
 					$result = $soap->poslovniProstor($zahtjev);
 
 					$this->setMessage('Podaci o poslovnom prostoru su uspješno spremljeni i prijavljeni na Finu');
@@ -80,11 +84,27 @@ class LocationController extends AdminController
 			}
 			catch (\Exception $exc)
 			{
-				$this->setWarning('Servisi porezne uprave nisu dostupni, lokacija nije prijavljena');
+				$this->setWarning('Iznimka u komunikaciji sa fiskalnim servisima, lokacija nije prijavljena');
 				$location->setSubmited(false);
+                                $error = $exc->getMessage() . "\n\n- - -\n\n" . $exc->getTraceAsString();
 			}
 			
 			$manager = $this->getDoctrine()->getEntityManager();
+                        
+                        if($isFiscal) {
+                            $log = new \Pro3x\InvoiceBundle\Entity\FiscalRequest();
+
+                            $log->setRequest($soap->__getLastRequest());
+                            
+                            if($error) {
+                                $log->setResponse($error);
+                            } else {
+                                $log->setResponse($soap->__getLastResponse());
+                            }
+
+                            $manager->persist($log);
+                        }
+                        
 			$manager->persist($location);
 			$manager->flush();
 		}
