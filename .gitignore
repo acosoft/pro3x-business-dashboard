@@ -6,3 +6,4 @@
 /app/config/parameters.yml
 /web/uploads/
 /src/Pro3x/InvoiceBundle/Resources/views/Invoice/print-x-*
+/documents/
