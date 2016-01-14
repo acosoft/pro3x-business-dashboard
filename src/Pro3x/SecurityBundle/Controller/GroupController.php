@@ -38,7 +38,7 @@ class GroupController extends Controller
 				$manager->persist($form->getData());
 				$manager->flush();
 				
-				$this->get('session')->setFlash('message', $message);
+				$this->addFlash('message', $message);
 				return $this->redirect($this->getRequest()->get('back'));
 			}
 		}
@@ -79,7 +79,7 @@ class GroupController extends Controller
 		$manager->remove($group);
 		$manager->flush();
 		
-		$this->get('session')->setFlash('message', 'Grupa je uspješno izbrisana');
+		$this->addFlash('message', 'Grupa je uspješno izbrisana');
 		return $this->redirect($this->getRequest()->get('back'));
 	}
 	

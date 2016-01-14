@@ -79,7 +79,7 @@ class CustomerController extends AdminController
 				
 				$manager->flush();
 				
-				$this->get('session')->setFlash('message', $msg);
+				$this->addFlash('message', $msg);
 				return $this->redirect($this->getBackUrl());
 //			}
 		}

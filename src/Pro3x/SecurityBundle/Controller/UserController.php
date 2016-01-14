@@ -33,7 +33,7 @@ class UserController extends AdminController
 		$manager->remove($user);
 		$manager->flush();
 		
-		$this->get('session')->setFlash('message', 'Korisnik je uspješno izbrisan');
+		$this->addFlash('message', 'Korisnik je uspješno izbrisan');
 		return $this->redirect($this->getRequest()->get('back'));
 	}
 	
@@ -104,7 +104,7 @@ class UserController extends AdminController
 					$manager->persist($user);
 					$manager->flush();
 
-					$this->get('session')->setFlash('message', 'Informacije o korisniku su uspješno izmjenjene');
+					$this->addFlash('message', 'Informacije o korisniku su uspješno izmjenjene');
 
 					return $this->redirect($this->getRequest()->get('back'));
 				}
@@ -146,7 +146,7 @@ class UserController extends AdminController
 				$manager->persist($user);
 				$manager->flush();
 				
-				$this->get('session')->setFlash('message', 'Podaci o novom korisniku su uspješno spremljeni u bazu');
+				$this->addFlash('message', 'Podaci o novom korisniku su uspješno spremljeni u bazu');
 				
 				return $this->redirect($this->getRequest()->get('back'));
 			}
