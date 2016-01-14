@@ -323,8 +323,6 @@ class InvoiceController extends AdminController {
             $man->persist($invoice);
             $man->flush();
 
-//            $msgView = $this->renderView('Pro3xInvoiceBundle:Invoice:paperInvoiceNumber.html.twig', array('invoiceNumber' => $invoiceNumber));
-//            $brResult = array('msg' => $msgView, 'paragon' => $invoiceNumber);
             return $this->renderInfo($invoice);
         }
 
