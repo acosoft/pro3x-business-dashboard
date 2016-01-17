@@ -1,0 +1,149 @@
+<div class="pro3x-document report"></div>
+
+<div class="pro3x-document report-template">
+
+    <div class="report-page-header">
+        <div style="padding-top: 10mm; padding-left: 10mm;">
+            {% if invoice.position.location.logo %}
+                <img src="{{ invoice.position.location.logo }}" />
+            {% endif %}
+        </div>
+
+        <div style="text-align: right; font-size: 12px; font-weight: 300; padding-right: 10mm;">
+            <div style="font-size: 24px;">TRANSACTA obrt za usluge</div>
+            <div>Vlasnik - <em>Owner</em>: Srđan Telenta, OIB - <em>Tax Registration Number</em>: 12369605311</div>
+            <div>Adresa - <em>Address</em>: Vlaška 72a, 10000 Zagreb, Hrvatska</div>
+            <div>Telefon - <em>Phone</em>: +385 (0)1 467 0743</div>
+            <div>Broj računa - <em>Bank account number</em>: 1107537214</div>
+            <div>IBAN: HR7124840081107537214, SWIFT: RZBHHR2X</div>
+            <div>Banka - <em>Bank</em>: Raiffeisenbank Austria d.d. Zagreb</div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <h1 class="pro3x"><span class="pro3x-report-title">RAČUN - INVOICE</span><small class="pro3x-report-subtitle"><span class="report-page-number"></span> / <span class="report-page-count"></span></small></h1>
+        <div class="clearfix"></div>
+
+
+        <div style="background-color: {{ background }} !important; padding: 4.5mm 5mm; width: 200mm; margin-left: 5mm;">
+            <div style="width: 85mm; float: left;">
+                <div><span class="pro3x-name">Oznaka </span><span class="pro3x-name"><small style="font-weight: normal;"><em class="small">No.</em></small></span>{{ invoice.sequence }} - {{ invoice.position.location.name }} - {{ (invoice.position.name)?invoice.position.name:invoice.position.id }}
+                    
+                </div>
+                <div><span class="pro3x-name">Datum </span><span class="pro3x-name"><small style="font-weight: normal;"><em>Date</em></small></span>{{ invoice.dateFormated }}</div>
+                <div><span class="pro3x-name">Vrijeme </span><span class="pro3x-name"><small style="font-weight: normal;"><em>Time</em></small></span>{{ invoice.timeFormated }}h</div>
+
+                {% if invoice.template.dueDays %}
+                    <div><span class="pro3x-name">Rok plaćanja</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Payment due</em></small></span>{{ invoice.created|date_modify(invoice.template.dueDays)|date('d.m.Y') }}</div>
+                {% else %}
+                    <div><span class="pro3x-name">Ukupno za platiti</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Total amount due</em></small></span>{{ invoice.totalFormated }}kn</div>
+                {% endif %}
+            </div>
+
+            {% if invoice.customer %}    
+                <div style="float: right; width: 100mm;">
+                    <div class="pro3x-value"><span class="pro3x-name">Kupac</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Customer</em></small></span>{{ invoice.customer.name }}</div>
+                    <div class="pro3x-value"><span class="pro3x-name">Adresa</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Address</em></small></span>{{ invoice.customer.address }}</div>
+                    <div class="pro3x-value"><span class="pro3x-name">Lokacija</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Location</em></small></span>{{ invoice.customer.location }}</div>
+                    <div class="pro3x-value"><span class="pro3x-name">OIB</span><span class="pro3x-name"><small style="font-weight: normal;"><em>Tax number</em></small></span>{% if invoice.customer.taxNumber %}{{ invoice.customer.taxNumber }}{% endif %}</div>
+                </div>
+            {% endif %}  
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+        
+    <div class="report-content">
+        <div class="panel panel-default" style="width: 200mm; margin: 5mm 5mm 5mm 5mm;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Naziv <div><small style="font-weight: normal;"><em>Description</em></small></div></th>
+                    <th style="text-align: right;">Cijena <div><small style="font-weight: normal;"><em>Unit price</em></small></div></th>
+                    <th style="text-align: right;">Količina <div><small style="font-weight: normal;"><em>Quantity</em></small></div></th>
+                    <th style="text-align: right;">Osnovica  <div><small style="font-weight: normal;"><em>Price</em></small></div></th>
+                    <th style="text-align: right;">Popust <div><small style="font-weight: normal;"><em>Discount</em></small></div></th>
+                    <th style="text-align: right;">Ukupno  <div><small style="font-weight: normal;"><em>Total</em></small></div></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for  item in invoice.items %}
+                    <tr class="report-item">
+                        <td>
+                            <span class="pro3x-index pull-left">{{ loop.index }}.</span>
+                            <div style="margin-left: 7mm;">{{ item.description|raw }}</div>
+                        </td>
+                        <td style="text-align: right;">{{ item.taxedPriceFormated }}</td>
+                        <td style="text-align: right;"> {{ item.amount }}<span style="display: inline-block; width: 10mm; text-align: right;">{{ item.unit }}</span></td>
+                        <td style="text-align: right;">{{ item.totalTaxedPriceFormated }}</td>
+                        <td style="text-align: right;">{{ item.discountFormated }} %</td>
+                        <td style="text-align: right;">{{ item.discountPriceFormated }}</td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+            
+    <div class="report-content-footer">
+        <div style="text-align: right; margin-top: 0mm;">
+            <h3 style="margin: 0mm 10mm 0mm 0mm; font-weight: 300;">Ukupno za platiti - <em>Total amount due</em>: {{ invoice.totalFormated }}KN</h3>
+        </div>
+
+        <div style="clear: both;"></div>
+
+        {% if invoice.taxItems %}
+        <table class="pro3x">
+            <thead>
+                <tr>
+                    <th style="padding-left: 0mm;">Porez <div><small style="font-weight: normal;"><em>Tax</em></small></div></th>
+                    <th style="text-align: right;">Stopa <div><small style="font-weight: normal;"><em>Rate</em></small></div></th>
+                    <th style="text-align: right;">Osnovica <div><small style="font-weight: normal;"><em>Base</em></small></div></th>
+                    <th style="text-align: right;">Iznos <div><small style="font-weight: normal;"><em>Total</em></small></div></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for  item in invoice.taxItems %}
+                    <tr>
+                        <td style="padding-left: 0;">
+                            <span style="display: inline-block; width: 5mm; text-align: right; margin-right: 5mm;">{{ loop.index }}.</span>{{ item.description }}
+                        </td>
+                        <td style="text-align: right;">{{ item.rate }} %</td>
+                        <td style="text-align: right;">{{ item.base }}</td>
+                        <td style="text-align: right;">{{ item.amount }}</td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <div style="margin-top: 5mm; margin-left: 10mm;">
+            <div>Način plaćanja - <em>Payment method</em>: Transakcijski račun - <em>Bank transfer</em></div>
+            <div>Operater - <em>Invoice issued by</em>:  {{ invoice.user.displayName }}</div>
+        </div>
+
+        <div style="margin-top: 5mm; margin-left: 10mm;">
+            {% if invoice.companySecureCode %}
+                {% if invoice.originalInvoiceNumber %}
+                    <div style="margin-bottom: 5mm;">BR: {{ invoice.originalInvoiceNumber }}</div>
+                {% endif %}
+
+                <div>JIR: {{ invoice.uniqueInvoiceNumber?invoice.uniqueInvoiceNumber:'Trenutno nedostupan' }}</div>
+                <div>ZKI: {{ invoice.companySecureCode }}</div>
+            {% endif %}
+        </div>
+        
+        {% if invoice.note %}
+        <div style="margin-top: 5mm; margin-left: 10mm;">
+            {{ invoice.note|raw }}
+        </div>    
+        {% endif %}
+    </div>
+        
+    <div class="pro3x-footer report-page-footer" style="background-color: {{ background }} !important;">
+        <div>Transacta obrt za usluge nije u sustavu PDV-a sukladno članku 90 st. 1 i 2 Zakona o porezu na dodanu vrijednost</div>
+        <div><small><em>In accordance with Article 90 paragraphs 1 and 2 of the Croatian VAT Act, the Transacta obrt za usluge is not registered for VAT.</em></small></div>
+    </div>
+</div>
+
