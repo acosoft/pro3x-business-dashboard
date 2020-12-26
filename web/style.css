@@ -304,3 +304,7 @@ table.pro3x
     }
 }
     
+#qrcode {
+    padding-top: 30px;
+    margin-left: 10mm;
+}

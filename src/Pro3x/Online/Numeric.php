@@ -36,6 +36,12 @@ class Numeric
 		
 		return $nf;
 	}
+
+	public function getFiscalNumberFormatter($minDecimals = 2, $maxDecimals = null)
+	{
+		$nf = $this->getNumberFormatter(0);
+		return $nf;
+	}
 }
 
 ?>

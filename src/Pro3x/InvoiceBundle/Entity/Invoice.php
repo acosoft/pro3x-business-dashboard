@@ -547,6 +547,15 @@ class Invoice
 	{
 		return $this->getNumeric()->getNumberFormatter()->format($this->getTotal());
 	}
+
+	public function getFiscalTotalFormated()
+	{
+		return $this->getNumeric()->getFiscalNumberFormatter()->format($this->getTotal() * 100);
+	}
+
+	public function getFiscalDateTimeFormated() {
+		return $this->created->format('Ymd_Hi');
+	}
 	
 	public function __call($name, $arguments)
 	{
