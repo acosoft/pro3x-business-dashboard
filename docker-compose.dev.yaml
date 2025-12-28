@@ -1,0 +1,36 @@
+# DEV ONLY
+# Contains development credentials
+# DO NOT USE IN PRODUCTION
+
+services:
+  app:
+    image: business-dashboard-app:dev
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    container_name: business-dashboard-app-dev
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app/config/parameters.yml:/var/www/html/app/config/parameters.yml:ro
+    depends_on:
+      - db
+
+  db:
+    image: business-dashboard-db:dev
+    build:
+      context: .
+      dockerfile: docker/db.Dockerfile
+    container_name: business-dashboard-db-dev
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dashboard
+      MYSQL_USER: dashboard
+      MYSQL_PASSWORD: dashboard
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
