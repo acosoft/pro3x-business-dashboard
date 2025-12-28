@@ -1,6 +1,12 @@
+# DEV ONLY
+# Contains development credentials
+# DO NOT USE IN PRODUCTION
+
 services:
   app:
-    build: ./docker
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
     container_name: business-dashboard-app
     ports:
       - "8080:80"
