@@ -26,9 +26,11 @@ EOF
 
 COPY . /var/www/html/
 
-RUN mkdir -p app/cache app/logs && chown -R www-data:www-data app/cache app/logs
+RUN mkdir -p app/cache app/logs && chown -R www-data:www-data app/cache app/logs app
 
 USER www-data
+
+RUN php app/console cache:clear --env=prod --no-debug
 
 EXPOSE 80
 
