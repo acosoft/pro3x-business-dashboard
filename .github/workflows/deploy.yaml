@@ -49,5 +49,5 @@ jobs:
             echo "Using APP_IMAGE: $APP_IMAGE"
             echo "Using DB_IMAGE: $DB_IMAGE"
             mv docker-compose.prod.yaml docker-compose.yaml
-            docker-compose pull
-            docker-compose up -d --remove-orphans
+            docker compose pull
+            docker compose up -d --remove-orphans
