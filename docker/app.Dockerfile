@@ -28,7 +28,8 @@ COPY --chown=www-data:www-data . /var/www/html/
 
 USER www-data
 
-RUN COMPOSER_CACHE_DIR=/tmp/composer-cache \
+RUN rm -rf app/cache/* && \
+    COMPOSER_CACHE_DIR=/tmp/composer-cache \
     SYMFONY_ENV=prod \
     SYMFONY_DEBUG=0 \
     APP_ENV=prod \
