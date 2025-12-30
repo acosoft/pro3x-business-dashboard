@@ -30,13 +30,6 @@ USER www-data
 
 RUN rm -rf app/cache/*
 
-RUN COMPOSER_CACHE_DIR=/tmp/composer-cache \
-    SYMFONY_ENV=prod \
-    SYMFONY_DEBUG=0 \
-    APP_ENV=prod \
-    APP_DEBUG=0 \
-    composer install --no-dev --optimize-autoloader --no-interaction --no-progress
-
 EXPOSE 80
 
 CMD ["apache2-foreground"]
