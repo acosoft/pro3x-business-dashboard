@@ -1,0 +1,20 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: db
+    database_port: 3306
+    database_name: ${MYSQL_DATABASE}
+    database_user: ${MYSQL_USER}
+    database_password: ${MYSQL_PASSWORD}
+    mailer_transport: -
+    mailer_host: -
+    mailer_user: -
+    mailer_password: -
+    locale: hr_HR
+    secret: top-secret
+    database_path: null
+    fina_wsdl: 'http://localhost/pro3x/fina-1-2/wsdl/FiskalizacijaService.wsdl'
+    daily_report: 'Pro3xInvoiceBundle:Report:printDailyReport.html.twig'
+    logo: '<img src="http://www.mali-zeleni.hr/wp-content/themes/mali-zeleni/images/mali-zeleni-logo-v4-small.png" />'
+    company: '<div>Mali zeleni d.o.o, Baretićevo 7c, 51000 Rijeka</div>'
+    file_upload_dir: /var/www/html/web/uploads
+    file_upload_dir_url: 'http://localhost:8080/uploads/'
