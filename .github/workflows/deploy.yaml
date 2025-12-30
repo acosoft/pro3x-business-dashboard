@@ -20,6 +20,7 @@ jobs:
         with:
           name: env-file
           path: .
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Set .env variables
         run: |
