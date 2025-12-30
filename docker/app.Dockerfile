@@ -24,11 +24,11 @@ RUN cat > /etc/apache2/sites-available/000-default.conf <<'EOF'
 </VirtualHost>
 EOF
 
-USER www-data
-
 COPY . /var/www/html/
 
 RUN mkdir -p app/cache app/logs && chown -R www-data:www-data app/cache app/logs
+
+USER www-data
 
 EXPOSE 80
 
