@@ -26,13 +26,18 @@ jobs:
           MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           EOF
 
+      - name: Render parameters.yml
+        run: |
+          export $(grep -v '^#' .env | xargs)
+          envsubst < app/config/parameters.yml.dist > parameters.yml
+
       - name: Upload files
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ vars.DEPLOY_HOST }}
           username: ${{ vars.DEPLOY_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ".env,docker-compose.prod.yaml"
+          source: ".env,docker-compose.prod.yaml,parameters.yml"
           target: "~/business-dashboard/"
 
       - name: Deploy to Hetzner Cloud

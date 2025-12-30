@@ -6,6 +6,8 @@ services:
       - db
     ports:
       - "127.0.0.1:8080:80"
+    volumes:
+      - ./parameters.yml:/var/www/html/app/config/parameters.yml:ro
     restart: unless-stopped
 
   db:
