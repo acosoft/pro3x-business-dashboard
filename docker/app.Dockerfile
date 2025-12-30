@@ -24,13 +24,11 @@ RUN cat > /etc/apache2/sites-available/000-default.conf <<'EOF'
 </VirtualHost>
 EOF
 
-COPY . /var/www/html/
-
-RUN mkdir -p app/cache app/logs && chown -R www-data:www-data app/cache app/logs app
+COPY --chown=www-data:www-data . /var/www/html/
 
 USER www-data
 
-RUN php app/console cache:clear --env=prod --no-debug
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 EXPOSE 80
 
