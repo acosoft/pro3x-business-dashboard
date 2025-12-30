@@ -32,9 +32,7 @@ jobs:
           host: ${{ vars.DEPLOY_HOST }}
           username: ${{ vars.DEPLOY_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: |
-            docker-compose.prod.yaml
-            .env
+          source: ".env,docker-compose.prod.yaml"
           target: "~/business-dashboard/"
 
       - name: Deploy to Hetzner Cloud
