@@ -1,0 +1,57 @@
+name: Deploy to Hetzner Cloud
+
+on:
+  workflow_run:
+    workflows: ["Publish Docker images"]
+    types:
+      - completed
+  
+jobs:
+  deploy:
+    environment: hetzner
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download .env file
+        uses: actions/download-artifact@v4
+        with:
+          name: env-file
+          path: .
+
+      - name: Set .env variables
+        run: |
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+          echo "MYSQL_DATABASE=${{ vars.MYSQL_DATABASE }}" >> .env
+          echo "MYSQL_USER=${{ vars.MYSQL_USER }}" >> .env
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+
+      - name: Upload files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.DEPLOY_HOST }}
+          username: ${{ vars.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: |
+            docker-compose.prod.yaml
+            .env
+          target: "~/business-dashboard/"
+
+      - name: Deploy to Hetzner Cloud
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ vars.DEPLOY_HOST }}
+          username: ${{ vars.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/business-dashboard
+            set -a
+            source .env
+            set +a
+            echo "Using APP_IMAGE: $APP_IMAGE"
+            echo "Using DB_IMAGE: $DB_IMAGE"
+            mv docker-compose.prod.yaml docker-compose.yaml
+            docker-compose pull
+            docker-compose up -d --remove-orphans
