@@ -28,7 +28,12 @@ COPY --chown=www-data:www-data . /var/www/html/
 
 USER www-data
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+RUN COMPOSER_CACHE_DIR=/tmp/composer-cache \
+    SYMFONY_ENV=prod \
+    SYMFONY_DEBUG=0 \
+    APP_ENV=prod \
+    APP_DEBUG=0 \
+    composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 EXPOSE 80
 
