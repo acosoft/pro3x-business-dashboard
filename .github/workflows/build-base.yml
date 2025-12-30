@@ -6,6 +6,8 @@ on:
     branches: [ main ]
     paths:
       - docker/base.Dockerfile
+      - composer.lock
+      - composer.json
 
 permissions:
   contents: read

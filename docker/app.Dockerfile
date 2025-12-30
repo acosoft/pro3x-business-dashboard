@@ -22,8 +22,7 @@ RUN cat > /etc/apache2/sites-available/000-default.conf <<'EOF'
 </VirtualHost>
 EOF
 
-RUN curl -k -fsSL https://getcomposer.org/download/1.10.26/composer.phar \
-    -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+USER www-data
 
 COPY . /var/www/html/
 

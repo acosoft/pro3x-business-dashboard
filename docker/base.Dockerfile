@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y --allow-unauthenticated \
     libmcrypt-dev \
     libbz2-dev \
     zlib1g-dev \
-    unzip
+    unzip \
+    git
 
 RUN a2enmod rewrite && a2enmod headers
 
@@ -30,3 +31,14 @@ RUN docker-php-ext-install mysql mysqli pdo pdo_mysql
 RUN docker-php-ext-install curl intl mbstring exif bcmath bz2 calendar soap sockets
 RUN docker-php-ext-install mcrypt xmlrpc zip
 RUN docker-php-ext-install sysvmsg sysvsem sysvshm
+
+RUN curl -k -fsSL https://getcomposer.org/download/1.10.26/composer.phar \
+    -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+
+USER www-data
+
+WORKDIR /var/www/html
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
