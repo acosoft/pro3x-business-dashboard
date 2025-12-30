@@ -29,6 +29,8 @@ jobs:
           context: .
           file: docker/app.Dockerfile
           push: true
+          build-args: |
+            BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/business-dashboard-base:latest
           tags: |
             ghcr.io/${{ github.repository_owner }}/business-dashboard-app:latest
             ghcr.io/${{ github.repository_owner }}/business-dashboard-app:${{ github.ref_name }}-${{ github.sha }}
