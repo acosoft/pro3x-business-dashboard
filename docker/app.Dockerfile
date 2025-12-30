@@ -1,6 +1,8 @@
 ARG BASE_IMAGE=ghcr.io/acosoft/business-dashboard-base:latest
 FROM ${BASE_IMAGE}
 
+USER root
+
 WORKDIR /var/www/html
 
 RUN echo "date.timezone=Europe/Zagreb" > /usr/local/etc/php/conf.d/docker-timezone.ini
