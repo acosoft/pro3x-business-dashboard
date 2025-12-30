@@ -57,4 +57,5 @@ jobs:
         with:
           name: env-file  
           path: .env
+          include-hidden-files: true
           if-no-files-found: error
