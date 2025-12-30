@@ -6,9 +6,9 @@ parameters:
     database_user: ${MYSQL_USER}
     database_password: ${MYSQL_PASSWORD}
     mailer_transport: smtp
-    mailer_host: -
-    mailer_user: -
-    mailer_password: -
+    mailer_host: 
+    mailer_user: 
+    mailer_password: 
     locale: hr_HR
     secret: top-secret
     database_path: null

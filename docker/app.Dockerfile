@@ -25,11 +25,14 @@ RUN cat > /etc/apache2/sites-available/000-default.conf <<'EOF'
 EOF
 
 COPY --chown=www-data:www-data . /var/www/html/
+COPY ./app/config/parameters.yml.dist /var/www/html/app/config/parameters.yml
 
 USER www-data
 
-RUN rm -rf app/cache/*
+RUN rm -rf app/cache/* && SYMFONY_ENV=prod composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 EXPOSE 80
 
 CMD ["apache2-foreground"]
+
+    
